@@ -17,10 +17,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'DashBoardController@index')->name('home');
 
-Route::resource('lottery', 'LotteryController');
-Route::resource('payment', 'PaymentController');
-Route::resource('user', 'UserController');
-Route::resource('profile', 'ProfileController');
-Route::resource('ticket', 'TicketController');
+
+Route::resource('lottery', 'LotteryController')->middleware('auth');
+Route::resource('payment', 'PaymentController')->middleware('auth');
+Route::resource('user', 'UserController')->middleware('auth');
+Route::resource('profile', 'ProfileController')->middleware('auth');
+Route::resource('ticket', 'TicketController')->middleware('auth');

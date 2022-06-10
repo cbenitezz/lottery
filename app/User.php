@@ -3,15 +3,18 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Permission\Traits\HasRoles;
+
 
 class User extends Authenticatable
 {
     protected $table = 'users';
     public $timestamps = true;
 
+    use HasRoles;
     use SoftDeletes;
     use Notifiable;
 
