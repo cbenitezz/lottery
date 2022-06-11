@@ -18,8 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'DashBoardController@index')->name('home');
-
-
 Route::resource('lottery', 'LotteryController')->middleware('auth');
 Route::resource('payment', 'PaymentController')->middleware('auth');
 Route::resource('user', 'UserController')->middleware('auth');
