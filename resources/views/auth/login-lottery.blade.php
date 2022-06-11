@@ -9,12 +9,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-<<<<<<< HEAD
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
-=======
+
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('asset/images/favicon.png') }}">
->>>>>>> 9e1b6571b9d693db7de7876ac618e0b836fc36ad
-    <title>Ela - Bootstrap Admin Dashboard Template</title>
+    <title>Sistema de Control</title>
     <!-- Bootstrap Core CSS -->
     <link href="{{ asset('asset/css/lib/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Custom CSS -->
