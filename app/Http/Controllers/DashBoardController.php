@@ -23,6 +23,6 @@ class DashBoardController extends Controller
      */
     public function index()
     {
-        return view('layouts.dashboard.app');
+        return view('layouts.dashboard.index');
     }
 }

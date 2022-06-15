@@ -11,7 +11,7 @@
     <!-- Favicon icon -->
 
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('asset/images/favicon.png') }}">
-    <title>Sistema de Control </title>
+    <title>Sistema de Control Lottery -  @yield('title')</title>
 
     <link href="{{ asset('asset/css/lib/chartist/chartist.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('asset/css/lib/owl.carousel.min.css')}}" rel="stylesheet" />
@@ -21,7 +21,7 @@
     <!-- Custom CSS -->
     <link href="{{ asset('asset/css/helper.css')}}" rel="stylesheet">
     <link href="{{ asset('asset/css/style.css')}}" rel="stylesheet">
-
+    @stack('style')
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:** -->
     <!--[if lt IE 9]>

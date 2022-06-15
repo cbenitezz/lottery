@@ -30,7 +30,7 @@
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="chart-flot.html">Clientes</a></li>
                         <li><a href="chart-morris.html">Vendedores</a></li>
-                        <li><a href="chart-chartjs.html">Roles</a></li>
+                        <li><a href="{{ route('roles.index')}}">Roles</a></li>
 
                     </ul>
                 </li>

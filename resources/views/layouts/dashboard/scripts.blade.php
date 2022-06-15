@@ -30,7 +30,7 @@
 <script src="{{ asset('asset/js/lib/chartist/chartist-init.js') }}"></script>
 <!--Custom JavaScript -->
 <script src="{{ asset('asset/js/custom.min.js') }}"></script>
-
+@stack('script')
 
 </body>
 

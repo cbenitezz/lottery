@@ -23,3 +23,6 @@ Route::resource('payment', 'PaymentController')->middleware('auth');
 Route::resource('user', 'UserController')->middleware('auth');
 Route::resource('profile', 'ProfileController')->middleware('auth');
 Route::resource('ticket', 'TicketController')->middleware('auth');
+
+/* Roles */
+Route::resource('/admin/roles', 'RolController');
