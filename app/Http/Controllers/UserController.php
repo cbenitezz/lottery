@@ -2,11 +2,24 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Profile;
+use App\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+
 
 class UserController extends Controller 
 {
 
+  
+  public function __construct()
+  {
+     
+  }
+  
+  
+  
   /**
    * Display a listing of the resource.
    *
@@ -14,7 +27,9 @@ class UserController extends Controller
    */
   public function index()
   {
-    
+    $users = User::Paginate(5);
+    $roles = Role::all();
+    return view('admin.users.index',compact('users', 'roles'));
   }
 
   /**
@@ -24,8 +39,21 @@ class UserController extends Controller
    */
   public function create()
   {
-    
+    return view('admin.users.create');
   }
+
+  public function createCliente(){
+
+    //return 
+      
+  }
+
+  public function createVendedor(){
+
+    //return 
+      
+  }
+
 
   /**
    * Store a newly created resource in storage.
@@ -34,7 +62,28 @@ class UserController extends Controller
    */
   public function store(Request $request)
   {
+    $validate = $this->validate($request,[
+      'name'=>'required|max:30',
+      'email'=>'required|unique:users|email|max:70',
+    ]);
     
+    $user = User::create([
+      'name'        => $request->name,
+      'email'       => $request->email,
+      'password'    => bcrypt('password'),
+
+    ])->assignRole('usuario');
+
+    
+    Profile::create([
+
+      "name"     => $user->name,
+      "user_id"  => $user->id,
+
+    ]);
+   
+    $request->session()->flash('succes', 'Usuario creado correctamente');
+    return redirect('admin/users');
   }
 
   /**
@@ -65,20 +114,33 @@ class UserController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function update($id)
+  public function update(Request $request, User $user)
   {
-    
-  }
+     if ($request->roles) {
 
+      $user->roles()->sync($request->roles);
+      $request->session()->flash('succes', 'Rol asignado correctamente');
+
+     } else {
+
+      $request->session()->flash('error',  'Rol no asignado');
+
+     }
+     return redirect('admin/users');
+
+  }
   /**
    * Remove the specified resource from storage.
    *
    * @param  int  $id
    * @return Response
    */
-  public function destroy($id)
+  public function destroy(Request $request,$id)
   {
-    
+      $user = User::findOrFail($id);
+      $user->delete();
+      $request->session()->flash('succes', 'Usuario eliminado correctamente');
+      return redirect('admin/users');
   }
   
 }

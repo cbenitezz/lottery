@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="open-{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <form action="{{route('destroy.user',$item->id)}}" method="post">
+    <form action="{{route('user.destroy',$item->id)}}" method="post">
         {{ csrf_field() }}
         <div class="modal-dialog">
             <div class="modal-content">

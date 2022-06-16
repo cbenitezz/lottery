@@ -28,8 +28,9 @@
                 <li> <a class="has-arrow  " href="#" aria-expanded="false">
                     <i class="fa fa-bar-chart"></i><span class="hide-menu">Usuarios</span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="chart-flot.html">Clientes</a></li>
-                        <li><a href="chart-morris.html">Vendedores</a></li>
+                        <li><a href="{{ route('user.create')}}">Sistema</a></li>
+                        <li><a href="{{ route('user.cliente')}}">Clientes</a></li>
+                        <li><a href="{{ route('user.vendedor')}}">Vendedores</a></li>
                         <li><a href="{{ route('roles.index')}}">Roles</a></li>
 
                     </ul>

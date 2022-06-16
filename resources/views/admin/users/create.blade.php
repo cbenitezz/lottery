@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.dashboard.app')
 @section('title', 'Crear Usuarios')
 
 @section('content')
@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-lg-8">
         @if (Session::has('succes'))
-            <div class="alert alert-success alert-dismissible fade show mb-4 mt-4" role="alert">
+            <div class="alert alert-success alert-dismissible  fade show mb-4 mt-4" role="alert">
                 <i class="icon-check"></i>
                 {{Session::get('succes')}}
                 <button type="button" class="close" data-dismiss="alert" aria-label="close">
@@ -27,7 +27,7 @@
 
         <div class="card">
             <div class="card-header">
-                <a href="{{route('index.user')}}" class="btn btn-success active btn-sm float-right">
+                <a href="{{route('user.index')}}" class="btn btn-success active btn-sm float-right">
                 <i class="fa fa-align-justify"></i> Listar Usuarios</a>
                 <h5 class="card-title mb-0">Crear Usuarios</h5>
                 <div class="small text-muted">Registro</div>
@@ -38,7 +38,7 @@
 
                 <div class="col-lg-12">
 
-                  {!! Form::open(['route' => 'store.user', 'method' => 'POST']) !!}
+                  {!! Form::open(['route' => 'user.store', 'method' => 'POST']) !!}
 
                     <div class="form-group">
                         {!! Form::label('name', 'Nombre') !!}

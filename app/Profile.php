@@ -13,6 +13,10 @@ class Profile extends Model
 
     use SoftDeletes;
 
+    protected $fillable = [
+        'name', 'user_id',
+    ];
+
     protected $dates = ['deleted_at'];
 
     public function user()

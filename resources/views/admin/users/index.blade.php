@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.dashboard.app')
 @section('title', 'Listado Usuarios')
 
 @section('content')
@@ -27,7 +27,7 @@
 
         <div class="card">
             <div class="card-header">
-            <a href="{{route('create.user')}}" class="btn btn-success active btn-sm float-right">
+            <a href="{{route('user.create')}}" class="btn btn-success active btn-sm float-right">
             <i class="fa fa-align-justify"></i> Crear Usuario</a>
             <h5 class="card-title mb-0">Listado de Usuarios</h5>
             <div class="small text-muted">Asignar roles - Eliminar</div>
@@ -79,7 +79,7 @@
                                     </div>
                                     <div class="modal fade" id="modal-rol-{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-                                   {!! Form::model($item, ['route'=>['update.user',$item], 'method'=>'put' ]) !!}
+                                   {!! Form::model($item, ['route'=>['user.update',$item], 'method'=>'put' ]) !!}
 
                                         <div class="modal-dialog  modal-dialog-centered">
                                             <div class="modal-content">
