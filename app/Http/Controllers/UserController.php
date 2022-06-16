@@ -44,16 +44,48 @@ class UserController extends Controller
 
   public function createCliente(){
 
-    //return 
+    return view('admin.users.cliente'); 
       
   }
+  public function storeCliente(Request $request)
+  {
+    $validate = $this->validate($request,[
+      'name'      =>'required|max:30',
+      'apellido'  =>'required|max:30',      
+      'email'     =>'required|unique:users|email|max:70',
+      'cedula'    =>'required|numeric|min:30',
+      'direccion' =>'required|max:80',
+      'barrio'    =>'required|max:80',
+      'phone'     =>'required|numeric|min:11',
 
+    ]);
+    
+      $user = new User;
+      $user->name     = $request->name;
+      $user->email    = $request->email;
+      $user->password = bcrypt('password');
+      $user->save();
+      $user->assignRole('cliente');
+
+
+
+    dd($request);
+
+
+  }
   public function createVendedor(){
 
-    //return 
+    return view('admin.users.vendedor'); 
+
       
   }
 
+  public function storeVendedor(Request $request)
+  {
+
+    dd($request);
+    
+  }
 
   /**
    * Store a newly created resource in storage.

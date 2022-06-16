@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.app')
-@section('title', 'Crear Usuarios del sistema')
+@section('title', 'Crear Vendedor')
 
 @section('content')
 
@@ -38,7 +38,7 @@
 
                 <div class="col-lg-12">
 
-                  {!! Form::open(['route' => 'user.store', 'method' => 'POST']) !!}
+                  {!! Form::open(['route' => 'user.vendedor', 'method' => 'POST']) !!}
 
                     <div class="form-group">
                         {!! Form::label('name', 'Nombre') !!}

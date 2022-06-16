@@ -19,7 +19,7 @@ class RolesTableSeeder extends Seeder
         /** El rol admin y usuario no se pueden eliminar o modificar para garantizar la creación de nuevos usuarios
          * y administración de la plataforma
          */
-        $roleDigitador  = Role::create(['name' => 'digitador']);
-        $roleSistemas   = Role::create(['name' => 'sistemas']);
+        $roleDigitador  = Role::create(['name' => 'cliente']);
+        $roleSistemas   = Role::create(['name' => 'vendedor']);
     }
 }
