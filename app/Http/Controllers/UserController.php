@@ -66,7 +66,7 @@ class UserController extends Controller
    *
    * @return Response
    */
-  public function create()
+  public function createUserSystem()
   {
     return view('admin.users.create');
   }
@@ -84,6 +84,18 @@ class UserController extends Controller
 
   }
 
+  public function createVendedor(){
+
+    return view('admin.users.vendedor');
+
+  }
+
+  public function createClienteVendedor()
+  {
+
+
+
+  }
 
 
   /**
@@ -94,7 +106,7 @@ class UserController extends Controller
    * @return [type]
    *
    */
-  public function storeCliente(Request $request)
+  public function storeCliente(User $user, Request $request)
   {
     $validate = $this->validate($request,[
       'name'      =>'required|max:30',
@@ -120,12 +132,7 @@ class UserController extends Controller
 
 
   }
-  public function createVendedor(){
 
-    return view('admin.users.vendedor');
-
-
-  }
 
   public function storeVendedor(Request $request)
   {

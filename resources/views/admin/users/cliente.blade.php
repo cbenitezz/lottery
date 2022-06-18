@@ -27,10 +27,10 @@
 
         <div class="card">
             <div class="card-header">
-                <a href="{{route('user.index')}}" class="btn btn-success active btn-sm float-right">
+                <a href="{{route('user.clientes')}}" class="btn btn-success active  float-right">
                 <i class="fa fa-align-justify"></i> Listar Clientes</a>
                 <h5 class="card-title mb-0">Crear Cliente</h5>
-                <div class="small text-muted">Registro</div>
+                <div class="small text-muted"></div>
 
             </div>
             <div class="card-body">
