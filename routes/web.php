@@ -35,9 +35,12 @@ Route::put('/admin/users/update/{user}','UserController@update')->middleware('au
 Route::post('/admin/user/{id}','UserController@destroy')->middleware('auth')->name('user.destroy');
 Route::post('/admin/users','UserController@store')->middleware('auth')->name('user.store');
 
-Route::get('/admin/users/cliente','UserController@createCliente')->middleware('auth')->name('user.cliente');
-Route::post('/admin/users/cliente','UserController@storeCliente')->middleware('auth')->name('user.cliente');
+Route::get('/admin/clientes','UserController@listarClientes')->middleware('auth')->name('user.clientes');
 
+Route::get('/admin/users/cliente','UserController@createCliente')->middleware('auth')->name('user.cliente');
+Route::post('/admin/users/{user}','UserController@storeCliente')->middleware('auth')->name('user.cliente');
+
+Route::get('/admin/vendedores','UserController@listarVendedores')->middleware('auth')->name('user.vendedores');
 Route::get('/admin/users/vendedor','UserController@createVendedor')->middleware('auth')->name('user.vendedor');
-Route::post('/admin/users/vendedor','UserController@storeVendedor')->middleware('auth')->name('user.vendedor');
+Route::post('/admin/users/{user}','UserController@storeVendedor')->middleware('auth')->name('user.vendedor');
 

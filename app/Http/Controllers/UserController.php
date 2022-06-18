@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -9,27 +9,56 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
 
-class UserController extends Controller 
+class UserController extends Controller
 {
 
-  
+
   public function __construct()
   {
-     
+
   }
-  
-  
-  
+
   /**
-   * Display a listing of the resource.
+   * function that show users with rol admin and conventional usuario.
    *
    * @return Response
    */
   public function index()
   {
-    $users = User::Paginate(5);
+
     $roles = Role::all();
-    return view('admin.users.index',compact('users', 'roles'));
+    $title = "Usuarios del Sistema";
+    $users = User::role(['admin','usuario'])->simplepaginate(5);
+    return view('admin.users.index',compact('users', 'roles','title'));
+  }
+
+  /**
+   * Description for listarVendedores: filter users with rol vendedor
+   *
+   * @return Response
+   *
+   */
+  public function listarVendedores()
+  {
+
+    $roles = Role::all();
+    $title = "Listado de Vendedores";
+    $users = User::role(['vendedor'])->simplepaginate(5);
+    return view('admin.users.index',compact('users', 'roles','title'));
+  }
+
+  /**
+   * Description for listarClientes: filter users with rol cliente
+   *
+   * @return Response
+   *
+   */
+  public function listarClientes()
+  {
+    $roles = Role::all();
+    $title = "Listado de Clientes";
+    $users = User::role(['cliente'])->simplepaginate(5);
+    return view('admin.users.index',compact('users', 'roles','title'));
   }
 
   /**
@@ -42,16 +71,34 @@ class UserController extends Controller
     return view('admin.users.create');
   }
 
+
+  /**
+   * [Description for createCliente:
+   *
+   * @return [type]
+   *
+   */
   public function createCliente(){
 
-    return view('admin.users.cliente'); 
-      
+    return view('admin.users.cliente');
+
   }
+
+
+
+  /**
+   * [Description for storeCliente: save cliente and vendedor
+   *
+   * @param Request $request
+   *
+   * @return [type]
+   *
+   */
   public function storeCliente(Request $request)
   {
     $validate = $this->validate($request,[
       'name'      =>'required|max:30',
-      'apellido'  =>'required|max:30',      
+      'apellido'  =>'required|max:30',
       'email'     =>'required|unique:users|email|max:70',
       'cedula'    =>'required|numeric|min:30',
       'direccion' =>'required|max:80',
@@ -59,7 +106,7 @@ class UserController extends Controller
       'phone'     =>'required|numeric|min:11',
 
     ]);
-    
+
       $user = new User;
       $user->name     = $request->name;
       $user->email    = $request->email;
@@ -67,7 +114,7 @@ class UserController extends Controller
       $user->save();
       $user->assignRole('cliente');
 
-
+      return back();
 
     dd($request);
 
@@ -75,16 +122,16 @@ class UserController extends Controller
   }
   public function createVendedor(){
 
-    return view('admin.users.vendedor'); 
+    return view('admin.users.vendedor');
 
-      
+
   }
 
   public function storeVendedor(Request $request)
   {
 
     dd($request);
-    
+
   }
 
   /**
@@ -98,7 +145,7 @@ class UserController extends Controller
       'name'=>'required|max:30',
       'email'=>'required|unique:users|email|max:70',
     ]);
-    
+
     $user = User::create([
       'name'        => $request->name,
       'email'       => $request->email,
@@ -106,14 +153,14 @@ class UserController extends Controller
 
     ])->assignRole('usuario');
 
-    
+
     Profile::create([
 
       "name"     => $user->name,
       "user_id"  => $user->id,
 
     ]);
-   
+
     $request->session()->flash('succes', 'Usuario creado correctamente');
     return redirect('admin/users');
   }
@@ -126,7 +173,7 @@ class UserController extends Controller
    */
   public function show($id)
   {
-    
+
   }
 
   /**
@@ -137,7 +184,7 @@ class UserController extends Controller
    */
   public function edit($id)
   {
-    
+
   }
 
   /**
@@ -174,7 +221,7 @@ class UserController extends Controller
       $request->session()->flash('succes', 'Usuario eliminado correctamente');
       return redirect('admin/users');
   }
-  
+
 }
 
 ?>

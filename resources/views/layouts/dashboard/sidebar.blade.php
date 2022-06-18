@@ -28,9 +28,9 @@
                 <li> <a class="has-arrow  " href="#" aria-expanded="false">
                     <i class="fa fa-bar-chart"></i><span class="hide-menu">Usuarios</span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="{{ route('user.create')}}">Sistema</a></li>
-                        <li><a href="{{ route('user.cliente')}}">Clientes</a></li>
-                        <li><a href="{{ route('user.vendedor')}}">Vendedores</a></li>
+                        <li><a href="{{ route('user.index')}}">Sistema</a></li>
+                        <li><a href="{{ route('user.clientes')}}">Clientes</a></li>
+                        <li><a href="{{ route('user.vendedores')}}">Vendedores</a></li>
                         <li><a href="{{ route('roles.index')}}">Roles</a></li>
 
                     </ul>
