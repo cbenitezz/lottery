@@ -10,6 +10,7 @@
 <script src="{{ asset('asset/js/jquery.slimscroll.js') }}"></script>
 <!--Menu sidebar -->
 <script src="{{ asset('asset/js/sidebarmenu.js') }}"></script>
+
 <!--stickey kit -->
 <script src="{{ asset('asset/js/lib/sticky-kit-master/dist/sticky-kit.min.js') }}"></script>
 

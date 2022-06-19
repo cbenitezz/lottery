@@ -29,15 +29,16 @@ Route::resource('/admin/roles', 'RolController');
 
 /* Rutas de Control de Usuarios */
 Route::get('/admin/users','UserController@index')->middleware('auth')->name('user.index');
-
-
-
-
-
-
-Route::get('/admin/users/crear','UserController@createUserSystem')->middleware('auth')->name('user.create');
-Route::get('/admin/users/edit/{id}','UserController@edit')->middleware('auth')->name('user.edit');
+Route::get('/admin/users/create','UserController@createUserSystem')->middleware('auth')->name('user.create');
 Route::put('/admin/users/update/{user}','UserController@update')->middleware('auth')->name('user.update');
+
+
+
+
+
+
+Route::get('/admin/users/edit/{id}','UserController@edit')->middleware('auth')->name('user.edit');
+
 Route::post('/admin/user/{id}','UserController@destroy')->middleware('auth')->name('user.destroy');
 Route::post('/admin/users','UserController@store')->middleware('auth')->name('user.store');
 

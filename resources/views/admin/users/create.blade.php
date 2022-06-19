@@ -1,14 +1,15 @@
 @extends('layouts.dashboard.app')
-@section('title', 'Crear Usuarios del sistema')
+@section('title', $title)
 
 @section('content')
 
 <div class="row">
     <div class="col-lg-8">
+
         @if (Session::has('succes'))
             <div class="alert alert-success alert-dismissible  fade show mb-4 mt-4" role="alert">
-                <i class="icon-check"></i>
-                {{Session::get('succes')}}
+                <i class="icon-check"></i><a href="#" class="alert-link">{{Session::get('succes')}}</a>
+
                 <button type="button" class="close" data-dismiss="alert" aria-label="close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -27,7 +28,7 @@
 
         <div class="card">
             <div class="card-header">
-                <a href="{{route('user.index')}}" class="btn btn-success active btn-sm float-right">
+                <a href="{{route('user.index')}}" class="btn btn-success active float-right">
                 <i class="fa fa-align-justify"></i> Listar Usuarios</a>
                 <h5 class="card-title mb-0">Crear Usuarios</h5>
                 <div class="small text-muted">Registro</div>
@@ -68,7 +69,8 @@
 
                     <div class="form-group">
                         <div class="alert alert-warning" role="alert">
-                            El usuario registrado tendrá como clave "password" y deberá ser cambiado al inicio de sesión
+                            <a href="#" class="alert-link">El usuario registrado tendrá como clave "password" y deberá ser cambiado al inicio de sesión</a>
+
                           </div>
                     </div>
 

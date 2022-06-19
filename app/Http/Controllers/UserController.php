@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
 
+
+
+
 class UserController extends Controller
 {
 
@@ -23,9 +26,8 @@ class UserController extends Controller
    *
    * @return Response
    */
-  public function index()
+  public function index(Request $request)
   {
-
     $roles = Role::all();
     $title = "Usuarios del Sistema";
     $users = User::role(['admin','usuario'])->simplepaginate(5);
@@ -68,7 +70,8 @@ class UserController extends Controller
    */
   public function createUserSystem()
   {
-    return view('admin.users.create');
+    $title = "Crear Usuario";
+    return view('admin.users.create',compact('title', 'title'));
   }
 
 
@@ -202,7 +205,8 @@ class UserController extends Controller
    */
   public function update(Request $request, User $user)
   {
-     if ($request->roles) {
+
+    if ($request->roles) {
 
       $user->roles()->sync($request->roles);
       $request->session()->flash('succes', 'Rol asignado correctamente');
@@ -212,8 +216,25 @@ class UserController extends Controller
       $request->session()->flash('error',  'Rol no asignado');
 
      }
-     return redirect('admin/users');
 
+     if($request->title == "Usuarios del Sistema")
+     {
+        return redirect('admin/users');
+
+     }elseif($request->title=="Listado de Clientes")
+     {
+        return redirect('admin/clientes');
+
+     }elseif($request->title =="Listado de Vendedores")
+     {
+        return redirect('admin/vendedores');
+     }
+
+
+
+  if (condition) {
+    # code...
+  }
   }
   /**
    * Remove the specified resource from storage.
