@@ -33,22 +33,25 @@
             <div class="card-header">
              @if($title == "Usuarios del Sistema")
                  @php
-                    $uri = 'user.create';
+                    $uri    = 'user.create';
+                    $button = "btn-success";
                  @endphp
-             @elseif($title =="Listado de Clientes")
+             @elseif($title =="Clientes")
                  @php
                     $uri = 'user.cliente';
+                    $button = "btn-info";
                  @endphp
-             @elseif($title =="Listado de Vendedores")
+             @elseif($title =="Vendedores")
                  @php
                     $uri = 'user.vendedor';
+                    $button = "btn-warning";
                  @endphp
              @endif
 
 
-            <a href="{{route($uri)}}" class="btn btn-success active float-right">
+            <a href="{{route($uri)}}" class="btn {{ $button }}  float-right">
             <i class="fa fa-plus"></i> Adicionar</a>
-            <h5 class="card-title mb-0">{{ $title }}</h5>
+            <h5 class="card-title mb-0"><i class="fa fa-user" aria-hidden="true"></i> CONTROL DE USUARIOS </h5>
             <div class="small text-muted">Asignar roles - Eliminar</div>
             </div>
             <div class="card-body">
@@ -57,7 +60,7 @@
                 <div class="col-lg-12 table-responsive">
                     <table class="table table-striped">
                     <thead>
-                        <th>Usuario</th>
+                        <th>{{ $title }}</th>
                         <th>Correo Electrónico</th>
                         <th class="text-center">Roles</th>
                         <th class="text-center">Acciones</th>
@@ -70,7 +73,7 @@
                                 <td class="text-center">
                                     <?php $rolActual = $item->getRoleNames(); ?>
                                     @foreach ($rolActual as $rol)
-                                      <button type="button" class="btn btn-success btn-sm "><i class="ti-user"></i> {{ $rol }}</button>
+                                      <button type="button" class="btn btn-success btn-sm "><i class="fa fa-user"></i> {{ $rol }}</button>
                                     @endforeach
 
 
@@ -91,8 +94,8 @@
                                         @else
 
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-rol-{{$item->id}}">
-                                            <i class="fa fa-link"></i> &nbsp;editar
+                                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-edit-{{$item->id}}">
+                                            <i class="fa fa-user"></i> &nbsp;editar
                                         </button>
 
                                         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-rol-{{$item->id}}">
@@ -154,6 +157,7 @@
                                     </div>
                                     <!-- End Modal Update Roles -->
 
+                                    @include('admin.users.modal_edit')
 
                                     @include('admin.users.modal')
 

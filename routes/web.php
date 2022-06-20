@@ -35,6 +35,7 @@ Route::put('/admin/users/update/{user}','UserController@update')->middleware('au
 Route::get('/admin/clientes','UserController@listarClientes')->middleware('auth')->name('user.clientes');
 Route::get('/admin/users/cliente','UserController@createCliente')->middleware('auth')->name('user.cliente');
 Route::post('/admin/users/cliente','UserController@storeCliente')->middleware('auth')->name('user.cliente');
+Route::put('/admin/customer/update/{user}','UserController@updateCustomerSeller')->middleware('auth')->name('customer.update');
 
 
 

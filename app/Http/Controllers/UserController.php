@@ -44,7 +44,7 @@ class UserController extends Controller
   {
 
     $roles = Role::all();
-    $title = "Listado de Vendedores";
+    $title = "Vendedores";
     $users = User::role(['vendedor'])->simplepaginate(5);
     return view('admin.users.index',compact('users', 'roles','title'));
   }
@@ -58,7 +58,7 @@ class UserController extends Controller
   public function listarClientes()
   {
     $roles = Role::all();
-    $title = "Listado de Clientes";
+    $title = "Clientes";
     $users = User::role(['cliente'])->simplepaginate(5);
     return view('admin.users.index',compact('users', 'roles','title'));
   }
@@ -180,6 +180,7 @@ class UserController extends Controller
 
       "name"     => $user->name,
       "user_id"  => $user->id,
+      "identification_card" =>"0",
 
     ]);
 
@@ -209,6 +210,54 @@ class UserController extends Controller
 
   }
 
+
+  public function updateCustomerSeller(User $user, Request $request)
+  {
+
+      $validate = $this->validate($request,[
+
+        'name'      =>'required|max:30',
+        'last_name' =>'required|max:30',
+        'city'      =>'required|max:40',
+        'address'   =>'required|max:80',
+        'sector'    =>'required|max:80',
+        'phone'     =>'required|numeric|min:11',
+
+      ]);
+
+
+      $user = User::findOrFail($user->id);
+      $user->name = $request->name;
+      $user->update();
+
+
+      $profile = Profile::findOrFail($request->id);
+      $profile->name = $request->name;
+      $profile->last_name= $request->last_name;
+      $profile->city = $request->city;
+      $profile->address = $request->address;
+      $profile->phone = $request->phone;
+      $profile->sector = $request->sector;
+      $profile->update();
+
+      if($request->title == "user.vendedor"){
+        $uri = "/admin/vendedores";
+      }elseif($request->title == "user.cliente"){
+        $uri = "/admin/clientes";
+      }else{
+        $uri = "/admin/users";
+      }
+
+      $info = explode('/',$uri);
+      $info = substr($info[2],0,-1);
+      if($info == "user"){
+        $info = "Usuario";
+      }
+
+      $request->session()->flash('succes', $info.': '.$request->name. '  actualizado correctamente');
+      return redirect($uri);
+
+  }
   /**
    * Update the specified resource in storage.
    *

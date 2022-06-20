@@ -23,7 +23,8 @@ class UserSeeder extends Seeder
         Profile::create([
 
             "name"    => 'Green Digital',
-            "user_id" =>  $user->id
+            "user_id" =>  $user->id,
+            "identification_card" =>"0"
 
         ]);
 

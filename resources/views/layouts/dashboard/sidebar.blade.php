@@ -16,7 +16,7 @@
                 </li>
                 <li class="nav-label">Rifa</li>
                 <li> <a class="has-arrow  " href="#" aria-expanded="false">
-                    <i class="fa fa-envelope"></i><span class="hide-menu">Sorteos</span></a>
+                    <i class="fa fa-random"></i><span class="hide-menu">Sorteos</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="email-compose.html">Registro</a></li>
                         <li><a href="email-compose.html">Ventas</a></li>
@@ -26,7 +26,7 @@
                     </ul>
                 </li>
                 <li> <a class="has-arrow  " href="#" aria-expanded="false">
-                    <i class="fa fa-bar-chart"></i><span class="hide-menu">Usuarios</span></a>
+                    <i class="fa fa-user-plus"></i><span class="hide-menu">Usuarios</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{ route('user.index')}}">Sistema</a></li>
                         <li><a href="{{ route('user.clientes')}}">Clientes</a></li>
