@@ -111,11 +111,13 @@ class UserController extends Controller
    */
   public function storeCliente(User $user, Request $request)
   {
+    //dd($request);
     $validate = $this->validate($request,[
       'name'      =>'required|max:30',
       'apellido'  =>'required|max:30',
       'email'     =>'required|unique:users|email|max:70',
-      'cedula'    =>'required|numeric|min:30',
+      'identification_card'    =>'required|unique:profiles|numeric|min:30',
+      'city'      =>'required|max:40',
       'direccion' =>'required|max:80',
       'barrio'    =>'required|max:80',
       'phone'     =>'required|numeric|min:11',
@@ -129,9 +131,19 @@ class UserController extends Controller
       $user->save();
       $user->assignRole('cliente');
 
-      return back();
+      $profile = new Profile;
+      $profile->user_id = $user->id;
+      $profile->identification_card = $request->identification_card;
+      $profile->name = $request->name;
+      $profile->last_name= $request->apellido;
+      $profile->city = $request->city;
+      $profile->address = $request->direccion;
+      $profile->phone = $request->phone;
+      $profile->sector = $request->barrio;
+      $profile->save();
 
-    dd($request);
+
+      return redirect('admin/clientes');
 
 
   }

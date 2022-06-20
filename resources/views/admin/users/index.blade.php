@@ -91,6 +91,10 @@
                                         @else
 
                                         <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-rol-{{$item->id}}">
+                                            <i class="fa fa-link"></i> &nbsp;editar
+                                        </button>
+
                                         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-rol-{{$item->id}}">
                                             <i class="fa fa-link"></i> &nbsp;Roles
                                         </button>

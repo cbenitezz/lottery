@@ -78,11 +78,11 @@
 
                     </div>
                     <div class="form-group">
-                    {!! Form::label('cedula', 'Cédula') !!}
-                      {!! Form::text('cedula', null, ['class'=> 'form-control'. ( $errors->has('cedula') ? ' is-invalid' : '' )
+                    {!! Form::label('identification_card', 'Cédula') !!}
+                      {!! Form::text('identification_card', null, ['class'=> 'form-control'. ( $errors->has('identification_card') ? ' is-invalid' : '' )
                       , 'placeholder'=>'Ingrese Cédula']) !!}
 
-                        @error('cedula')
+                        @error('identification_card')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -90,11 +90,11 @@
 
                     </div>
                     <div class="form-group">
-                    {!! Form::label('apellido', 'Apellido') !!}
-                      {!! Form::text('cedula', null, ['class'=> 'form-control'. ( $errors->has('cedula') ? ' is-invalid' : '' )
-                      , 'placeholder'=>'Ingrese Cédula']) !!}
+                    {!! Form::label('city', 'Ciudad') !!}
+                      {!! Form::text('city', null, ['class'=> 'form-control'. ( $errors->has('city') ? ' is-invalid' : '' )
+                      , 'placeholder'=>'Ciudad']) !!}
 
-                        @error('cedula')
+                        @error('city')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
