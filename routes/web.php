@@ -38,22 +38,16 @@ Route::post('/admin/users/cliente','UserController@storeCliente')->middleware('a
 Route::put('/admin/customer/update/{user}','UserController@updateCustomerSeller')->middleware('auth')->name('customer.update');
 
 
+/* Vendedores */
+Route::get('/admin/vendedores','UserController@listarVendedores')->middleware('auth')->name('user.vendedores');
+Route::get('/admin/users/vendedor','UserController@createClienteVendedor')->middleware('auth')->name('user.vendedor');
+
 
 Route::get('/admin/users/edit/{id}','UserController@edit')->middleware('auth')->name('user.edit');
 
 Route::post('/admin/user/{id}','UserController@destroy')->middleware('auth')->name('user.destroy');
 Route::post('/admin/users','UserController@store')->middleware('auth')->name('user.store');
-
-
-
-
-
-
-
-
-Route::get('/admin/vendedores','UserController@listarVendedores')->middleware('auth')->name('user.vendedores');
-Route::get('/admin/users/vendedor','UserController@createVendedor')->middleware('auth')->name('user.vendedor');
-Route::post('/admin/users/{vendedor','UserController@storeVendedor')->middleware('auth')->name('user.vendedor');
+Route::post('/admin/users/{vendedor}','UserController@storeVendedor')->middleware('auth')->name('user.vendedor1');
 
 
 

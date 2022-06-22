@@ -49,7 +49,7 @@
              @endif
 
 
-            <a href="{{route($uri)}}" class="btn {{ $button }}  float-right">
+            <a href="{{route($uri,[ 'title'=>$title ])}}" class="btn {{ $button }}  float-right">
             <i class="fa fa-plus"></i> Adicionar</a>
             <h5 class="card-title mb-0"><i class="fa fa-user" aria-hidden="true"></i> CONTROL DE USUARIOS </h5>
             <div class="small text-muted">Asignar roles - Eliminar</div>

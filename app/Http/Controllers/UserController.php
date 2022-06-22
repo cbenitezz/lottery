@@ -89,14 +89,15 @@ class UserController extends Controller
 
   public function createVendedor(){
 
-    return view('admin.users.vendedor');
+    return view('admin.users.cliente');
 
   }
 
-  public function createClienteVendedor()
+  public function createClienteVendedor(Request $request)
   {
-
-
+      $title = $request->title;
+      if($request->title == )
+      return view('admin.users.cliente',compact('title'));
 
   }
 
