@@ -7,6 +7,9 @@
                                                          
                             <div class="content">
                       <form method="POST" action="https://rifa.tucasayacolombia.com/rifa/10" accept-charset="UTF-8"><input name="_method" type="hidden" value="PATCH"><input name="_token" type="hidden" value="qZXv9paAlivHMMoAhzK4SZT8amgTl4i4bFe2Na2T">
+<div class="content">
+                      <form method="POST" action="https://rifa.tucasayacolombia.com/rifa/10" accept-charset="UTF-8"><input name="_method" type="hidden" value="PATCH"><input name="_token" type="hidden" value="jFPxSci7mjNutzjPpf9huGI1oYgjORScWiAs2A1A">
+
 
 
                                     <div class="row">
@@ -44,14 +47,17 @@
                                                       <input class="form-control" readonly="readonly" name="representante" type="text" value="Azael Vargas y Carlos Lopez ">
                                             </div>
                                         </div>
+
                                       
                                     </div>   
 
 
+                                    </div>
+
+
+
                                     <div class="row">
 
-                                         
-                                 
                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>FECHA DE INCIO *</label>
@@ -63,9 +69,13 @@
                                                 <label>FECHA FINAL *</label>
 
                                                   <input class="form-control" readonly="readonly" name="fecha_final" type="date" value="2022-08-06">
+
                         
+
+
                                             </div>
                                         </div>
+
 
 
                                      
@@ -73,6 +83,13 @@
 
 
                                     <div class="row"> 
+
+
+                                    </div>
+
+
+                                    <div class="row">
+
 
 
                                            <div class="col-md-6">
@@ -91,7 +108,7 @@
                                             </div>
                                         </div>
 
-                                      
+                        
 
                                       
                                     </div>  
@@ -99,13 +116,25 @@
                                      <div class="row"> 
 
 
+
+
+                                    </div>
+
+                                     <div class="row">
+
+
+
                                           <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>COMISIÓN POR VENTA *</label>
                                                   <input class="form-control" readonly="readonly" name="comision_venta" type="text" value="27000">
                                             </div>
+
                                         </div> 
                                     
+                                </div>
+
+
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>COMISIÓN POR COBRO *</label>
@@ -119,10 +148,17 @@
                                                       <input class="form-control" readonly="readonly" name="comision_extra" type="text" value="27000">
                                             </div>
                                         </div>
+
                                  
                                     </div>
 
                                     <div class="row">  
+
+
+                                    </div>
+
+                                    <div class="row">
+
                                           <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>CIUDAD *</label>
@@ -147,8 +183,13 @@
                                                 <label>PORCENTAJE DE COMISIÓN POR VENTA *</label>
                                                   <input class="form-control" readonly="readonly" name="porcentaje_venta" type="text" value="30">
                                             </div>
+
                                         </div> 
                                     
+
+                                        </div>
+
+
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>PORCENTAJE DE COMISIÓN POR COBRO *</label>
@@ -162,10 +203,17 @@
                                                       <input class="form-control" readonly="readonly" name="porcentaje_extra" type="text" value="30">
                                             </div>
                                         </div>
+
                                         
                                     </div>
 
                                     
+
+
+                                    </div>
+
+
+
                                     <div class="row">
                                          <div class="col-md-6">
                                             <div class="form-group">
@@ -185,8 +233,19 @@
                                 </div><br><br>
                     
 
+
+
+                                <div class="form-group">
+
+
+
+                                </div><br><br>
+
+
                                     <div class="clearfix"></div>
                                  </form>
                             </div>
+
                         </div>
                     </div>
+

@@ -9,9 +9,6 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
 
-
-
-
 class UserController extends Controller
 {
 
@@ -30,7 +27,8 @@ class UserController extends Controller
   {
     $roles = Role::all();
     $title = "Usuarios del Sistema";
-    $users = User::role(['admin','usuario'])->simplepaginate(5);
+    $users = User::role(['admin','cajero'])->simplepaginate(5);
+    //dd($users);
     return view('admin.users.index',compact('users', 'roles','title'));
   }
 
@@ -44,7 +42,7 @@ class UserController extends Controller
   {
 
     $roles = Role::all();
-    $title = "Vendedores";
+    $title = "Vendedor";
     $users = User::role(['vendedor'])->simplepaginate(5);
     return view('admin.users.index',compact('users', 'roles','title'));
   }
@@ -58,7 +56,7 @@ class UserController extends Controller
   public function listarClientes()
   {
     $roles = Role::all();
-    $title = "Clientes";
+    $title = "Cliente";
     $users = User::role(['cliente'])->simplepaginate(5);
     return view('admin.users.index',compact('users', 'roles','title'));
   }
@@ -70,6 +68,7 @@ class UserController extends Controller
    */
   public function createUserSystem()
   {
+    
     $title = "Crear Usuario";
     return view('admin.users.create',compact('title', 'title'));
   }
@@ -81,6 +80,7 @@ class UserController extends Controller
    * @return [type]
    *
    */
+  /*
   public function createCliente(){
 
     return view('admin.users.cliente');
@@ -92,10 +92,12 @@ class UserController extends Controller
     return view('admin.users.cliente');
 
   }
+  */
 
-  public function createClienteVendedor(Request $request)
+  public function createCustomerSeller(Request $request)
   {
-      $title = $request->title;
+    //dd($request);  
+    $title = $request->title;
       //if($request->title == )
       return view('admin.users.cliente',compact('title'));
 
@@ -110,7 +112,7 @@ class UserController extends Controller
    * @return [type]
    *
    */
-  public function storeCliente(User $user, Request $request)
+  public function storeCustomerSeller(User $user, Request $request)
   {
     //dd($request);
     $validate = $this->validate($request,[
@@ -124,13 +126,13 @@ class UserController extends Controller
       'phone'     =>'required|numeric|min:11',
 
     ]);
-
+      $rol = $request->rol;
       $user = new User;
       $user->name     = $request->name;
       $user->email    = $request->email;
       $user->password = bcrypt('password');
       $user->save();
-      $user->assignRole('cliente');
+      $user->assignRole($rol);
 
       $profile = new Profile;
       $profile->user_id = $user->id;
@@ -143,8 +145,12 @@ class UserController extends Controller
       $profile->sector = $request->barrio;
       $profile->save();
 
-
-      return redirect('admin/clientes');
+      if($rol == 'cliente'){
+        return redirect('admin/clientes');
+      }else{
+        return redirect('admin/vendedores');
+      }
+     
 
 
   }
@@ -174,7 +180,7 @@ class UserController extends Controller
       'email'       => $request->email,
       'password'    => bcrypt('password'),
 
-    ])->assignRole('usuario');
+    ])->assignRole('cajero');
 
 
     Profile::create([
@@ -212,7 +218,7 @@ class UserController extends Controller
   }
 
 
-  public function updateCustomerSeller(User $user, Request $request)
+  public function updateCustomerSeller(Profile $profile, Request $request)
   {
 
       $validate = $this->validate($request,[
@@ -227,10 +233,10 @@ class UserController extends Controller
       ]);
 
 
-      $user = User::findOrFail($user->id);
+      $user = User::findOrFail($profile->user_id);
       $user->name = $request->name;
       $user->update();
-
+      
 
       $profile = Profile::findOrFail($request->id);
       $profile->name = $request->name;
@@ -240,21 +246,9 @@ class UserController extends Controller
       $profile->phone = $request->phone;
       $profile->sector = $request->sector;
       $profile->update();
-
-      if($request->title == "user.vendedor"){
-        $uri = "/admin/vendedores";
-      }elseif($request->title == "user.cliente"){
-        $uri = "/admin/clientes";
-      }else{
-        $uri = "/admin/users";
-      }
-
-      $info = explode('/',$uri);
-      $info = substr($info[2],0,-1);
-      if($info == "user"){
-        $info = "Usuario";
-      }
-
+      
+      $info = $user->getRoleNames();
+      
       $request->session()->flash('succes', $info.': '.$request->name. '  actualizado correctamente');
       return redirect($uri);
 
@@ -265,12 +259,13 @@ class UserController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function update(Request $request, User $user)
+  public function updateRol(Request $request, User $user)
   {
 
-    if ($request->roles) {
+     if ($request->roles) {
 
       $user->roles()->sync($request->roles);
+
       $request->session()->flash('succes', 'Rol asignado correctamente');
 
      } else {
@@ -283,20 +278,15 @@ class UserController extends Controller
      {
         return redirect('admin/users');
 
-     }elseif($request->title=="Listado de Clientes")
+     }elseif($request->title=="Cliente")
      {
         return redirect('admin/clientes');
 
-     }elseif($request->title =="Listado de Vendedores")
+     }elseif($request->title =="Vendedor")
      {
         return redirect('admin/vendedores');
      }
 
-
-
-  if (condition) {
-    # code...
-  }
   }
   /**
    * Remove the specified resource from storage.

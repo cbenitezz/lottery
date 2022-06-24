@@ -3,6 +3,7 @@
     <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                     <div class="modal-header"><!-- start modal header -->
+                    
                         <h5 class="modal-title" id="staticModalLabel">
                             <i class="fa fa-user-circle" aria-hidden="true"></i>
                             Editar :{{$item->profile->name}} | {{$item->profile->identification_card}}</h5>

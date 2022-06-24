@@ -4,7 +4,7 @@
 @section('content')
 
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         @if (Session::has('succes'))
             <div class="alert alert-success alert-dismissible fade show mb-4 mt-4" role="alert">
                 {{Session::get('succes')}}

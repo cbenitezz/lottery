@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.app')
-@section('title', 'Crear Cliente')
+@section('title', 'Crear Cliente / Vendedor')
 
 @section('content')
 
@@ -34,9 +34,28 @@
 <div class="col-lg-12">
     <div class="card">
         <div class="card-header">
+        @if($title == "Usuarios del Sistema")
+                 @php
+                    $uri    = 'user.create';
+                    $button = "btn-success";
+                    $rol = 'cajero';
+                 @endphp
+             @elseif($title =="Cliente")
+                 @php
+                    $uri = 'user.cliente';
+                    $button = "btn-info";
+                    $rol = 'cliente';
+                 @endphp
+             @elseif($title =="Vendedor")
+                 @php
+                    $uri = 'user.cliente';
+                    $button = "btn-warning";
+                    $rol = 'vendedor';
+                 @endphp
+             @endif
             <a href="{{route('user.clientes')}}" class="btn btn-success active  float-right">
-                <i class="fa fa-align-justify"></i> Listar Clientes</a>
-                <h5 class="card-title mb-0">Crear Cliente / Vendedor</h5>
+                <i class="fa fa-align-justify"></i> Listar </a>
+                <h5 class="card-title mb-0">Crear {{ $title }}</h5>
                 <div class="small text-muted"></div>
         </div>
         <div class="card-body">
@@ -57,6 +76,7 @@
                                     {!! Form::label('name', 'Nombre',['classs'=>'control-label mb-1']) !!}
                                     {!! Form::text('name', null, ['class'=> 'form-control'. ( $errors->has('name') ? ' is-invalid' : '' )
                                     , 'placeholder'=>'...']) !!}
+                                    {{ Form::hidden('rol', $rol) }}
 
                                     @error('name')
                                             <span class="invalid-feedback" role="alert">
@@ -164,7 +184,7 @@
                             </div>
                         </div>
                         <div>
-                            {!! Form::submit('Registrar Usuario', ['class'=>'btn btn-lg btn-info btn-block']) !!}
+                            {!! Form::submit('Registrar '.$title, ['class'=>'btn btn-lg btn-info btn-block']) !!}
                             <div class="form-group">
                                 <div class="alert alert-info text-center" role="alert" >
                                      El usuario registrado tendrá como clave "password" y 
