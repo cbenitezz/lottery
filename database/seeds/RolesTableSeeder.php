@@ -15,7 +15,7 @@ class RolesTableSeeder extends Seeder
     {
         /* Roles del Sistema*/
         $roleAdmin      = Role::create(['name' => 'admin']);
-        $roleUsuario    = Role::create(['name' => 'usuario']);
+        $roleUsuario    = Role::create(['name' => 'cajero']);
         /** El rol admin y usuario no se pueden eliminar o modificar para garantizar la creación de nuevos usuarios
          * y administración de la plataforma
          */

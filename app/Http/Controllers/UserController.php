@@ -96,7 +96,7 @@ class UserController extends Controller
   public function createClienteVendedor(Request $request)
   {
       $title = $request->title;
-      if($request->title == )
+      //if($request->title == )
       return view('admin.users.cliente',compact('title'));
 
   }
