@@ -26,7 +26,7 @@
 
         <div class="card">
             <div class="card-header">
-                <a href="{{route('roles.index')}}" class="btn btn-success active btn-sm float-right">
+                <a href="{{route('roles.index')}}" class="btn btn-success active  float-right">
                     <i class="fa fa-align-justify"></i> Listar Roles</a>
                     <h5 class="card-title mb-0">Permisos Asignados</h5>
                     <div class="small text-muted">Adicione nuevos permisos al rol</div>

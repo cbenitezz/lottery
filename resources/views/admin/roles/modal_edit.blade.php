@@ -1,8 +1,7 @@
-
-
+<!-- start Modal Update Roles -->
 <div class="modal fade" id="modal-rol-{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
     <!-- Editar Rol -->
-    {!! Form::model($item, ['route'=>['roles.update',$item], 'method'=>'put' ]) !!}
+
 
         <div class="modal-dialog  modal-dialog-centered">
             <div class="modal-content">
@@ -16,6 +15,7 @@
                 </button>
             </div>
             <div class="modal-body">
+                {!! Form::model($item, ['route'=>['roles.update',$item], 'method'=>'put' ]) !!}
 
                 <div class="row">
                 <div class="col-lg-12">
@@ -28,13 +28,20 @@
 
                 </div>
                 </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <hr>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    {!! Form::submit('Actualizar', ['class'=>'btn btn-primary']) !!}
+                    </div>
+                </div>
 
+                {!! Form::close() !!}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                {!! Form::submit('Actualizar', ['class'=>'btn btn-primary']) !!}
+
             </div>
             </div>
         </div>
-    {!! Form::close() !!}
+
 </div>

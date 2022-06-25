@@ -18,7 +18,7 @@
                 <li> <a class="has-arrow  " href="#" aria-expanded="false">
                     <i class="fa fa-random"></i><span class="hide-menu">Sorteos</span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="email-compose.html">Registro</a></li>
+                        <li><a href="{{ route('lottery.index')}}">Listado</a></li>
                         <li><a href="email-compose.html">Ventas</a></li>
                         <li><a href="email-read.html">Sorteos</a></li>
                         <li><a href="email-inbox.html">Abonos</a></li>

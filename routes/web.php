@@ -43,7 +43,7 @@ Route::get('/admin/users/cliente','UserController@createCustomerSeller')->middle
 Route::post('/admin/users/cliente','UserController@storeCustomerSeller')->middleware('auth')->name('user.cliente');
 Route::get('/admin/users/vendedor','UserController@createCustomerSeller')->middleware('auth')->name('user.vendedor');
 
-/* Listar Clientes y Vendedores */ 
+/* Listar Clientes y Vendedores */
 Route::get('/admin/clientes','UserController@listarClientes')->middleware('auth')->name('user.clientes');
 Route::get('/admin/vendedores','UserController@listarVendedores')->middleware('auth')->name('user.vendedores');
 
@@ -58,6 +58,6 @@ Route::get('/clear-cache', function () {
 
 
  Route::fallback(function() {
-    //return 'Hm, why did you land here somehow?';
+
     return view('errors.404');
 });

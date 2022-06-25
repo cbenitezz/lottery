@@ -27,7 +27,7 @@
 
         <div class="card">
             <div class="card-header">
-            <a href="{{route('roles.create')}}" class="btn btn-success active btn-sm float-right">
+            <a href="{{route('roles.create')}}" class="btn btn-success active  float-right">
             <i class="fa fa-align-justify"></i>Crear Rol</a>
 
             <h5 class="card-title mb-0">Listado Roles</h5>
@@ -76,8 +76,6 @@
                                     </div>
 
 
-                                    @include('admin.roles.modal_permisos')
-
                                 </td>
                                 <td class="text-center">
                                     <div class="dropdown">
@@ -95,7 +93,7 @@
                                     </div>
 
 
-                                    @include('admin.roles.modal_permisos')
+                                    @include('admin.roles.modal_del')
 
                                 </td>
 

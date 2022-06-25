@@ -118,10 +118,12 @@ class RolController extends Controller
 
   public function destroy(Request $request,$id)
   {
-      $user = User::findOrFail($id);
-      $user->delete();
-      $request->session()->flash('succes', 'Usuario eliminado correctamente');
-      return redirect('admin/users');
+
+      $rol = Role::findOrFail($id);
+      $rol->delete();
+      $request->session()->flash('succes', 'Rol eliminado correctamente');
+      return redirect('admin/roles');
+
   }
 }
 

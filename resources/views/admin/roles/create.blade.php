@@ -27,7 +27,7 @@
 
         <div class="card">
             <div class="card-header">
-                <a href="{{route('roles.index')}}" class="btn btn-success active btn-sm float-right">
+                <a href="{{route('roles.index')}}" class="btn btn-success active  float-right">
                     <i class="fa fa-align-justify"></i> Listar Roles</a>
                     <h5 class="card-title mb-0">Crear Roles</h5>
                     <div class="small text-muted">Creación y Asignación de Permisos</div>
