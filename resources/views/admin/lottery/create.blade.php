@@ -190,7 +190,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                            <div class="col-6">
+                            <div class="col-3">
                             <div class="form-group">
                                 {!! Form::label('lottery', 'Loteria') !!}
                                 {!! Form::text('lottery', null, ['class'=> 'form-control'. ( $errors->has('lottery') ? ' is-invalid' : '' )
@@ -203,6 +203,19 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    {!! Form::label('boletas', 'Número de Boletas') !!}
+                                    {!! Form::select('boletas', ['100' => '100', '500' => '500','1000'=>'1000'],null, ['class'=> 'form-control'. ( $errors->has('boletas') ? ' is-invalid' : '' )
+                                    , 'placeholder'=>'Seleccione la Cantidad']) !!}
+
+                                        @error('boletas')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
 
                         </div>
                         <div>

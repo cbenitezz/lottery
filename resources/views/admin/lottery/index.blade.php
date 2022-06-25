@@ -32,10 +32,10 @@
         <div class="card">
             <div class="card-header">
 
-            <a href="{{route('lottery.create')}}" class="btn   float-right">
-            <i class="fa fa-plus"></i> Adicionar</a>
+            <a href="{{route('lottery.create')}}" class="btn btn-success active float-right">
+            <i class="fa fa-plus"></i> Crear Rifa</a>
             <h5 class="card-title mb-0"><i class="fa fa-user" aria-hidden="true"></i> CONTROL DE RIFAS </h5>
-            <div class="small text-muted">Crear Rifa</div>
+            <div class="small text-muted">Listado de Sorteos</div>
             </div>
             <div class="card-body">
               <div class="row">
@@ -43,11 +43,12 @@
                 <div class="col-lg-12 table-responsive">
                     <table class="table table-striped">
                     <thead>
-                        <th>ID</th>
+                        <th>#</th>
                         <th>Slogan</th>
-                        <th class="text-center">Nombre</th>
-                        <th class="text-center">Inicio</th>
-                        <th class="text-center">Final</th>
+                        <th>Nombre</th>
+                        <th>Inicio</th>
+                        <th>Final</th>
+                        <th>Estado</th>
                     </thead>
                     <tbody>
                         @foreach ($lotteries as $lottery)
@@ -57,6 +58,7 @@
                                 <td>{{$lottery->name}}</td>
                                 <td>{{$lottery->date_start}}</td>
                                 <td>{{$lottery->date_end}}</td>
+                                <td>{{$lottery->status}}</td>
 
 
                            </tr>
@@ -67,7 +69,7 @@
 
                     </tbody>
                     </table>
-                    {{  }}
+
                 </div>
 
               </div>
