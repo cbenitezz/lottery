@@ -118,16 +118,13 @@ class LotteryController extends Controller
             ];
 
         }
-        $chunk_data = array_chunk($data, 1000);
+        $data_massive = array_chunk($data, 1000);
 
-        if (isset($chunk_data) && !empty($chunk_data)) {
-        foreach ($chunk_data as $chunk_data_val) {
-            //var_dump($chunk_data_val);
-            DB::table('tickets')->insert($chunk_data_val);
+        if (isset($data_massive) && !empty($data_massive)) {
+        foreach ($data_massive as $data_val) {
+            DB::table('tickets')->insert($data_val);
         }
         }
-
-//dd($data);
 
     return redirect('/lottery');
 
