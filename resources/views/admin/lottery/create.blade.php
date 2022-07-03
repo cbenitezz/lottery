@@ -206,7 +206,7 @@
                             <div class="col-3">
                                 <div class="form-group">
                                     {!! Form::label('boletas', 'Número de Boletas') !!}
-                                    {!! Form::select('boletas', ['100' => '100', '500' => '500','1000'=>'1000'],null, ['class'=> 'form-control'. ( $errors->has('boletas') ? ' is-invalid' : '' )
+                                    {!! Form::select('boletas', ['500' => '500', '1000' => '1.000','10000'=>'10.000'],null, ['class'=> 'form-control'. ( $errors->has('boletas') ? ' is-invalid' : '' )
                                     , 'placeholder'=>'Seleccione la Cantidad']) !!}
 
                                         @error('boletas')

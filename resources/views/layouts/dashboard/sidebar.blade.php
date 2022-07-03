@@ -19,10 +19,11 @@
                     <i class="fa fa-random"></i><span class="hide-menu">Sorteos</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{ route('lottery.index')}}">Listado</a></li>
-                        <li><a href="email-compose.html">Ventas</a></li>
-                        <li><a href="email-read.html">Sorteos</a></li>
-                        <li><a href="email-inbox.html">Abonos</a></li>
-                        <li><a href="email-inbox.html">Disponibilidad</a></li>
+                        <li><a href="{{ route('lottery.boleteria')}}">Boletería</a></li>
+                        <li><a href="{{ route('lottery.index')}}">Ventas</a></li>
+                        <li><a href="{{ route('lottery.index')}}">Sorteos</a></li>
+                        <li><a href="{{ route('lottery.index')}}">Abonos</a></li>
+                        <li><a href="{{ route('lottery.index')}}">Disponibilidad</a></li>
                     </ul>
                 </li>
                 <li> <a class="has-arrow  " href="#" aria-expanded="false">
@@ -39,8 +40,8 @@
                 <li> <a class="has-arrow  " href="#" aria-expanded="false">
                     <i class="fa fa-suitcase"></i><span class="hide-menu">Informes <span class="label label-rouded label-warning pull-right">6</span></span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="ui-alert.html">Cartera</a></li>
-                        <li><a href="ui-button.html">Comisiones</a></li>
+                        <li><a href="{{ route('lottery.index')}}">Cartera</a></li>
+                        <li><a href="{{ route('lottery.index')}}">Comisiones</a></li>
 
                     </ul>
                 </li>

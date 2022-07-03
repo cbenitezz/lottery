@@ -11,7 +11,7 @@ class CreateTicketsTable extends Migration {
 			$table->increments('id');
 			$table->integer('user_id')->unsigned();
 			$table->integer('lottery_id')->unsigned();
-			$table->integer('number_ticket');
+			$table->string('number_ticket');
 			$table->boolean('paid_ticket');
 			$table->timestamps();
 			$table->softDeletes();

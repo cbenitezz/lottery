@@ -1,8 +1,10 @@
 </div>
 <!-- End Wrapper -->
 <!-- All Jquery -->
+<!--
+<script src="{{-- asset('asset/js/jquery.min.js') --}}"></script>-->
+<script src="{{ asset('asset/js/jquery-3.5.1.js') }}"></script>
 
-<script src="{{ asset('asset/js/lib/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap tether Core JavaScript -->
 <script src="{{ asset('asset/js/lib/bootstrap/js/popper.min.js') }}"></script>
 <script src="{{ asset('asset/js/lib/bootstrap/js/bootstrap.min.js') }}"></script>
@@ -15,20 +17,7 @@
 <script src="{{ asset('asset/js/lib/sticky-kit-master/dist/sticky-kit.min.js') }}"></script>
 
 
-<script src="{{ asset('asset/js/lib/datamap/d3.min.js') }}"></script>
-<script src="{{ asset('asset/js/lib/datamap/topojson.js') }}"></script>
-<script src="{{ asset('asset/js/lib/datamap/datamaps.world.min.js') }}"></script>
-<script src="{{ asset('asset/js/lib/datamap/datamap-init.js') }}"></script>
 
-<script src="{{ asset('asset/js/lib/weather/jquery.simpleWeather.min.js') }}"></script>
-<script src="{{ asset('asset/js/lib/weather/weather-init.js') }}"></script>
-<script src="{{ asset('asset/js/lib/owl-carousel/owl.carousel.min.js') }}"></script>
-<script src="{{ asset('asset/js/lib/owl-carousel/owl.carousel-init.js') }}"></script>
-
-
-<script src="{{ asset('asset/js/lib/chartist/chartist.min.js') }}"></script>
-<script src="{{ asset('asset/js/lib/chartist/chartist-plugin-tooltip.min.js') }}"></script>
-<script src="{{ asset('asset/js/lib/chartist/chartist-init.js') }}"></script>
 <!--Custom JavaScript -->
 <script src="{{ asset('asset/js/custom.min.js') }}"></script>
 @stack('script')

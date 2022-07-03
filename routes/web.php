@@ -18,7 +18,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'DashBoardController@index')->name('home');
+
+/* Rutas Loteria / Sorteo  */
+Route::get('admin/boleteria','LotteryController@boleteria')->middleware('auth')->name('lottery.boleteria');
 Route::resource('lottery', 'LotteryController')->middleware('auth');
+
+
 Route::resource('payment', 'PaymentController')->middleware('auth');
 //Route::resource('user', 'UserController')->middleware('auth');
 Route::resource('profile', 'ProfileController')->middleware('auth');

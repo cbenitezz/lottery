@@ -58,7 +58,14 @@
                                 <td>{{$lottery->name}}</td>
                                 <td>{{$lottery->date_start}}</td>
                                 <td>{{$lottery->date_end}}</td>
-                                <td>{{$lottery->status}}</td>
+                                <td>
+                                    @if($lottery->status)
+                                        <button type="button" class="btn btn-warning ">Activo</button>
+                                    @else
+                                        <button type="button" class="btn btn-dark ">Inactivo</button>
+                                    @endif
+
+                                </td>
 
 
                            </tr>
