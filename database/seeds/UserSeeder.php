@@ -13,8 +13,8 @@ class UserSeeder extends Seeder
     public function run()
     {
         $user = User::create([
-            "name"        => 'Green Digital',
-            "email"       => 'info@armeniadigital.com',
+            "name"        => 'Administrador',
+            "email"       => 'info@lottery.co',
             "password"    => bcrypt('Carlos62$'),
 
 
@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
 
         Profile::create([
 
-            "name"    => 'Green Digital',
+            "name"    => 'Administrador',
             "user_id" =>  $user->id,
             "identification_card" =>"0"
 

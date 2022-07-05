@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Payment extends Model 
+class Payment extends Model
 {
 
     protected $table = 'payments';
@@ -17,7 +17,7 @@ class Payment extends Model
 
     public function tickets()
     {
-        return $this->belongsTo('App\Ticket');
+        return $this->belongsTo('App\Ticket','ticket_id');
     }
 
 }

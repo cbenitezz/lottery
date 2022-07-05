@@ -1,20 +1,37 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 
-class TicketController extends Controller 
+use App\Ticket;
+use App\User;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+
+
+class TicketController extends Controller
 {
 
-  /**
+
+  public function asignar(Ticket $ticket)
+  {
+
+       $title = "Vendedor";
+       $users = User::role(['vendedor','admin'])->simplepaginate(50);
+       return view('admin.ticket.asignar', compact('users','title','ticket'));
+
+  }
+
+
+
+    /**
    * Display a listing of the resource.
    *
    * @return Response
    */
   public function index()
   {
-    
+
   }
 
   /**
@@ -24,7 +41,7 @@ class TicketController extends Controller
    */
   public function create()
   {
-    
+
   }
 
   /**
@@ -34,7 +51,17 @@ class TicketController extends Controller
    */
   public function store(Request $request)
   {
-    
+
+    //dd($request);
+      $ticket = Ticket::findOrFail($request->id);
+      $ticket->user_id = $request->user_id;
+      $ticket->status = 1;
+      $ticket->update();
+
+      return redirect('admin/boleteria');
+
+
+
   }
 
   /**
@@ -45,7 +72,7 @@ class TicketController extends Controller
    */
   public function show($id)
   {
-    
+
   }
 
   /**
@@ -56,7 +83,7 @@ class TicketController extends Controller
    */
   public function edit($id)
   {
-    
+
   }
 
   /**
@@ -67,7 +94,7 @@ class TicketController extends Controller
    */
   public function update($id)
   {
-    
+
   }
 
   /**
@@ -78,9 +105,9 @@ class TicketController extends Controller
    */
   public function destroy($id)
   {
-    
+
   }
-  
+
 }
 
 ?>

@@ -41,35 +41,38 @@ class LotteryController extends Controller
 
   public function boleteria(Request $request)
   {
-    //$data = Lottery::select('id','eslogan','name','date_start','date_end','status')->orderBy('date_end','desc')->get();
-    //$data = Ticket::all();
-   // dd($data);
+
     if($request->ajax()){
 
-        $data = Ticket::select('id','user_id','lottery_id','number_ticket','paid_ticket')->orderBy('id','asc');
+        $data = Ticket::select('id', 'user_id','lottery_id','number_ticket','paid_ticket','status')->orderBy('id','asc');
 
-        //$data = Ticket::all();
-       // dd($data);
         return datatables()->eloquent($data)
-        ->addColumn('action',function($data){
-            $button = '<a name="edit" href="'. route("profile.update",$data->id).' " id="'.$data->id.'"
-                class="edit btn btn-primary btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i>
-                Editar</a>&nbsp;&nbsp;';
+
+        ->editColumn('status', '@if($status == 0)
+               <span class="label label-rouded label-warning pull-right">&nbsp;&nbsp;&nbsp;Libre&nbsp;&nbsp;&nbsp;</span>
+               @else<span class="label label-rouded label-primary pull-right">Asignada</span> @endif')
+         ->addColumn('action',function($data){
+            $button = '<a href="/asignar/' .$data->id . '"  name="eliminar" id="'
+                .$data->id.'" class="active btn btn-primary btn-sm">
+                <i class="fa fa-trash" aria-hidden="true"></i>&nbsp;
+                Asignar</a>&nbsp;&nbsp;';
             $button .= '<a data-remote="/profile/create/' .$data->id . '"  name="eliminar" id="'
-               .$data->id.'" class="btn-delete btn btn-danger btn-sm">
+               .$data->id.'" class="active btn btn-info btn-sm">
                <i class="fa fa-trash" aria-hidden="true"></i>&nbsp;
-               Eliminar</a>';
+               Abonar</a>';
              return $button;
-          })->rawColumns(['action'])
-        ->editColumn('user_id', '{{$id}}')
-        ->editColumn('user_id', function(Ticket $ticket) {
-            return  $ticket->user->name . '!';
-        })
-        ->editColumn('sorteo', function(Ticket $ticket) {
-            return  $ticket->lotteries . '!';
-        })
+          })->rawColumns(['action','status'])
+
+        ->editColumn('lottery_id', function(Ticket $ticket) {
+            return  $ticket->lotteries->name;
+         })
+        ->addColumn('user_id', function(Ticket $ticket) {
+            return  $ticket->user->name;
+         })
+
+
         ->toJson();
-       // return DataTables::of($data)->make(true);
+
 
 
     }

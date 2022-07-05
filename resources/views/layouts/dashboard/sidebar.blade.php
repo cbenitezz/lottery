@@ -19,11 +19,11 @@
                     <i class="fa fa-random"></i><span class="hide-menu">Sorteos</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{ route('lottery.index')}}">Listado</a></li>
-                        <li><a href="{{ route('lottery.boleteria')}}">Boletería</a></li>
-                        <li><a href="{{ route('lottery.index')}}">Ventas</a></li>
-                        <li><a href="{{ route('lottery.index')}}">Sorteos</a></li>
+                        <li><a href="{{ route('lottery.boleteria')}}">Asignar</a></li>
+                       <!-- <li><a href="{{-- route('lottery.index') --}}">Ventas</a></li>
+                        <li><a href="{{-- route('lottery.index')--}}">Sorteos</a></li>
+                        <li><a href="{{-- route('lottery.index') --}}">Abonos</a></li>-->
                         <li><a href="{{ route('lottery.index')}}">Abonos</a></li>
-                        <li><a href="{{ route('lottery.index')}}">Disponibilidad</a></li>
                     </ul>
                 </li>
                 <li> <a class="has-arrow  " href="#" aria-expanded="false">

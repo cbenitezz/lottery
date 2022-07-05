@@ -13,6 +13,7 @@ class CreateTicketsTable extends Migration {
 			$table->integer('lottery_id')->unsigned();
 			$table->string('number_ticket');
 			$table->boolean('paid_ticket');
+            $table->char('status',1)->default(0);
 			$table->timestamps();
 			$table->softDeletes();
 		});

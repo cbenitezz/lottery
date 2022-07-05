@@ -28,6 +28,7 @@ class UserController extends Controller
     $roles = Role::all();
     $title = "Usuarios del Sistema";
     $users = User::role(['admin','cajero'])->simplepaginate(5);
+    //$users = User::all();
     //dd($users);
     return view('admin.users.index',compact('users', 'roles','title'));
   }
@@ -43,7 +44,8 @@ class UserController extends Controller
 
     $roles = Role::all();
     $title = "Vendedor";
-    $users = User::role(['vendedor'])->simplepaginate(5);
+    $users = User::role(['vendedor'])->simplepaginate(50);
+    //dd($users);
     return view('admin.users.index',compact('users', 'roles','title'));
   }
 
@@ -68,7 +70,7 @@ class UserController extends Controller
    */
   public function createUserSystem()
   {
-    
+
     $title = "Crear Usuario";
     return view('admin.users.create',compact('title', 'title'));
   }
@@ -96,7 +98,7 @@ class UserController extends Controller
 
   public function createCustomerSeller(Request $request)
   {
-    //dd($request);  
+    //dd($request);
     $title = $request->title;
       //if($request->title == )
       return view('admin.users.cliente',compact('title'));
@@ -150,7 +152,7 @@ class UserController extends Controller
       }else{
         return redirect('admin/vendedores');
       }
-     
+
 
 
   }
@@ -236,7 +238,7 @@ class UserController extends Controller
       $user = User::findOrFail($profile->user_id);
       $user->name = $request->name;
       $user->update();
-      
+
 
       $profile = Profile::findOrFail($request->id);
       $profile->name = $request->name;
@@ -246,9 +248,9 @@ class UserController extends Controller
       $profile->phone = $request->phone;
       $profile->sector = $request->sector;
       $profile->update();
-      
+
       $info = $user->getRoleNames();
-      
+
       $request->session()->flash('succes', $info.': '.$request->name. '  actualizado correctamente');
       return redirect($uri);
 
