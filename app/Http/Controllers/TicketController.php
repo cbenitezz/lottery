@@ -13,12 +13,54 @@ class TicketController extends Controller
 {
 
 
-  public function asignar(Ticket $ticket)
-  {
+  public $ticket;
+  public $ticket_url;
 
+  public function asignar(Ticket $ticket, Request $request)
+  {
+    /*
        $title = "Vendedor";
        $users = User::role(['vendedor','admin'])->simplepaginate(50);
-       return view('admin.ticket.asignar', compact('users','title','ticket'));
+       return view('admin.ticket.asignar_datatable', compact('users','title','ticket'));
+       */
+      $this->ticket = $ticket;
+      $this->ticket_url ="/ticket";
+
+      if($request->ajax()){
+
+       // $data = Ticket::select('id', 'user_id','lottery_id','number_ticket','paid_ticket','status')->orderBy('id','asc');
+        $data = User::role(['vendedor','admin']);
+
+        return datatables()->eloquent($data)
+
+         ->addColumn('action',function($data){
+                $button = '<form method="POST" action="'.$this->ticket_url.'">
+                        <input type="hidden" name="_token" value="'. @csrf_token().'">
+                        <input type="hidden" name="name" value="'.$this->ticket->number_ticket.'">
+                        <input type="hidden" name="id"   value="'.$this->ticket->id.'">
+                        <input type="hidden" name="user_id"   value="'.$data->id.'">
+                        <input type="submit" class="btn btn-primary" value="# '.$this->ticket->number_ticket.'">
+                        </form>';
+             return $button;
+          })->rawColumns(['action'])
+        ->addColumn('boletas', function($data) {
+            return  $data->tickets()->count();
+        })
+        ->addColumn('phone',function($data){
+            return $data->profile->phone;
+        })
+        ->editColumn('name', function($data){
+            return $data->profile->name .' '.$data->profile->last_name;
+        })
+        ->addColumn('identification_card', function($data){
+            return $data->profile->identification_card;
+        })
+         ->toJson();
+
+           }
+
+     return view('admin.ticket.asignar_datatable');
+
 
   }
 

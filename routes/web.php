@@ -31,7 +31,7 @@ Route::resource('payment', 'PaymentController')->middleware('auth');
 Route::resource('profile', 'ProfileController')->middleware('auth');
 
 
-Route::get('asignar/{ticket}', 'TicketController@asignar')->middleware('auth')->name('asignar');
+Route::get('asignar/{ticket}', 'TicketController@asignar')->middleware('auth')->name('ticket.asignar');
 Route::resource('ticket', 'TicketController')->middleware('auth');
 
 /* Roles */

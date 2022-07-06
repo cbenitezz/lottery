@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Lottery;
 use App\Ticket;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
+
 
 class LotteryController extends Controller
 {
@@ -42,23 +44,42 @@ class LotteryController extends Controller
   public function boleteria(Request $request)
   {
 
+/*
+    $products = Ticket::join('users','id', '=', 'user_id')->select('id', 'user_id','lottery_id','number_ticket','paid_ticket','status')->get();
+dd($products);*/
     if($request->ajax()){
 
         $data = Ticket::select('id', 'user_id','lottery_id','number_ticket','paid_ticket','status')->orderBy('id','asc');
+/*
+        $data = Ticket::select('id', 'user_id','lottery_id','number_ticket','paid_ticket','status')
+                ->whereHas('profiles', function(Builder $query){
+                    $query->select('name, 'last_name');
+                })
+                ->orderBy('id','asc');
+
+        $posts = Post::whereHas('comments', function (Builder $query) {
+            $query->where('content', 'like', 'code%');
+        })->get();
+
+
+
+*/
 
         return datatables()->eloquent($data)
 
         ->editColumn('status', '@if($status == 0)
-               <span class="label label-rouded label-warning pull-right">&nbsp;&nbsp;&nbsp;Libre&nbsp;&nbsp;&nbsp;</span>
-               @else<span class="label label-rouded label-primary pull-right">Asignada</span> @endif')
+               <span class="label label-rouded label-warning ">
+               <i class="fa fa-user-circle" aria-hidden="true"></i> Disponible</span>
+               @else<span class="label label-rouded label-primary ">
+               <i class="fa fa-handshake-o" aria-hidden="true"></i> Asignada</span> @endif')
          ->addColumn('action',function($data){
             $button = '<a href="/asignar/' .$data->id . '"  name="eliminar" id="'
                 .$data->id.'" class="active btn btn-primary btn-sm">
-                <i class="fa fa-trash" aria-hidden="true"></i>&nbsp;
+                <i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp;
                 Asignar</a>&nbsp;&nbsp;';
             $button .= '<a data-remote="/profile/create/' .$data->id . '"  name="eliminar" id="'
                .$data->id.'" class="active btn btn-info btn-sm">
-               <i class="fa fa-trash" aria-hidden="true"></i>&nbsp;
+                <i class="fa fa-usd" aria-hidden="true"></i>&nbsp;
                Abonar</a>';
              return $button;
           })->rawColumns(['action','status'])
@@ -67,8 +88,9 @@ class LotteryController extends Controller
             return  $ticket->lotteries->name;
          })
         ->addColumn('user_id', function(Ticket $ticket) {
-            return  $ticket->user->name;
+            return  $ticket->user->profile->name. ' '.$ticket->user->profile->last_name;
          })
+         //->filterColumn('user_id','where', "like", ["%$keyword%"])
 
 
         ->toJson();
@@ -76,8 +98,6 @@ class LotteryController extends Controller
 
 
     }
-
-    //return Datatables::of(Ticket::query())->make(true);
 
      return view('admin.lottery.boleteria');
 

@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.app')
-@section('title', 'Boleteria')
+@section('title', "Vendedor")
 
 @section('content')
 
@@ -33,25 +33,24 @@
             <div class="card-header">
 
 
-            <h5 class="card-title mb-0"><i class="fa fa-user" aria-hidden="true"></i> CONTROL DE ASIGNACIÓN </h5>
-            <div class="small text-muted">Asignar / desasignar</div>
+
+            <a href="{{route('lottery.boleteria')}}" class="btn btn-warning  float-right">
+            <i class="fa fa-plus"></i> Boleteria</a>
+            <h5 class="card-title mb-0"><i class="fa fa-th-large" aria-hidden="true"></i> ASIGNACIÓN BOLETA  </h5>
+            <div class="small text-muted">Vendedores</div>
             </div>
             <div class="card-body">
               <div class="row">
 
                 <div class="col-lg-12 table-responsive">
-                    <table class="table table-striped" id="boleteria_table">
+                    <table class="table table-striped" id="asignar_ticket">
                     <thead>
-                        <tr>
-
-                            <th>Vendedor</th>
-                            <th># Sorteo</th>
-                            <th># Boleta</th>
-                            <th>Abono</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-
+                        <th>Vendedor</th>
+                        <th>Cédula</th>
+                        <th>Correo Electrónico</th>
+                        <th>Teléfono Celular</th>
+                        <th>Boletas Asignadas</th>
+                        <th>Asignar</th>
                     </thead>
 
                     </table>
@@ -70,7 +69,6 @@
     </div>
 
 </div>
-
 @endsection
 
 @push('script')
@@ -96,12 +94,10 @@
 
 <script>
 
-    $('.modal').removeClass('fade');
 
     $(document).ready( function() {
 
-
-        $('#boleteria_table').DataTable({
+        $('#asignar_ticket').DataTable({
 
             processing: true,
             serverSide: true,
@@ -109,25 +105,23 @@
             autoWidth:false,
             searching: true,
             ajax: {
-                url: "{{ route('lottery.boleteria') }}",
+                url: "",
             },
 
             columns: [
 
-                    { data: 'user_id', name: 'user_id',sortable: true},
-                    { data: 'lottery_id', name: 'lottery_id',sortable: true },
-                    { data: 'number_ticket', name: 'number_ticket',sortable: true},
-                    { data: 'paid_ticket', name: 'paid_ticket',sortable: true, searchable: true},
-                    { data: 'status', name: 'status',sortable: true, searchable: true},
+
+                    { data: 'name', name: 'name',sortable: true },
+                    { data: 'identification_card', name: 'identification_card',sortable: true },
+                    { data: 'email', name: 'email',sortable: true},
+                    { data: 'phone', name: 'phone',sortable: true},
+                    { data: 'boletas', name: 'boletas',sortable: true, searchable: true},
                     { data: 'action', name:'action'},
 
 
 
             ],
-            columnDefs: [{ "targets": [2,5],
-                          "orderable": false,
-                          "className": "text-center",
-            }],
+            columnDefs: [{ "targets": [3,4,5], "className": "text-center",}],
             lengthMenu: [
             [10, 25, 50, 200],
             [10, 25, 50, 200],
@@ -210,4 +204,3 @@
 
 
 @endpush
-
