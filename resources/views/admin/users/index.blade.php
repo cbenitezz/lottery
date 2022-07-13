@@ -73,7 +73,8 @@
                                 <td class="text-center">
                                     <?php $rolActual = $item->getRoleNames(); ?>
                                     @foreach ($rolActual as $rol)
-                                      <button type="button" class="btn btn-success btn-sm "><i class="fa fa-user"></i> {{ $rol }}</button>
+
+                                      <span class="badge badge-success" style="color: black"><i class="fa fa-user"></i> {{ $rol }}</span>
                                     @endforeach
 
 
@@ -84,12 +85,13 @@
                                         @if ($item->id == 1)
 
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#">
+                                        <button type="button" class="btn-secondary btn-sm" disabled="disabled"  data-toggle="modal" data-target="#">
                                             <i class="fa fa-lock"></i> &nbsp;Roles
                                         </button>
 
-                                        <a class="btn btn-danger btn-sm" disabled="disabled"  data-target="#">
-                                        <i class="fa fa-lock" aria-hidden="true"></i>&nbsp;Eliminar</a>
+                                        <button type="button"class="btn-secondary btn-sm" disabled="disabled"  data-target="#">
+                                            <i class="fa fa-lock" aria-hidden="true"></i>&nbsp;Eliminar
+                                        </button>
 
                                         @else
 

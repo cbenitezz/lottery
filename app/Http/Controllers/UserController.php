@@ -251,8 +251,16 @@ class UserController extends Controller
 
       $info = $user->getRoleNames();
 
-      $request->session()->flash('succes', $info.': '.$request->name. '  actualizado correctamente');
-      return redirect($uri);
+      $request->session()->flash('succes', $info[0].': '.$request->name. '  actualizado correctamente');
+      if($info[0]=="cliente"){
+        $ruta = 'admin/clientes';
+      }elseif($info[0]== 'vendedor'){
+        $ruta ='admin/vendedores';
+      }else{
+        $ruta = 'admin/users';
+      }
+
+      return redirect($ruta);
 
   }
   /**

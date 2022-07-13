@@ -207,7 +207,7 @@ h6 {
   display: none;
 }
 .page-wrapper {
-  background: #fafafa;
+  background: #e8ebeb;
   padding-bottom: 60px;
 }
 .container-fluid {
@@ -2029,7 +2029,7 @@ textarea {
   color: #263238;
 }
 .footer {
-  background: #ffffff none repeat scroll 0 0;
+  background: #e8ebeb none repeat scroll 0 0;
   border-top: 1px solid rgba(120, 130, 140, 0.13);
   color: #67757c;
   left: 0;

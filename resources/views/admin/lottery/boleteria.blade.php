@@ -70,7 +70,7 @@
     </div>
 
 </div>
-
+@include('admin.lottery.modal_abono')
 @endsection
 
 @push('script')
@@ -101,7 +101,7 @@
     $(document).ready( function() {
 
 
-        $('#boleteria_table').DataTable({
+     let datatableAbono =   $('#boleteria_table').DataTable({
 
             processing: true,
             serverSide: true,
@@ -192,6 +192,14 @@
             },
 
         });
+        $('boleteria_table tbody').on('click','.abonar', function(){
+            let data = datatableAbono.row($(this).parents()).data();
+            $('#abono').val(data.number_ticket);
+            $('#id').val(data.id);
+
+        })
+
+
     });
 
 </script>

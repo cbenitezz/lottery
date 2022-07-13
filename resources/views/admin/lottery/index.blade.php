@@ -60,9 +60,13 @@
                                 <td>{{$lottery->date_end}}</td>
                                 <td>
                                     @if($lottery->status)
-                                        <button type="button" class="btn btn-warning ">Activo</button>
+
+                                        <span class="badge badge-warning"><strong>Activo</strong></span>
                                     @else
-                                        <button type="button" class="btn btn-dark ">Inactivo</button>
+
+                                        <span class="badge badge-secondary"><strong>Inactivo</strong></span>
+
+                                        Activo
                                     @endif
 
                                 </td>
