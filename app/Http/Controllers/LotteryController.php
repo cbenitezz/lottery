@@ -77,11 +77,11 @@ dd($products);*/
                 .$data->id.'" class="active btn btn-primary btn-sm">
                 <i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp;
                 Asignar</a>&nbsp;&nbsp;';
-            $button .= '<a data-remote="/profile/create/' .$data->id . '"  name="abonar" id="abonar"
-                        class="active btn btn-info btn-sm" data-toggle="modal" data-target="#modal-abono">
+            $button .= '<buttom data-remote="/profile/create/' .$data->id . '"  name="abonar" id="abonar"
+                        class="abonar active btn btn-info btn-sm" data-toggle="modal" data-target="#modal-abono">
                         <i class="fa fa-usd" aria-hidden="true"></i>&nbsp;
                         Abonar
-                        </a>';
+                        </buttom>';
              return $button;
           })->rawColumns(['action','status'])
 

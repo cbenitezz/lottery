@@ -61,6 +61,9 @@
               </div>
 
             </div>
+            <div class="card-footer">
+                @include('admin.lottery.modal_abono')
+            </div>
 
 
         </div>
@@ -69,8 +72,9 @@
 
     </div>
 
+
 </div>
-@include('admin.lottery.modal_abono')
+
 @endsection
 
 @push('script')
@@ -192,13 +196,29 @@
             },
 
         });
-        $('boleteria_table tbody').on('click','.abonar', function(){
+        $('#boleteria_table tbody').on('click','.abonar', function(){
             let data = datatableAbono.row($(this).parents()).data();
-            $('#abono').val(data.number_ticket);
+            $('#numero').val(data.number_ticket);
             $('#id').val(data.id);
+            //console.log(data.number_ticket));
 
         })
 
+
+        //Función separador de miles
+        $("#abono4").on({
+        "focus": function(event) {
+            $(event.target).select();
+        },
+        "keyup": function(event) {
+            $(event.target).val(function(index, value) {
+            return value.replace(/\D/g, "")
+                .replace(/([0-9])([0-9]{0})$/, '$1')
+                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
+            });
+        }
+        });
+        //fin función
 
     });
 

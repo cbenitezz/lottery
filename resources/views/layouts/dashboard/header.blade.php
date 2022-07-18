@@ -6,7 +6,7 @@
 
             <a class="navbar-brand" href="{{ url('/home')}}">
                 <!-- Logo icon -->
-                <b><img src="{{ asset('asset/images/logo.png')}}" alt="homepage" class="dark-logo" /></b>
+                <b><img src="{{ asset('asset/images/logo_dashboard.png')}}" alt="homepage" class="dark-logo" /></b>
                 <!--End Logo icon -->
                 <!-- Logo text -->
                 <span><img src="{{ asset('asset/images/logo-text.png')}}" alt="homepage" class="dark-logo" /></span>
