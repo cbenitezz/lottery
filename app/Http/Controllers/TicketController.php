@@ -18,13 +18,13 @@ class TicketController extends Controller
 
   public function asignar(Ticket $ticket, Request $request)
   {
-    /*
-       $title = "Vendedor";
-       $users = User::role(['vendedor','admin'])->simplepaginate(50);
-       return view('admin.ticket.asignar_datatable', compact('users','title','ticket'));
-       */
+
+      $data = User::role(['vendedor','admin']);
+
+
       $this->ticket = $ticket;
       $this->ticket_url ="/ticket";
+      $lottery_id = $ticket->lottery_id;
 
       if($request->ajax()){
 
@@ -34,13 +34,14 @@ class TicketController extends Controller
         return datatables()->eloquent($data)
 
          ->addColumn('action',function($data){
-                $button = '<form method="POST" action="'.$this->ticket_url.'">
-                        <input type="hidden" name="_token" value="'. @csrf_token().'">
-                        <input type="hidden" name="name" value="'.$this->ticket->number_ticket.'">
-                        <input type="hidden" name="id"   value="'.$this->ticket->id.'">
-                        <input type="hidden" name="user_id"   value="'.$data->id.'">
-                        <input type="submit" class="btn btn-primary" value="# '.$this->ticket->number_ticket.'">
-                        </form>';
+                $button =  '<form method="POST" action="'.$this->ticket_url.'">
+                            <input type="hidden" name="_token" value="'. @csrf_token().'">
+                            <input type="hidden" name="name" value="'.$this->ticket->number_ticket.'">
+                            <input type="hidden" name="lottery_id"   value="'.$this->ticket->lottery_id.'">
+                            <input type="hidden" name="id"   value="'.$this->ticket->id.'">
+                            <input type="hidden" name="user_id"   value="'.$data->id.'">
+                            <input type="submit" class="btn btn-primary" value="# '.$this->ticket->number_ticket.'">
+                            </form>';
              return $button;
           })->rawColumns(['action'])
         ->addColumn('boletas', function($data) {
@@ -59,7 +60,7 @@ class TicketController extends Controller
 
            }
 
-     return view('admin.ticket.asignar_datatable');
+     return view('admin.ticket.asignar_datatable',compact('lottery_id'));
 
 
   }
@@ -94,13 +95,15 @@ class TicketController extends Controller
   public function store(Request $request)
   {
 
-    //dd($request);
+      //dd($request);
       $ticket = Ticket::findOrFail($request->id);
       $ticket->user_id = $request->user_id;
       $ticket->status = 1;
       $ticket->update();
 
-      return redirect('admin/boleteria');
+//dd($ticket->lottery_id);
+
+      return redirect('admin/boleteria/'.$ticket->lottery_id);
 
 
 

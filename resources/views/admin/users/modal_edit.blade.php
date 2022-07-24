@@ -33,15 +33,16 @@
                                 </div>
                                 <div class="form-group">
 
-                                        {!! Form::label('city', 'Ciudad', ['style'=>"float:left; margin-left:10px"]) !!}
-                                        {!! Form::text('city', null, ['class'=> 'form-control'. ( $errors->has('city') ? ' is-invalid' : '' )
-                                        ,'required'=>'required', 'maxlength'=>50]) !!}
+                                        {!! Form::label('sede', 'Sede', ['style'=>"float:left; margin-left:10px"]) !!}
+                                        {!! Form::select('sede', ['Calarca' => 'Calarcá', 'Montenegro' => 'Montenegro','Tebaida'=>'Tebaida'],
+                                         'Tebaida', ['class'=> 'form-control'. ( $errors->has('sede') ? ' is-invalid' : '' )]) !!}
 
-                                        @error('city')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                        @error('sede')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
+
                                 </div>
                                 <div class="form-group">
                                         {!! Form::label('sector', 'Barrio', ['style'=>"float:left; margin-left:10px"]) !!}

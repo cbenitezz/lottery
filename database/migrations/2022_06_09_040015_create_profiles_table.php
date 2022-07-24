@@ -13,7 +13,7 @@ class CreateProfilesTable extends Migration {
 			$table->string('identification_card', 30)->nullable();
 			$table->string('name', 150);
 			$table->string('last_name', 150)->nullable();
-			$table->string('city', 50)->nullable();
+			$table->enum('sede', array('Calarca', 'Montenegro', 'Tebaida'));
 			$table->string('address', 150)->nullable();
 			$table->string('sector', 150)->nullable();
 			$table->string('phone', 30)->nullable();

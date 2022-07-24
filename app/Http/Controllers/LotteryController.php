@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Lottery;
 use App\Ticket;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -22,35 +23,72 @@ class LotteryController extends Controller
    */
   public function index()
   {
-    $lotteries = Lottery::select(['id','eslogan','name','date_start','date_end','status'])->orderBy('date_end','desc')->get();
+    $lotteries = Lottery::select(['id','eslogan','name','sede','date_start','date_end','status'])->orderBy('date_end','desc')->get();
     $title = 'Sorteo';
 
 
     if(!$lotteries->count())
     {
-
+      /* Sino hay rifa programada se debe crear una por default */
       return view('admin.lottery.create',compact('title'));
-      {{{ dd('si no tiene'); }}}
+
 
     }else{
 
-        return view('admin.lottery.index',compact('lotteries','title'));
-        {{{ dd('tiene'); }}}
-    }
+        foreach ($lotteries as $lottery) {
 
+            if($lottery->date_end <= Carbon::now()){
+                /*
+                    Esta instrucción actualiza el registro de la tabla lottery
+                    pasando el atributo STATUS a 0, asi de manera automatica mediante
+                    la fecha se controla los sorteos o rifas activas
+
+                */
+                 Lottery::where("id", $lottery->id)->update(["status" => 0]);
+
+            }
+        }
+
+        return view('admin.lottery.index',compact('lotteries','title'));
+
+    }
 
   }
 
-  public function boleteria(Request $request)
+
+
+  public function boleteria(Request $request, $id)
   {
 
+   // $data = Ticket::select('id', 'user_id','lottery_id','number_ticket','paid_ticket','status')->where('lottery_id',$lottery->id)->orderBy('id','asc')->toSql();
+   // dd($data);
 /*
+    $data = DB::table('tickets')->select('id', 'user_id','lottery_id','number_ticket','paid_ticket','status')->orderBy('id','asc')->get();
+    dd($data);
+
     $products = Ticket::join('users','id', '=', 'user_id')->select('id', 'user_id','lottery_id','number_ticket','paid_ticket','status')->get();
 dd($products);*/
+    $data = Ticket::select('id', 'user_id','lottery_id','number_ticket','paid_ticket','status')->where('lottery_id',$id)->orderBy('id','asc');
+
+    //$lottery = $data->lottery_id;
+/*
+    $buttom_abonar2 ='
+    <buttom  name="abonar" id="abonar" class="abonar active btn btn-info btn-sm"
+    data-toggle="modal" data-target="#modal-abono">
+    <i class="fa fa-usd" aria-hidden="true"></i>&nbsp;Abonar
+    </buttom>';
+
+*/
+
     if($request->ajax()){
 
-        $data = Ticket::select('id', 'user_id','lottery_id','number_ticket','paid_ticket','status')->orderBy('id','asc');
+
+
+        // $data = DB::table('tickets')->select(['id', 'user_id','lottery_id','number_ticket','paid_ticket','status'])->orderBy('id','asc');
+         // $data = DB::table('tickets');
+        //  $data = DB::table('users');
 /*
+        DB::table('name')->select('column as column_alias')->get();
         $data = Ticket::select('id', 'user_id','lottery_id','number_ticket','paid_ticket','status')
                 ->whereHas('profiles', function(Builder $query){
                     $query->select('name, 'last_name');
@@ -64,32 +102,66 @@ dd($products);*/
 
 
 */
-
-        return datatables()->eloquent($data)
+        //return DataTables::of($data)
+       // return datatables()->query($data)
+       // return datatables()->of($data)
+        //return datatables($data)
+       return datatables()->eloquent($data)
 
         ->editColumn('status', '@if($status == 0)
                <span class="label label-rouded label-warning ">
                <i class="fa fa-user-circle" aria-hidden="true"></i> Disponible</span>
                @else<span class="label label-rouded label-primary ">
                <i class="fa fa-handshake-o" aria-hidden="true"></i> Asignada</span> @endif')
-         ->addColumn('action',function($data){
-            $button = '<a href="/asignar/' .$data->id . '"  name="eliminar" id="'
-                .$data->id.'" class="active btn btn-primary btn-sm">
-                <i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp;
-                Asignar</a>&nbsp;&nbsp;';
-            $button .= '<buttom data-remote="/profile/create/' .$data->id . '"  name="abonar" id="abonar"
-                        class="abonar active btn btn-info btn-sm" data-toggle="modal" data-target="#modal-abono">
-                        <i class="fa fa-usd" aria-hidden="true"></i>&nbsp;
-                        Abonar
-                        </buttom>';
-             return $button;
-          })->rawColumns(['action','status'])
-
         ->editColumn('lottery_id', function(Ticket $ticket) {
-            return  $ticket->lotteries->name;
-         })
+          return  '<span class="hide-menu">'.$ticket->lotteries->name.'
+          <span class="label label-rouded label-warning ">'.$ticket->lotteries->id.'</span>
+          </span>';})
+        ->addColumn('action',function(Ticket $ticket){
+
+                  $button = '<a href="/asignar/' .$ticket->id. '"  name="eliminar" id="'
+                            .$ticket->id.'" class="active btn btn-primary btn-sm">
+                            <i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp;
+                            Asignar</a>&nbsp;&nbsp;';
+            if($ticket->status == 1){
+
+                if($ticket->paid_ticket < 90000){
+
+                    $button .= '<buttom  name="abonar" id="abonar" class="abonar btn-success
+                               btn-sm" data-toggle="modal" data-target="#modal-abono">
+                              <i class="fa fa-usd" aria-hidden="true"></i>&nbsp;
+                              Abonar
+                              </buttom>';
+                }else{
+
+                    $button .= '<buttom   class="disabled btn btn-default btn-sm">
+                              <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                              PAGADA
+                              </buttom>';
+
+                }
+            }else{
+
+                $button .= '<buttom   class="disabled btn btn-default btn-sm">
+                              <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                              Asignar
+                              </buttom>';
+            }
+
+             return $button;
+          })->rawColumns(['action','status','lottery_id'])
         ->addColumn('user_id', function(Ticket $ticket) {
             return  $ticket->user->profile->name. ' '.$ticket->user->profile->last_name;
+         })
+         ->addColumn('identification', function(Ticket $ticket) {
+            return  $ticket->user->profile->identification_card;
+         })
+         ->editColumn('paid_ticket', function(Ticket $ticket) {
+
+            return  number_format($ticket->paid_ticket,0,',','.');
+         })
+         ->editColumn('lottery_identificador', function(Ticket $ticket) {
+            return  $ticket->lotteries->id;
          })
          //->filterColumn('user_id','where', "like", ["%$keyword%"])
 
@@ -100,7 +172,7 @@ dd($products);*/
 
     }
 
-     return view('admin.lottery.boleteria');
+     return view('admin.lottery.boleteria', compact('id'));
 
 
   }
@@ -122,21 +194,21 @@ dd($products);*/
    */
   public function store(Request $request)
   {
-
+//dd($request);
     /*
       Esta instrucción actualiza todos los registros de la tabla lottery
       pasando el atributo STATUS a 0, asi la ultima acción de registro
       quedará como la unica activa para su edición futura
 
     */
-    Lottery::query()->update(['status' => 0]);
+    //Lottery::query()->update(['status' => 0]);
 
     $validate = $this->validate($request,[
         'name'               =>'required|max:30',
         'nit'                =>'required|numeric|min:10',
         'eslogan'            =>'required|max:70',
         'representative'     =>'required|max:30',
-        'city'               =>'required|max:40',
+        'sede'               =>'required|max:40',
         'address'            =>'required|max:80',
         'lottery'            =>'required|max:80',
         'commission_sale'    =>'required|numeric|min:11',
@@ -157,7 +229,7 @@ dd($products);*/
         $lottery->lottery = $request->lottery;
         $lottery->commission_sale = $request->commission_sale;
         $lottery->address = $request->address;
-        $lottery->city = $request->city;
+        $lottery->sede = $request->sede;
         $lottery->status = 1;
         $lottery->save();
 

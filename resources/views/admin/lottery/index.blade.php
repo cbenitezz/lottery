@@ -46,8 +46,10 @@
                         <th>#</th>
                         <th>Slogan</th>
                         <th>Nombre</th>
+                        <th>Sede</th>
                         <th>Inicio</th>
                         <th>Final</th>
+                        <th>Asignar</th>
                         <th>Estado</th>
                     </thead>
                     <tbody>
@@ -56,20 +58,32 @@
                                 <td>{{$lottery->id }}</td>
                                 <td>{{$lottery->eslogan}}</td>
                                 <td>{{$lottery->name}}</td>
+                                <td>{{$lottery->sede}}</td>
                                 <td>{{$lottery->date_start}}</td>
                                 <td>{{$lottery->date_end}}</td>
+
+                                @if($lottery->status)
                                 <td>
-                                    @if($lottery->status)
-
-                                        <span class="badge badge-warning"><strong>Activo</strong></span>
-                                    @else
-
-                                        <span class="badge badge-secondary"><strong>Inactivo</strong></span>
-
-                                        Activo
-                                    @endif
-
+                                  <a href="{{route('lottery.boleteria',['id'=> $lottery->id])}}" class="btn btn-warning">
+                                  <i class="fa fa-check-circle-o" aria-hidden="true"></i> Asignar</a>
                                 </td>
+                                <td>
+                                  <span class="badge badge-warning">&nbsp;&nbsp;<strong><i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                     Activo</strong></span>
+                                </td>
+
+                                @else
+                                 <td>
+                                    <a href="#" class="btn btn-secondary  disabled ">
+                                     Terminada</a>
+                                  </td>
+                                  <td>
+                                    <span class="badge badge-secondary"><strong>Inactivo</strong></span>
+                                  </td>
+
+                                @endif
+
+
 
 
                            </tr>

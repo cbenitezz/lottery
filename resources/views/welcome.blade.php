@@ -9,7 +9,7 @@
     <title>Estrategias Inmobiliarias S.A.S.</title>
 
 
-<link href="https://getbootstrap.com/docs/5.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<link href="{{ asset('asset/css/bootstrap.min.css')}}" rel="stylesheet">
 
     <!-- Favicons -->
 
@@ -91,7 +91,7 @@
 
 
     <!-- Custom styles for this template -->
-    <link href="https://getbootstrap.com/docs/5.2/examples/sign-in/signin.css" rel="stylesheet">
+    <link href="{{ asset('asset/css/signin.css')}}" rel="stylesheet">
   </head>
   <body class="text-center">
 

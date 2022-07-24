@@ -125,11 +125,12 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    {!! Form::label('city', 'Ciudad') !!}
-                                    {!! Form::text('city', null, ['class'=> 'form-control'. ( $errors->has('city') ? ' is-invalid' : '' )
-                                    , 'placeholder'=>'...']) !!}
+                                    {!! Form::label('sede', 'Sede') !!}
+                                    {!! Form::select('sede', ['Calarca' => 'Calarcá', 'Montenegro' => 'Montenegro','Tebaida'=>'Tebaida'],
+                                    null, ['class'=> 'form-control'. ( $errors->has('sede') ? ' is-invalid' : '' )
+                                    , 'placeholder'=>'Seleccione la Sede']) !!}
 
-                                        @error('city')
+                                        @error('sede')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

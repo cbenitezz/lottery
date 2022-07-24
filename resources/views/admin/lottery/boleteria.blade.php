@@ -45,7 +45,8 @@
                         <tr>
 
                             <th>Vendedor</th>
-                            <th># Sorteo</th>
+                            <th>Cédula</th>
+                            <th>Sorteo - #</th>
                             <th># Boleta</th>
                             <th>Abono</th>
                             <th>Estado</th>
@@ -110,25 +111,26 @@
             processing: true,
             serverSide: true,
             responsive: true,
-            autoWidth:false,
+            autoWidth: false,
             searching: true,
             ajax: {
-                url: "{{ route('lottery.boleteria') }}",
+                url: "{{ route('lottery.boleteria',$id) }}",
             },
 
             columns: [
 
-                    { data: 'user_id', name: 'user_id',sortable: true},
-                    { data: 'lottery_id', name: 'lottery_id',sortable: true },
-                    { data: 'number_ticket', name: 'number_ticket',sortable: true},
-                    { data: 'paid_ticket', name: 'paid_ticket',sortable: true, searchable: true},
-                    { data: 'status', name: 'status',sortable: true, searchable: true},
-                    { data: 'action', name:'action'},
+                    { data: 'user_id', name: 'user_id'},
+                    { data: 'identification', name: 'identification'},
+                    { data: 'lottery_id', name: 'lottery_id'},
+                    { data: 'number_ticket', name: 'number_ticket'},
+                    { data: 'paid_ticket', name: 'paid_ticket'},
+                    { data: 'status', name: 'status'},
+                    { data: 'action', name:'action',sortable: false,searchable: false },
 
 
 
             ],
-            columnDefs: [{ "targets": [2,5],
+            columnDefs: [{ "targets": [2,6],
                           "orderable": false,
                           "className": "text-center",
             }],
@@ -200,25 +202,49 @@
             let data = datatableAbono.row($(this).parents()).data();
             $('#numero').val(data.number_ticket);
             $('#id').val(data.id);
-            //console.log(data.number_ticket));
+            $('#lottery').val(data.lottery_identificador);
+            //console.log(data.lottery_identificador);
 
+        });
+
+        $('#form_abonar').submit(e=>{
+            //id from tableticket
+            //
+            let id = $('#id').val();
+            let numero  = $('#numero').val();
+            let abono   = $('#abono').val();
+            let lottery = $('#lottery').val();
+            console.log('id:'+id +'numero:'+ numero +'abono:' + abono+' lottery:' +lottery);
+            $.ajaxSetup({
+                headers: {
+                  'X-CSRF-TOKEN': $('input[name="_token"]').attr('value')
+                }
+            });
+            $.ajax({
+                    type: "POST",
+                    url: '/payment',
+                    data:{
+                        id:id,
+                        numero:numero,
+                        abono:abono
+                    },
+                    success: function (result){
+                        console.log(result.data);
+                        if(result.data == true){
+                         window.location.href = '/admin/boleteria/'+lottery;
+                        //console.log(result.contar);
+                        }
+
+
+                    },
+                    error: function (result) {
+                        console.log('Error:', result);
+                    }
+                });
+            e.preventDefault();
         })
 
 
-        //Función separador de miles
-        $("#abono4").on({
-        "focus": function(event) {
-            $(event.target).select();
-        },
-        "keyup": function(event) {
-            $(event.target).val(function(index, value) {
-            return value.replace(/\D/g, "")
-                .replace(/([0-9])([0-9]{0})$/, '$1')
-                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
-            });
-        }
-        });
-        //fin función
 
     });
 

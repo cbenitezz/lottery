@@ -122,7 +122,7 @@ class UserController extends Controller
       'apellido'  =>'required|max:30',
       'email'     =>'required|unique:users|email|max:70',
       'identification_card'    =>'required|unique:profiles|numeric|min:30',
-      'city'      =>'required|max:40',
+      'sede'      =>'required|max:40',
       'direccion' =>'required|max:80',
       'barrio'    =>'required|max:80',
       'phone'     =>'required|numeric|min:11',
@@ -141,7 +141,7 @@ class UserController extends Controller
       $profile->identification_card = $request->identification_card;
       $profile->name = $request->name;
       $profile->last_name= $request->apellido;
-      $profile->city = $request->city;
+      $profile->sede = $request->sede;
       $profile->address = $request->direccion;
       $profile->phone = $request->phone;
       $profile->sector = $request->barrio;
@@ -227,7 +227,7 @@ class UserController extends Controller
 
         'name'      =>'required|max:30',
         'last_name' =>'required|max:30',
-        'city'      =>'required|max:40',
+        'sede'      =>'required|max:40',
         'address'   =>'required|max:80',
         'sector'    =>'required|max:80',
         'phone'     =>'required|numeric|min:11',
@@ -243,7 +243,7 @@ class UserController extends Controller
       $profile = Profile::findOrFail($request->id);
       $profile->name = $request->name;
       $profile->last_name= $request->last_name;
-      $profile->city = $request->city;
+      $profile->sede = $request->sede;
       $profile->address = $request->address;
       $profile->phone = $request->phone;
       $profile->sector = $request->sector;
@@ -274,13 +274,12 @@ class UserController extends Controller
 
      if ($request->roles) {
 
-      $user->roles()->sync($request->roles);
-
-      $request->session()->flash('succes', 'Rol asignado correctamente');
+        $user->roles()->sync($request->roles);
+        $request->session()->flash('succes', 'Rol asignado correctamente');
 
      } else {
 
-      $request->session()->flash('error',  'Rol no asignado');
+        $request->session()->flash('error',  'Rol no asignado');
 
      }
 

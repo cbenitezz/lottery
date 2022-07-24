@@ -34,7 +34,7 @@
 
 
 
-            <a href="{{route('lottery.boleteria')}}" class="btn btn-warning  float-right">
+            <a href="{{route('lottery.boleteria',$lottery_id)}}" class="btn btn-warning  float-right">
             <i class="fa fa-plus"></i> Boleteria</a>
             <h5 class="card-title mb-0"><i class="fa fa-th-large" aria-hidden="true"></i> ASIGNACIÓN BOLETA  </h5>
             <div class="small text-muted">Vendedores</div>

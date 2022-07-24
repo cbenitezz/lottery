@@ -19,7 +19,7 @@
                     <i class="fa fa-random"></i><span class="hide-menu">Sorteos</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{ route('lottery.index')}}">Listado</a></li>
-                        <li><a href="{{ route('lottery.boleteria')}}">Asignar</a></li>
+                        <!--<li><a href="{{-- route('lottery.boleteria')--}}">Asignar</a></li>-->
                        <!-- <li><a href="{{-- route('lottery.index') --}}">Ventas</a></li>
                         <li><a href="{{-- route('lottery.index')--}}">Sorteos</a></li>
                         <li><a href="{{-- route('lottery.index') --}}">Abonos</a></li>-->
@@ -31,6 +31,7 @@
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{ route('user.index')}}">Sistema</a></li>
                         <li><a href="{{ route('user.clientes')}}">Clientes</a></li>
+                        <li><a href="{{ route('customer.index')}}">Clientes 2</a></li>
                         <li><a href="{{ route('user.vendedores')}}">Vendedores</a></li>
                         <li><a href="{{ route('roles.index')}}">Roles</a></li>
 

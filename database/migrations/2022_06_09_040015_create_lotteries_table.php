@@ -20,7 +20,7 @@ class CreateLotteriesTable extends Migration {
 			$table->string('winning_number_lottery', 4)->nullable();
 			$table->integer('commission_sale');
 			$table->string('address', 200);
-			$table->string('city', 150);
+			$table->enum('sede', array('Calarca', 'Montenegro', 'Tebaida'));
             $table->char('status',1)->default('0');
 			$table->integer('per_commission_sale')->nullable();
 			$table->softDeletes();

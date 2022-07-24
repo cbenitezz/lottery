@@ -10,7 +10,7 @@ class CreatePaymentsTable extends Migration {
 		Schema::create('payments', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('ticket_id')->unsigned();
-			$table->integer('value');
+			$table->decimal('value',13,3);
 			$table->date('date_payment');
 			$table->timestamps();
 			$table->softDeletes();

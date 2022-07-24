@@ -25,7 +25,7 @@
             </div>
         @endif
 
-       
+
     </div>
 
 </div><!-- end view -->
@@ -66,10 +66,10 @@
 
                     </div>
 
-                    
+
                     {!! Form::open(['route' => 'user.cliente', 'method' => 'POST']) !!}
 
-                        
+
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
@@ -96,7 +96,7 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                     @enderror
-                                </div>    
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -130,15 +130,17 @@
                         <div class="row">
                             <div class="col-6">
                             <div class="form-group">
-                                {!! Form::label('city', 'Ciudad') !!}
-                                {!! Form::text('city', null, ['class'=> 'form-control'. ( $errors->has('city') ? ' is-invalid' : '' )
-                                , 'placeholder'=>'...']) !!}
+                                    {!! Form::label('sede', 'Sede') !!}
+                                    {!! Form::select('sede', ['Calarca' => 'Calarcá', 'Montenegro' => 'Montenegro','Tebaida'=>'Tebaida'],
+                                     'Tebaida', ['class'=> 'form-control'. ( $errors->has('sede') ? ' is-invalid' : '' )]) !!}
 
-                                    @error('city')
+                                    @error('sede')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
+
+
                                 </div>
                             </div>
                             <div class="col-6">
@@ -187,15 +189,15 @@
                             {!! Form::submit('Registrar '.$title, ['class'=>'btn btn-lg btn-info btn-block']) !!}
                             <div class="form-group">
                                 <div class="alert alert-info text-center" role="alert" >
-                                     El usuario registrado tendrá como clave "password" y 
+                                     El usuario registrado tendrá como clave "password" y
                                     deberá ser cambiado al inicio de sesión
                                 </div>
-                            </div>       
+                            </div>
                         </div>
-                        
-                        
+
+
                      {!! Form::close() !!}
-                    
+
                 </div>
             </div>
 

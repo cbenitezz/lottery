@@ -5,7 +5,7 @@
                     <div class="modal-header"><!-- start modal header -->
                         <h5 class="modal-title" id="staticModalLabel">
                             <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                            RECEPCIÓN DE ABONO
+                            RECEPCIÓN DE ABONO <strong id="lottery"></strong>
                         </h5>
 
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -15,12 +15,13 @@
                     </div><!-- end modal header -->
                     <div class="modal-body"><!-- start modal body -->
 
-                        {!! Form::open(['route' => 'user.store', 'method' => 'POST']) !!}
+                        {!! Form::open(['id'=>'form_abonar']) !!}
 
                             <div class="form-group">
                                 {!! Form::label('numero', 'Numero de Boleta') !!}
-                                {!! Form::text('numero', null, ['class'=> 'form-control', 'placeholder'=>'', 'disabled'=>'disabled']) !!}
-                                {!! Form::hidden('id') !!}
+                                {!! Form::text('numero', null, ['class'=> 'form-control', 'placeholder'=>'', 'disabled'=>'disabled', 'id'=>'numero']) !!}
+                                {!! Form::hidden('id', null, ['id'=>'id']) !!}
+                                {!! Form::hidden('lottery', null, ['id'=>'lottery']) !!}
 
                                 @error('name')
                                         <span class="invalid-feedback" role="alert">
