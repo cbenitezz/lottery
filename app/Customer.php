@@ -20,14 +20,13 @@ class Customer extends Model
 
 
 
-
     public function tickets()
     {
         return $this->belongsTo('App\Ticket','ticket_id');
     }
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('App\User', 'seller_id', 'id');
     }
 }

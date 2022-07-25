@@ -70,6 +70,7 @@ class LotteryController extends Controller
 dd($products);*/
     $data = Ticket::select('id', 'user_id','lottery_id','number_ticket','paid_ticket','status')->where('lottery_id',$id)->orderBy('id','asc');
 
+  //  $data = Ticket::with('user','lottery')->select('id', 'user_id','lottery_id','number_ticket','paid_ticket','status')->where('lottery_id',$id)->orderBy('id','asc');
     //$lottery = $data->lottery_id;
 /*
     $buttom_abonar2 ='
@@ -163,7 +164,7 @@ dd($products);*/
          ->editColumn('lottery_identificador', function(Ticket $ticket) {
             return  $ticket->lotteries->id;
          })
-         //->filterColumn('user_id','where', "like", ["%$keyword%"])
+
 
 
         ->toJson();

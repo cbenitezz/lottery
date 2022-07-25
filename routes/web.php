@@ -19,8 +19,29 @@ Route::get('/', function () {
 
 Route::get('/sql',function(){
 
-    $payment= App\Payment::where('ticket_id', 10004)->first();
-    dd($payment->id);
+   // $payment= App\Payment::where('ticket_id', 10004)->first();
+    //$customers = App\Customer::select(['id','seller_id','ticket_id','name','last_name','phone'])->orderBy('id','asc');
+    //$customers = Illuminate\Support\Facades\DB::table('customers')->select(['id','seller_id','ticket_id','identification_card','name','last_name','phone'])->orderBy('id','asc')->get();
+    //$customers->ticket_id->number_ticket;
+    /*
+    $customers = App\Customer::
+    with(['tickets'=>function($query){
+      $query->select('number_ticket','paid_ticket');
+    },'users'=>function($query){
+      $query->select('name');
+    }])->select(['id','seller_id','ticket_id','identification_card','name','last_name','phone'])
+    ->orderBy('id','asc')->toSql();*/
+
+
+    $customers = App\Customer::with(['tickets' => function($query){
+        $query->select('id','number_ticket as numero','paid_ticket');
+    }])
+    ->select(['id','seller_id','ticket_id','identification_card','name','last_name','phone'])
+    ->get();
+                              /*->select(['id','seller_id','ticket_id','identification_card','name','last_name','phone'])
+                              ->where('tickets.id','customers.ticket_id')
+                              ->orderBy('id','asc')->toSql();*/
+    dd($customers[0]->tickets->numero);
 
 });
 
