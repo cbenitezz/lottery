@@ -1,23 +1,23 @@
 <!-- start Modal Update Roles -->
-<div class="modal fade" id="modal-edit-{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" style="display: none;" aria-hidden="true">
+<div class="modal fade" id="modal-edit-{{$users->id}}" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                     <div class="modal-header"><!-- start modal header -->
 
                         <h5 class="modal-title" id="staticModalLabel">
                             <i class="fa fa-user-circle" aria-hidden="true"></i>
-                            Editar :{{$item->profile->name}} | {{$item->profile->identification_card}}</h5>
+                            Editar :{{$users->profile->name}} | {{$users->profile->identification_card}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div><!-- end modal header -->
                     <div class="modal-body"><!-- start modal body -->
 
-                        {!! Form::model($item->profile, ['route'=>['customer.update',$item->profile->id], 'method'=>'put' ]) !!}
+                        {!! Form::model($users->profile, ['route'=>['customer.update',$users->profile->id], 'method'=>'put' ]) !!}
                         <div class="row">
                             <div  class="col-lg-6"><!-- Col1 -->
-                                {!! Form::hidden('title', $item->getRoleNames()) !!}
-                                {!! Form::hidden('id', $item->profile->id) !!}
+                                {!! Form::hidden('title', $users->getRoleNames()) !!}
+                                {!! Form::hidden('id', $users->profile->id) !!}
 
                                 <div class="form-group">
 

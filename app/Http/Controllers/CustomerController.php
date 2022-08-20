@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
+use App\CustomerRecords;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,62 +17,34 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
 
-        //$title = "Clientes";
-       // $customers = Customer::select(['id','seller_id','ticket_id','identification_card','name','last_name','phone'])->orderBy('id','asc');
 
-      // $customers = Customer::with(['tickets','users'])->select(['id','seller_id','ticket_id','identification_card','name','last_name','phone'])->orderBy('id','asc');
-
-        $customers = Customer::select(['id','seller_id','ticket_id','identification_card','name','last_name','phone'])
-                              ->with(['tickets'=>function($query){
-                                $query->select('id','number_ticket','paid_ticket as abono');
-                              },'users'=>function($query){
-                                $query->select('id','name as seller');
-                              }])
-                              ->orderBy('id','asc');
-
-        /*
-        $user = User::select("id", "name")
-        ->with(['positions' => function ($query) {
-            $query->select('name');
-        }, 'profile' => function ($query) {
-            $query->select("user_id", "company_name");
-        }])->get();
-
-        */
-
-       // $customers = DB::table('customers')->select(['id','seller_id','ticket_id','identification_card','name','last_name','phone'])->orderBy('id','asc');
-        //return datatables()->query(DB::table('users'))->toJson();
-       // return view('admin.customers.index',compact('customers', 'title'));
+        $customers = CustomerRecords::select(['id','identification_card','name','last_name','phone','number_ticket','abono','seller'])->orderBy('id','asc');
 
         if($request->ajax()){
 
 
             return datatables()->eloquent($customers)
             //return datatables()->query($customers)
-            ->editColumn('name', function(Customer $customers) {
+            ->editColumn('name', function(CustomerRecords $customers) {
                 return  $customers->name;
              })
-             ->editColumn('last_name', function(Customer $customers) {
+             ->editColumn('last_name', function(CustomerRecords $customers) {
                 return  $customers->last_name;
              })
-             ->editColumn('identification_card', function(Customer $customers) {
+             ->editColumn('identification_card', function(CustomerRecords $customers) {
                 return  $customers->identification_card;
              })
-             ->editColumn('phone', function(Customer $customers) {
+             ->editColumn('phone', function(CustomerRecords $customers) {
                 return  $customers->phone;
              })
-             ->addColumn('number_ticket', function(Customer $customers) {
-                return  $customers->tickets->number_ticket;
+             ->editColumn('number_ticket', function(CustomerRecords $customers) {
+                return  $customers->number_ticket;
              })
-             /*
-             ->filterColumn('number_ticket', function($customers) {
-                return  $customers->tickets->abono;
-            })*/
-             ->addColumn('abono', function(Customer $customers) {
-                return  $customers->tickets->abono;
+            ->editColumn('abono', function(CustomerRecords $customers) {
+                return  $customers->abono;
              })
-             ->addColumn('seller', function(Customer $customers) {
-                return  $customers->users->seller;
+             ->editColumn('seller', function(CustomerRecords $customers) {
+                return  $customers->seller;
              })->toJson();
 
         }

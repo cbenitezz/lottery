@@ -21,6 +21,8 @@ class CreateLotteriesTable extends Migration {
 			$table->integer('commission_sale');
 			$table->string('address', 200);
 			$table->enum('sede', array('Calarca', 'Montenegro', 'Tebaida'));
+            $table->string('talonario',50)->default('00000');
+            $table->string('recibo',50)->default('00000');
             $table->char('status',1)->default('0');
 			$table->integer('per_commission_sale')->nullable();
 			$table->softDeletes();

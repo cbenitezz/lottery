@@ -23,6 +23,7 @@ class DashBoardController extends Controller
      */
     public function index()
     {
+        //$rol = $auth()->getRoleNames();
         return view('layouts.dashboard.index');
     }
 }

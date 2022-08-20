@@ -10,39 +10,38 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Foreach_;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/sql',function(){
+Route::get('imprimir',function(Request $request){
 
-   // $payment= App\Payment::where('ticket_id', 10004)->first();
-    //$customers = App\Customer::select(['id','seller_id','ticket_id','name','last_name','phone'])->orderBy('id','asc');
-    //$customers = Illuminate\Support\Facades\DB::table('customers')->select(['id','seller_id','ticket_id','identification_card','name','last_name','phone'])->orderBy('id','asc')->get();
-    //$customers->ticket_id->number_ticket;
-    /*
-    $customers = App\Customer::
-    with(['tickets'=>function($query){
-      $query->select('number_ticket','paid_ticket');
-    },'users'=>function($query){
-      $query->select('name');
-    }])->select(['id','seller_id','ticket_id','identification_card','name','last_name','phone'])
-    ->orderBy('id','asc')->toSql();*/
+return view('admin.payments.recibo');
+
+});
 
 
-    $customers = App\Customer::with(['tickets' => function($query){
-        $query->select('id','number_ticket as numero','paid_ticket');
-    }])
-    ->select(['id','seller_id','ticket_id','identification_card','name','last_name','phone'])
-    ->get();
-                              /*->select(['id','seller_id','ticket_id','identification_card','name','last_name','phone'])
-                              ->where('tickets.id','customers.ticket_id')
-                              ->orderBy('id','asc')->toSql();*/
-    dd($customers[0]->tickets->numero);
+Route::get('/sql',function(Request $request){
 
+    $get_array = ['hola', 'que', 'tal', 'mundo'];
+
+    $pdf = Barryvdh\DomPDF\Facade\Pdf::loadView('admin.payments.recibo',$get_array);
+    $pdf->setPaper('a7', 'portrait');
+        return $pdf->download('ticket.pdf');
+
+
+    //$get_array = json_decode($request->array_table, true);
+    //$usuario   = $request->usuario;
+
+    if($request->ajax()){
+
+       // return response()->json(['data'=>true, 'array'=>$get_array]);
+
+    }
 });
 
 Auth::routes();
@@ -53,7 +52,7 @@ Route::get('/home', 'DashBoardController@index')->name('home');
 Route::get('admin/boleteria/{id}','LotteryController@boleteria')->middleware('auth')->name('lottery.boleteria');
 Route::resource('lottery', 'LotteryController')->middleware('auth');
 
-
+Route::post('printer','PaymentController@printer')->middleware('auth')->name('printer');
 Route::resource('payment', 'PaymentController')->middleware('auth');
 //Route::resource('user', 'UserController')->middleware('auth');
 Route::resource('profile', 'ProfileController')->middleware('auth');

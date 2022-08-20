@@ -39,14 +39,51 @@ class UserController extends Controller
    * @return Response
    *
    */
-  public function listarVendedores()
+  public function listarVendedores(Request $request)
   {
 
     $roles = Role::all();
     $title = "Vendedor";
-    $users = User::role(['vendedor'])->simplepaginate(50);
-    //dd($users);
-    return view('admin.users.index',compact('users', 'roles','title'));
+    $users = User::role(['vendedor'])->with('profile');
+
+    if($request->ajax()){
+
+
+        return datatables()->eloquent($users)
+        //return datatables()->query($customers)
+        ->editColumn('name', function(User $users) {
+            return  $users->name;
+         })
+        ->addColumn('last_name', function(User $users) {
+            return  $users->profile->last_name;
+        })
+        ->editColumn('email', function(User $users) {
+            return  $users->email;
+        })
+        ->addColumn('phone', function(User $users) {
+            return  $users->profile->phone;
+        })
+        ->addColumn('rol', function(User $users) {
+            $rol = $users->getRoleNames();
+            return
+            '<span class="badge badge-success" style="color: black"><i class="fa fa-user"></i> '.  $rol[0] .'</span>';
+
+        })
+        ->addColumn('actions', function(User $users) {
+            return
+            '<span class="label label-rouded label-warning">6</span>';
+        })
+        ->rawColumns(['rol','actions'])
+        ->toJson();
+
+
+    }
+    return view('admin.users.vendedor-datatable');
+   // return view('admin.users.index',compact('users', 'roles','title'));
+
+
+
+
   }
 
   /**

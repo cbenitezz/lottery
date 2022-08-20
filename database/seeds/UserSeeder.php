@@ -28,6 +28,24 @@ class UserSeeder extends Seeder
 
         ]);
 
+
+        $user = User::create([
+            "name"        => 'Cajero',
+            "email"       => 'cajero@estrategiasmichu.com',
+            "password"    => bcrypt('Password$2022'),
+
+        ])->assignRole('cajero');
+
+        Profile::create([
+
+            "name"    => 'Cajero',
+            "user_id" =>  $user->id,
+            "identification_card" =>"0"
+
+        ]);
+
+
+
         // Seeder para 10 Usuarios
         // factory(User::class, 10)->create()->each(function ($user) {
         //    $user->assignRole('usuario');

@@ -11,22 +11,21 @@
 
             <a href="{{route('customer.create',[ 'title'=>"22" ])}}" class="btn btn-warning  float-right">
             <i class="fa fa-plus"></i> Adicionar</a>
-            <h5 class="card-title mb-0"><i class="fa fa-user" aria-hidden="true"></i> CONTROL DE CLIENTES </h5>
-            <div class="small text-muted">Listado de Clientes, Boleta y Vendedor</div>
+            <h5 class="card-title mb-0"><i class="fa fa-user" aria-hidden="true"></i> CONTROL VENDEDORES </h5>
+            <div class="small text-muted">Listado Vendedor</div>
             </div>
             <div class="card-body">
               <div class="row">
 
                 <div class="col-lg-12 table-responsive">
-                    <table class="table table-striped" id="customers_table" >
+                    <table class="table table-striped" id="seller_table" style="font-size: 0.8rem;color:black">
                     <thead>
                         <th>Nombre</th>
                         <th>Apellido</th>
-                        <th>Cédula</th>
+                        <th>Email</th>
                         <th>Teléfono</th>
-                        <th>Boleta #</th>
-                        <th>Abonos</th>
-                        <th>Vendedor</th>
+                        <th># Boletas</th>
+
 
                     </thead>
 
@@ -74,7 +73,7 @@
     $(document).ready( function() {
 
 
-     let datatableAbono =   $('#customers_table').DataTable({
+     let datatableAbono =   $('#seller_table').DataTable({
 
             processing: true,
             serverSide: true,
@@ -82,26 +81,26 @@
             autoWidth: false,
             searching: true,
             ajax: {
-                url: "{{ route('customer.index') }}",
+                url: "{{ route('user.vendedores') }}",
             },
 
             columns: [
 
                     { data: 'name', name: 'name'},
                     { data: 'last_name', name: 'last_name'},
-                    { data: 'identification_card', name: 'identification_card'},
+                    { data: 'email', name: 'email'},
                     { data: 'phone', name: 'phone'},
-                    { data: 'number_ticket', name: 'number_ticket'},
-                    { data: 'abono', name: 'abono'},
-                    { data: 'seller', name: 'seller'},
+                    { data: 'actions', name: 'actions'},
+
 
 
 
 
             ],
-            columnDefs: [{ "targets": [4,5,6],
+            columnDefs: [{ "targets": [4],
                           "orderable": false,
                           "className": "text-center",
+
             }],
             lengthMenu: [
             [10, 25, 50, 200],
@@ -156,7 +155,7 @@
             "lengthMenu": "Mostrar _MENU_ Entradas",
             "loadingRecords": "Cargando...",
             "processing": "Procesando...",
-            "search": "Buscar:",
+            "search": "Buscar por Nombre:",
             "zeroRecords": "Sin resultados encontrados",
             "paginate": {
                 "first": "Primero",
@@ -169,51 +168,6 @@
         });
 
 
-        $('#boleteria_table tbody').on('click','.abonar', function(){
-            let data = datatableAbono.row($(this).parents()).data();
-            $('#numero').val(data.number_ticket);
-            $('#id').val(data.id);
-            $('#lottery').val(data.lottery_identificador);
-            //console.log(data.lottery_identificador);
-
-        });
-
-        $('#form_abonar').submit(e=>{
-            //id from tableticket
-            //
-            let id = $('#id').val();
-            let numero  = $('#numero').val();
-            let abono   = $('#abono').val();
-            let lottery = $('#lottery').val();
-            console.log('id:'+id +'numero:'+ numero +'abono:' + abono+' lottery:' +lottery);
-            $.ajaxSetup({
-                headers: {
-                  'X-CSRF-TOKEN': $('input[name="_token"]').attr('value')
-                }
-            });
-            $.ajax({
-                    type: "POST",
-                    url: '/payment',
-                    data:{
-                        id:id,
-                        numero:numero,
-                        abono:abono
-                    },
-                    success: function (result){
-                        console.log(result.data);
-                        if(result.data == true){
-                         window.location.href = '/admin/boleteria/'+lottery;
-                        //console.log(result.contar);
-                        }
-
-
-                    },
-                    error: function (result) {
-                        console.log('Error:', result);
-                    }
-                });
-            e.preventDefault();
-        })
 
 
 
