@@ -34,28 +34,14 @@
 <div class="col-lg-12">
     <div class="card">
         <div class="card-header">
-        @if($title == "Usuarios del Sistema")
-                 @php
-                    $uri    = 'user.create';
-                    $button = "btn-success";
-                    $rol = 'cajero';
-                 @endphp
-             @elseif($title =="Cliente")
-                 @php
-                    $uri = 'user.cliente';
-                    $button = "btn-info";
-                    $rol = 'cliente';
-                 @endphp
-             @elseif($title =="Vendedor")
-                 @php
-                    $uri = 'user.cliente';
-                    $button = "btn-warning";
-                    $rol = 'vendedor';
-                 @endphp
-             @endif
-            <a href="{{route('user.clientes')}}" class="btn btn-success active  float-right">
+            @if($rol=='cliente')
+             <?php  $route='/customer ' ?>
+            @elseif($rol=='vendedor')
+            <?php  $route ='/admin/vendedores'?>
+            @endif
+            <a href="{{ $route }}" class="btn btn-success active  float-right">
                 <i class="fa fa-align-justify"></i> Listar </a>
-                <h5 class="card-title mb-0">Crear {{ $title }}</h5>
+                <h5 class="card-title mb-0">Crear {{ $rol }}</h5>
                 <div class="small text-muted"></div>
         </div>
         <div class="card-body">
@@ -186,7 +172,7 @@
                             </div>
                         </div>
                         <div>
-                            {!! Form::submit('Registrar '.$title, ['class'=>'btn btn-lg btn-info btn-block']) !!}
+                            {!! Form::submit('Registrar '.$rol, ['class'=>'btn btn-lg btn-info btn-block']) !!}
                             <div class="form-group">
                                 <div class="alert alert-info text-center" role="alert" >
                                      El usuario registrado tendrá como clave "password" y

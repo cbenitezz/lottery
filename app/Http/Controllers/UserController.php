@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Customer;
 use App\Profile;
 use App\User;
 use Illuminate\Http\Request;
@@ -42,15 +42,12 @@ class UserController extends Controller
   public function listarVendedores(Request $request)
   {
 
-    $roles = Role::all();
-    $title = "Vendedor";
-    $users = User::role(['vendedor'])->with('profile');
+    $users = User::role(['vendedor'])->with('profile')->orderBy('id', 'desc');
 
     if($request->ajax()){
 
 
         return datatables()->eloquent($users)
-        //return datatables()->query($customers)
         ->editColumn('name', function(User $users) {
             return  $users->name;
          })
@@ -79,9 +76,6 @@ class UserController extends Controller
 
     }
     return view('admin.users.vendedor-datatable');
-   // return view('admin.users.index',compact('users', 'roles','title'));
-
-
 
 
   }
@@ -135,10 +129,9 @@ class UserController extends Controller
 
   public function createCustomerSeller(Request $request)
   {
-    //dd($request);
-    $title = $request->title;
-      //if($request->title == )
-      return view('admin.users.cliente',compact('title'));
+
+    $rol = $request->rol;
+    return view('admin.users.cliente',compact('rol'));
 
   }
 
@@ -157,7 +150,7 @@ class UserController extends Controller
     $validate = $this->validate($request,[
       'name'      =>'required|max:30',
       'apellido'  =>'required|max:30',
-      'email'     =>'required|unique:users|email|max:70',
+      'email'     =>'nullable|unique:users|email|max:70',
       'identification_card'    =>'required|unique:profiles|numeric|min:30',
       'sede'      =>'required|max:40',
       'direccion' =>'required|max:80',
@@ -165,32 +158,50 @@ class UserController extends Controller
       'phone'     =>'required|numeric|min:11',
 
     ]);
+      $email = $request->email ?? 'none@none.com';
       $rol = $request->rol;
-      $user = new User;
-      $user->name     = $request->name;
-      $user->email    = $request->email;
-      $user->password = bcrypt('password');
-      $user->save();
-      $user->assignRole($rol);
-
-      $profile = new Profile;
-      $profile->user_id = $user->id;
-      $profile->identification_card = $request->identification_card;
-      $profile->name = $request->name;
-      $profile->last_name= $request->apellido;
-      $profile->sede = $request->sede;
-      $profile->address = $request->direccion;
-      $profile->phone = $request->phone;
-      $profile->sector = $request->barrio;
-      $profile->save();
-
       if($rol == 'cliente'){
-        return redirect('admin/clientes');
+        $customer= new Customer();
+        $customer->seller_id = auth()->id;
+        $customer->ticket_id =
+        $customer->identification_card = $request->identification_card;
+        $customer->name = $request->name;
+        $customer->last_name = $request->apellido;
+        $customer->email = $email;
+        $customer->sede = $request->sede;
+        $customer->address = $request->direccion;
+        $customer->phone = $request->phone;
+        $customer->save();
       }else{
-        return redirect('admin/vendedores');
+
+        $user = new User;
+        $user->name     = $request->name;
+        $user->email    = $email;
+        $user->password = bcrypt('password');
+        $user->save();
+        $user->assignRole($rol);
+
+        $profile = new Profile;
+        $profile->user_id = $user->id;
+        $profile->identification_card = $request->identification_card;
+        $profile->name = $request->name;
+        $profile->last_name= $request->apellido;
+        $profile->sede = $request->sede;
+        $profile->address = $request->direccion;
+        $profile->phone = $request->phone;
+        $profile->sector = $request->barrio;
+        $profile->save();
+
+
+
       }
 
 
+      if($rol == 'cliente'){
+        return redirect('/customer');
+      }else{
+        return redirect('admin/vendedores');
+      }
 
   }
 

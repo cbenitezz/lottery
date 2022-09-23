@@ -18,7 +18,7 @@ class CustomerController extends Controller
     {
 
 
-        $customers = CustomerRecords::select(['id','identification_card','name','last_name','phone','number_ticket','abono','seller'])->orderBy('id','asc');
+        $customers = CustomerRecords::select(['id','identification_card','name','last_name','phone','number_ticket','abono','seller'])->orderBy('id','desc');
 
         if($request->ajax()){
 

@@ -9,8 +9,11 @@
         <div class="card">
             <div class="card-header">
 
-            <a href="{{route('customer.create',[ 'title'=>"22" ])}}" class="btn btn-warning  float-right">
+            <a href="{{route('user.cliente',[ 'rol'=>"cliente" ])}}" class="btn btn-warning  float-right">
             <i class="fa fa-plus"></i> Adicionar</a>
+
+
+
             <h5 class="card-title mb-0"><i class="fa fa-user" aria-hidden="true"></i> CONTROL DE CLIENTES </h5>
             <div class="small text-muted">Listado de Clientes, Boleta y Vendedor</div>
             </div>
