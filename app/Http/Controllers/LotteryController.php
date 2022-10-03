@@ -128,11 +128,9 @@ dd($products);*/
 
                 if($ticket->paid_ticket < 90000){
 
-                    $button .= '<buttom  name="abonar" id="abonar" class="abonar btn-success
-                               btn-sm" data-toggle="modal" data-target="#modal-abono">
+                    $button .= '<a href="/payment/"  name="eliminar" id="pago" class="active btn btn-primary btn-sm">
                               <i class="fa fa-usd" aria-hidden="true"></i>&nbsp;
-                              Abonar
-                              </buttom>';
+                              Abonar</a>';
                 }else{
 
                     $button .= '<buttom   class="disabled btn btn-default btn-sm">
@@ -253,6 +251,7 @@ dd($products);*/
         {
             $data [] = [
                 'user_id'       => $user->id,
+                'customer_id'   => $user->id,
                 'lottery_id'    => $lottery->id,
                 'number_ticket' => $numbers[$i],
                 'paid_ticket'   => 0,

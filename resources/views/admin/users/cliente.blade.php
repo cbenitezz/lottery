@@ -34,14 +34,10 @@
 <div class="col-lg-12">
     <div class="card">
         <div class="card-header">
-            @if($rol=='cliente')
-             <?php  $route='/customer ' ?>
-            @elseif($rol=='vendedor')
-            <?php  $route ='/admin/vendedores'?>
-            @endif
-            <a href="{{ $route }}" class="btn btn-success active  float-right">
-                <i class="fa fa-align-justify"></i> Listar </a>
-                <h5 class="card-title mb-0">Crear {{ $rol }}</h5>
+
+            <a href="/customer" class="btn btn-success active  float-right">
+                <i class="fa fa-align-justify"></i> Listar</a>
+                <h5 class="card-title mb-0">Crear Cliente</h5>
                 <div class="small text-muted"></div>
         </div>
         <div class="card-body">
@@ -55,14 +51,14 @@
 
                     {!! Form::open(['route' => 'user.cliente', 'method' => 'POST']) !!}
 
-
+                        <!---->
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    {!! Form::label('name', 'Nombre',['classs'=>'control-label mb-1']) !!}
-                                    {!! Form::text('name', null, ['class'=> 'form-control'. ( $errors->has('name') ? ' is-invalid' : '' )
+                                    {!! Form::label('name', 'Nombre',['required','classs'=>'control-label mb-1']) !!}
+                                    {!! Form::text('name', null, ['required','class'=> 'form-control'. ( $errors->has('name') ? ' is-invalid' : '' )
                                     , 'placeholder'=>'...']) !!}
-                                    {{ Form::hidden('rol', $rol) }}
+                                    {{ Form::hidden('rol', 'cliente') }}
 
                                     @error('name')
                                             <span class="invalid-feedback" role="alert">
@@ -74,7 +70,7 @@
                             <div class="col-6">
                                <div class="form-group">
                                     {!! Form::label('apellido', 'Apellido') !!}
-                                    {!! Form::text('apellido', null, ['class'=> 'form-control'. ( $errors->has('apellido') ? ' is-invalid' : '' )
+                                    {!! Form::text('apellido', null, ['required','class'=> 'form-control'. ( $errors->has('apellido') ? ' is-invalid' : '' )
                                     , 'placeholder'=>'...']) !!}
 
                                     @error('apellido')
@@ -90,7 +86,7 @@
                                 <div class="form-group">
                                 {!! Form::label('email', 'Email') !!}
                                 {!! Form::email('email', null, ['class'=> 'form-control'. ( $errors->has('email') ? ' is-invalid' : '' )
-                                , 'placeholder'=>'...']) !!}
+                                , 'placeholder'=>'cliente@estrategiasmichu.com']) !!}
 
                                     @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -102,7 +98,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                 {!! Form::label('identification_card', 'Cédula') !!}
-                                {!! Form::text('identification_card', null, ['class'=> 'form-control'. ( $errors->has('identification_card') ? ' is-invalid' : '' )
+                                {!! Form::text('identification_card', null, ['required','class'=> 'form-control'. ( $errors->has('identification_card') ? ' is-invalid' : '' )
                                 , 'placeholder'=>'...']) !!}
 
                                     @error('identification_card')
@@ -114,25 +110,11 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
-                            <div class="form-group">
-                                    {!! Form::label('sede', 'Sede') !!}
-                                    {!! Form::select('sede', ['Calarca' => 'Calarcá', 'Montenegro' => 'Montenegro','Tebaida'=>'Tebaida'],
-                                     'Tebaida', ['class'=> 'form-control'. ( $errors->has('sede') ? ' is-invalid' : '' )]) !!}
 
-                                    @error('sede')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-
-
-                                </div>
-                            </div>
                             <div class="col-6">
                             <div class="form-group">
                                 {!! Form::label('direccion', 'Dirección') !!}
-                                {!! Form::text('direccion', null, ['class'=> 'form-control'. ( $errors->has('direccion') ? ' is-invalid' : '' )
+                                {!! Form::text('direccion', null, ['required','class'=> 'form-control'. ( $errors->has('direccion') ? ' is-invalid' : '' )
                                 , 'placeholder'=>'...']) !!}
 
                                     @error('direccion')
@@ -142,25 +124,26 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-6">
-                            <div class="form-group">
-                                {!! Form::label('barrio', 'Barrio') !!}
-                                {!! Form::text('barrio', null, ['class'=> 'form-control'. ( $errors->has('barrio') ? ' is-invalid' : '' )
-                                , 'placeholder'=>'...']) !!}
+                                <div class="form-group">
+                                    {!! Form::label('barrio', 'Barrio') !!}
+                                    {!! Form::text('barrio', null, ['required','class'=> 'form-control'. ( $errors->has('barrio') ? ' is-invalid' : '' )
+                                    , 'placeholder'=>'...']) !!}
 
-                                    @error('barrio')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
+                                        @error('barrio')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+
                             <div class="col-6">
                             <div class="form-group">
                                 {!! Form::label('phone', 'Teléfono Movil') !!}
-                                {!! Form::text('phone', null, ['class'=> 'form-control'. ( $errors->has('phone') ? ' is-invalid' : '' )
+                                {!! Form::text('phone', null, ['required','class'=> 'form-control'. ( $errors->has('phone') ? ' is-invalid' : '' )
                                 , 'placeholder'=>'...']) !!}
 
                                     @error('phone')
@@ -171,14 +154,10 @@
                                 </div>
                             </div>
                         </div>
+
                         <div>
-                            {!! Form::submit('Registrar '.$rol, ['class'=>'btn btn-lg btn-info btn-block']) !!}
-                            <div class="form-group">
-                                <div class="alert alert-info text-center" role="alert" >
-                                     El usuario registrado tendrá como clave "password" y
-                                    deberá ser cambiado al inicio de sesión
-                                </div>
-                            </div>
+                            {!! Form::submit('Registrar Cliente', ['class'=>'btn btn-lg btn-info btn-block']) !!}
+
                         </div>
 
 

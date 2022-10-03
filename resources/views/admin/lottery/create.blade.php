@@ -84,7 +84,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                {!! Form::label('name', 'Nombre') !!}
+                                {!! Form::label('name', 'Nombre del Sorteo') !!}
                                 {!! Form::text('name', null, ['class'=> 'form-control'. ( $errors->has('name') ? ' is-invalid' : '' )
                                 , 'placeholder'=>'...']) !!}
 
@@ -97,7 +97,7 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                {!! Form::label('representative', 'Representante') !!}
+                                {!! Form::label('representative', 'Nombre Representante Legal') !!}
                                 {!! Form::text('representative', null, ['class'=> 'form-control'. ( $errors->has('representative') ? ' is-invalid' : '' )
                                 , 'placeholder'=>'...']) !!}
 
@@ -169,7 +169,8 @@
                             <div class="form-group">
                                 {!! Form::label('ticket_value', 'Valor de la Boleta') !!}
                                 {!! Form::text('ticket_value', null, ['class'=> 'form-control'. ( $errors->has('ticket_value') ? ' is-invalid' : '' )
-                                , 'placeholder'=>'...']) !!}
+                                , 'placeholder'=>'$', 'onkeypress'=>"return event.charCode >= 48 && event.charCode <= 57",'maxlength'=>"5",
+                                'pattern'=>"\d{5}"]) !!}
 
                                     @error('ticket_value')
                                     <span class="invalid-feedback" role="alert">
@@ -182,7 +183,8 @@
                                 <div class="form-group">
                                     {!! Form::label('commission_sale', 'Comisión por Venta') !!}
                                     {!! Form::text('commission_sale', null, ['class'=> 'form-control'. ( $errors->has('commission_sale') ? ' is-invalid' : '' )
-                                    , 'placeholder'=>'...']) !!}
+                                    , 'placeholder'=>'$', 'onkeypress'=>"return event.charCode >= 48 && event.charCode <= 57",'maxlength'=>"5",
+                                     'pattern'=>"\d{5}"]) !!}
 
                                         @error('commission_sale')
                                         <span class="invalid-feedback" role="alert">

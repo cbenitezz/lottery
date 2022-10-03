@@ -8,7 +8,7 @@ class Receipt extends Model
 {
 
     protected $fillable = [
-        'cashierer', 'ticket','payment','checkbook'
+        'lottery_id','cashierer', 'ticket','payment','checkbook'
     ];
 
 

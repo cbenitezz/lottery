@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Lottery;
 use App\Payment;
+use App\Profile;
 use App\Receipt;
 use App\Ticket;
 use Carbon\Carbon;
@@ -23,8 +24,11 @@ class PaymentController extends Controller
   {
 
     $lotteries = Lottery::pluck('name','id');
-    //dd($lotteries);
-    return view('admin.payments.index', compact('lotteries'));
+    foreach ($lotteries as $key => $value) {
+        $lottoId = $key;
+    }
+
+    return view('admin.payments.index', compact('lotteries','lottoId'));
 
   }
 
@@ -49,23 +53,51 @@ class PaymentController extends Controller
    public function printer(Request $request)
    {
 
-    $get_array = json_decode($request->array_table, true);
-    $usuario   = $request->usuario;
-
-    $pdf = Pdf::loadView('admin.payments.recibo',$get_array);
-        return $pdf->download('invoice.pdf');
 
     if($request->ajax()){
 
 
+        $registro = json_decode($request->array_table);
+        $request->usuario_seller;
+        $request->lottery;
 
-        //return response()->json(['data'=>true, 'array'=>$get_array]);
+        $vendedor = $request->usuario_seller_cc;
+
+        $lottery = Lottery::findOrFail($request->lottery)->first();
+        $recibo = $registro[0][1];
+        $abonoTotal=0;
+        foreach ($registro as $key => $value) {
+            $abonoTotal += intval(substr($value[2],1));
+        }
+
+       // dd($request->array_table);
+
+        $data = [
+            'cajero'         =>  $request->usuario_cajero,
+            'recibo'         =>  $recibo,
+            'fecha'          =>  Carbon::now(),
+            'cedula'         =>  $vendedor,
+            'nombreVendedor' =>  $request->usuario_seller,
+            'abono'          =>  $abonoTotal,
+            'nit'            =>  $lottery->nit,
+            'sede'           =>  $lottery->sede,
+            'loteria'        =>  $lottery->lottery,
+
+        ];
+
+        $filePdf = 'ticket-'.time().'.pdf';
+        $pdf = Pdf::loadView('admin.payments.recibo',$data);
+        $pdf->setPaper('a7', 'portrait');
+        $pdf->save(storage_path('app/public/').$filePdf);
+
+            //return $pdf->download('ticket.pdf');
+            //return $pdf->stream('ticket.pdf');
+        return response()->json(['data'=>true, 'filePdf'=>$filePdf, 'arreglo'=>$vendedor, 'ticket'=>$registro[0][1] ]);
     }
 
-
-
-
    }
+
+
   /**
    * Store a newly created resource in storage.
    *
@@ -74,16 +106,6 @@ class PaymentController extends Controller
   public function store(Request $request)
   {
 
-    /*
-        lottery_id:lottery_id,
-        boleta:boleta,
-        talonario:talonario,
-        valor:valor,
-        usuario:usuario,
-
-    */
-
-
     if($request->ajax()){
 
             $seller = Ticket::select('id','user_id')
@@ -91,28 +113,40 @@ class PaymentController extends Controller
                         ->where('lottery_id',$request->lottery_id)
                         ->first();
 
+            /* seller */
             $vendedor = $seller->user->profile->name
             .' '.$seller->user->profile->last_name;
+
+            $vendedorCc = $seller->user->profile->identification_card;
+
+            $query = Lottery::select('ticket_value')->where('id',$request->lottery_id )->first();
+            $saldo = $query->ticket_value-$request->valor;
 
             $datos = [
                     'lottery' => $request->lottery_id,
                     'boleta' =>$request->boleta,
                     'talonario'=>$request->talonario,
                     'valor' =>$request->valor,
-                    'usuario'=>$request->usuario,
+                    'usuario_cajero'=>$request->usuario_cajero,
                     'seller'=>$vendedor,
+                    'vendedorCc' =>$vendedorCc,
+                    'saldo' =>$saldo,
                     ];
             // obtener el ID del ticket conociendo de antemano el numero de la Boleta
             // ademas el identificador de la loteria complementa la solicitud
+            // var_dump($datos['lottery']);
 
 
-           // $this->receipts($datos);
-           $receipts = Receipt::create([
 
+
+            Receipt::create([
+
+            "lottery_id"=> $datos['lottery'],
             "cashierer" => $datos['seller'],
             "ticket"    => $datos['boleta'],
             "payment"   => $datos['valor'],
             "checkbook" => $datos['talonario'],
+
              ]);
 
 
@@ -158,7 +192,6 @@ class PaymentController extends Controller
             $lottery->update();
 
 
-           //return response()->json(['data' => true, 'ticket'=> $ticketReady  ]);
            return response()->json(['data'=>true, 'array'=>$datos]);
 
         }else{
@@ -178,29 +211,18 @@ class PaymentController extends Controller
                     $ticket->paid_ticket = $payment->value;
                     $ticket->update();
 
+                    $datos['saldo'] = $lottery->ticket_value - $payment->value;
+
                 }else{
                     return response()->json(['data' => 'pagada' ]);
                 }
 
 
-/*
-            $payment= Payment::where('ticket_id', $id_ticket)->first();
-            $payment->value        = $ticket->paid_ticket;
-            $payment->date_payment = Carbon::now();
-            $payment->update();*/
-           // return response()->json(['data' => $ticketReady ]);
-
-
-
-
             return response()->json(['data'=>true, 'array'=>$datos]);
-
         }
 
-       // return response()->json(['data' => true, 'array'=>$datos]);
     }
-    //return redirect()
-    //return response()->json(['registro' => true ]);
+
   }
 
   /**

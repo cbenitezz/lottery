@@ -21,7 +21,8 @@
                             <div class="card-body">
                                 <form  id="form_abono_boleta">
                                     @csrf
-                                    <input type="hidden" id="usuario" value="{{ auth()->user()->profile->name}} {{ auth()->user()->profile->last_name }}">
+                                    <input type="hidden" id="usuario_cajero" value="{{ auth()->user()->profile->name}} {{ auth()->user()->profile->last_name }}">
+                                    <input type="hidden" id="lottoId" value="{{ $lottoId}} ">
                                     <div class="form-body">
                                         <div class="row p-t-10">
                                             <div class="col-md-6">
@@ -43,7 +44,7 @@
                                                     <label class="control-label">Boleta #</label>
                                                     <input type="text"
                                                            maxlength="4"
-                                                           pattern="\d{4}"
+                                                           pattern="\d{4}|\d{3}"
                                                            required
                                                            id="boleta"
                                                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
@@ -61,7 +62,7 @@
                                                     <input type="text"
                                                            required
                                                            maxlength="5"
-                                                           pattern="\d{5}"
+                                                           pattern="\d{3}|\d{4}|\d{5}"
                                                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                            id="talonario"
                                                            class="form-control form-control-danger"
@@ -82,7 +83,7 @@
                                                            min ="1000"
                                                            max ="90000">
                                                            <small id="messages_pay" class=" hidden form-control-feedback color-danger">
-                                                             <strong> Boleta Pagada ! </strong></small>
+                                                             <strong> Boleta Pagada o excede valor! </strong></small>
                                                 </div>
                                             </div>
                                             <!--/span-->
@@ -137,10 +138,12 @@
                                 </div>
                             </div>
                             <div class="card-footer col-md-offset-3 col-md-9">
+                                <input type="hidden" id="usuario_cajero" value="{{ auth()->user()->profile->name}} {{ auth()->user()->profile->last_name }}">
+                                <span id="user_seller_cc"></span>
                                 <button type="submit" id="btn_imprimir_reporte" class="btn btn-warning" >
                                     <span class="color-dark">
                                         <i class="fa fa-print" aria-hidden="true"></i>
-                                         Imprimir</span>
+                                         Generar PDF</span>
                                 </button>
 
                             </div>
@@ -152,11 +155,14 @@
 @push('script')
 <script>
     $('.modal').removeClass('fade');
+    $("#user_seller_cc").hide();
     $("#btn_imprimir_reporte").hide();
 
     $("#btn_imprimir_reporte").click(function () {
        let arrayDatos = [];
-       let boleta,talonario,abono,saldo,usuario;
+       let boleta,talonario,abono,saldo,usuario,usuario_seller,usuario_cajero;
+       let lottery,usuario_seller_cc;
+
        // ----------------- array ----------------------
         let convertedIntoArray = [];
         $("table#table_reporte tr").each(function() {
@@ -171,7 +177,13 @@
         });
 
         let array_table = JSON.stringify(convertedIntoArray);
-            usuario = $('#user_seller').val();
+            usuario_seller    = $('#user_seller').text();
+            usuario_seller_cc = $('#user_seller_cc').text();
+            lottery           = $('#lottery_id option:selected').val();
+            usuario_cajero    = $('#usuario_cajero').val();
+
+
+            //alert(usuario_seller_id);
         $.ajaxSetup({
                 headers: {
                   'X-CSRF-TOKEN': $('input[name="_token"]').attr('value')
@@ -182,15 +194,19 @@
                     url: '/printer',
                     data:{
                         array_table,
-                        usuario,
+                        usuario_seller,
+                        lottery,
+                        usuario_cajero,
+                        usuario_seller_cc,
                     },
                     success: function (result){
                         console.log(result);
 
-                        if(result == true){
+                        if(result.data == true){
 
                            // imprimir();
-                         //window.location.href = '/admin/boleteria/'+lottery;
+                        //window.location.href = '/storage/'+result.filePdf;
+                         window.open('/storage/'+result.filePdf, '_blank');
                         //console.log(result.contar);
                         }
 
@@ -213,7 +229,7 @@
             let boleta  = $('#boleta').val();
             let talonario   = $('#talonario').val();
             let valor = $('#valor').val();
-            let usuario = $('#usuario').val();
+            let usuario_cajero = $('#usuario_cajero').val();
             $.ajaxSetup({
                 headers: {
                   'X-CSRF-TOKEN': $('input[name="_token"]').attr('value')
@@ -227,7 +243,7 @@
                         boleta:boleta,
                         talonario:talonario,
                         valor:valor,
-                        usuario:usuario,
+                        usuario_cajero:usuario_cajero,
 
                     },
                     success: function (result){
@@ -239,9 +255,10 @@
                         }
                         if(result.data == true){
 
-                            let saldo = 90000-result.array.valor;
+                            let saldo = result.array.saldo;
                             $("#btn_imprimir_reporte").show();
                             $('#user_seller').html(result.array.seller);
+                            $('#user_seller_cc').html(result.array.vendedorCc);
 
                             $('#table_reporte').append(
                                     "<tr>\

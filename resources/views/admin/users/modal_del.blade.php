@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="open-{{$users->id}}" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" style="display: none;" aria-hidden="true">
+<div class="modal fade" id="open-{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" style="display: none;" aria-hidden="true">
 
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
@@ -11,9 +11,9 @@
                 </button>
               </div>
               <div class="modal-body">
-                <form action="{{route('user.destroy',$users->id)}}" method="post">
+                <form action="{{route('user.destroy',$item->id)}}" method="post">
                     {{ csrf_field() }}
-                    Desea Eliminar el Usuario ?<br>"<strong>{{$users->name}}</strong>" <br>
+                    Desea Eliminar el Usuario ?<br>"<strong>{{$item->name}}</strong>" <br>
                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-danger btn-sm">Eliminar!</button>
                 </form>

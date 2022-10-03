@@ -15,6 +15,7 @@ class CreateReceiptsTable extends Migration
     {
         Schema::create('receipts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('lottery_id');
             $table->string('cashierer',100);
             $table->string('ticket', 6);
             $table->decimal('payment',13,3);

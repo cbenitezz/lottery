@@ -30,9 +30,9 @@ class CreateCustomersRecordView extends Migration
 
             FROM
             customers
-            inner join tickets on customers.ticket_id = tickets.id
+            inner join tickets on tickets.customer_id = customers.id
             inner join users on customers.seller_id = users.id
-            where customers.deleted_at is null order by id asc
+            where customers.deleted_at is null and customers.status = '1' order by id asc
         ");
     }
 

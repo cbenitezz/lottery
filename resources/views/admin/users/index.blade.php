@@ -112,6 +112,8 @@
 
 
                                     </div>
+
+
                                     @include('admin.users.modal_rol')
                                     @include('admin.users.modal_edit')
                                     @include('admin.users.modal_del')
@@ -126,6 +128,7 @@
 
                     </tbody>
                     </table>
+                    <br>
                     {{ $users->links() }}
                 </div>
 

@@ -33,7 +33,6 @@
                     <i class="fa fa-user-plus"></i><span class="hide-menu">Usuarios</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{ route('user.index')}}">Sistema</a></li>
-                        <li><a href="{{ route('user.clientes')}}">Clientes</a></li>
                         <li><a href="{{ route('customer.index')}}">Clientes</a></li>
                         <li><a href="{{ route('user.vendedores')}}">Vendedores</a></li>
                         <li><a href="{{ route('roles.index')}}">Roles</a></li>

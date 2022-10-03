@@ -23,26 +23,24 @@
     <div>
         <pre>
 
-               La Tebaida
-             NIT: 00018417576
-            2022-07-25 15:59:25
+               Sede:{{$sede}}
+                Nit:{{$nit}}
+                {{$fecha}}
+        -----------------------------
+           CAJERO:   {{$cajero}}
+           RECIBO:   {{$recibo}}
         -----------------------------
             DATOS DEL VENDEDOR
 
-          CAJERO:   Martha Hernandez
-          RECIBO:   45580
-          N COMPRO: 1
-          LOTERIA:  Boyaca
-          FECHA:    2022-07-25
-          IDENT:    9806831
-          CÓDIGO:   172
-          NOMBRE:   Jose Hernan Buitrago Diaz
+        CÉDULA:   {{$cedula}}
+        NOMBRE:   {{$nombreVendedor}}
 
         ------------------------------
-           BOLETA     TA ABONO  TOTAL
+        LOTERIA:  {{$loteria}}
         ------------------------------
-        ----------------------------
-            TOTAL: $ 20,000
+        ABONO TOTAL:$ {{$abono}}
+        ------------------------------
+
         </pre>
 
 

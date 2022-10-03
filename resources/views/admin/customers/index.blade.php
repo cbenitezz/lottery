@@ -9,7 +9,7 @@
         <div class="card">
             <div class="card-header">
 
-            <a href="{{route('user.cliente',[ 'rol'=>"cliente" ])}}" class="btn btn-warning  float-right">
+            <a href="{{route('user.cliente')}}" class="btn btn-warning  float-right">
             <i class="fa fa-plus"></i> Adicionar</a>
 
 

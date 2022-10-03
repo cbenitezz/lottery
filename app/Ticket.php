@@ -27,7 +27,7 @@ class Ticket extends Model
 
     public function customers()
     {
-        return $this->hasMany('App\Customer');
+        return $this->belongsTo('App\Customer','customer_id');
     }
 
     public function lotteries()

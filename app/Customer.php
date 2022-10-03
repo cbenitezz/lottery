@@ -22,7 +22,7 @@ class Customer extends Model
 
     public function tickets()
     {
-        return $this->belongsTo('App\Ticket','ticket_id');
+        return $this->hasMany('App\Ticket');
     }
 
     public function users()

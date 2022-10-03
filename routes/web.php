@@ -27,11 +27,18 @@ return view('admin.payments.recibo');
 
 Route::get('/sql',function(Request $request){
 
-    $get_array = ['hola', 'que', 'tal', 'mundo'];
+    $data = [
+        'cajero'         => 'Carlos',
+        'recibo'         => '1234',
+        'fecha'          => '2022-09-25',
+        'cedula'         => '6137911',
+        'nombreVendedor' => 'adriana patricia velez',
+        'abono'          => '20000'];
 
-    $pdf = Barryvdh\DomPDF\Facade\Pdf::loadView('admin.payments.recibo',$get_array);
+
+    $pdf = Barryvdh\DomPDF\Facade\Pdf::loadView('admin.payments.recibo',$data);
     $pdf->setPaper('a7', 'portrait');
-        return $pdf->download('ticket.pdf');
+        return $pdf->stream('ticket.pdf');
 
 
     //$get_array = json_decode($request->array_table, true);
@@ -79,8 +86,11 @@ Route::post('/admin/user/{id}','UserController@destroy')->middleware('auth')->na
 
 /* Ruta para la creación de Clientes y vendedores*/
 Route::get('/admin/users/cliente','UserController@createCustomerSeller')->middleware('auth')->name('user.cliente');
-Route::post('/admin/users/cliente','UserController@storeCustomerSeller')->middleware('auth')->name('user.cliente');
-Route::get('/admin/users/vendedor','UserController@createCustomerSeller')->middleware('auth')->name('user.vendedor');
+//Route::get('/admin/users/vendedor','UserController@createCustomerSeller')->middleware('auth')->name('user.vendedor');
+Route::post('/admin/users/cliente','UserController@storeCustomer')->middleware('auth')->name('user.cliente');
+Route::post('/admin/users/customer','UserController@storeCustomerNumberTicket')->middleware('auth')->name('user.customer');
+Route::get('/admin/users/customersave','UserController@customerSave')->middleware('auth')->name('user.customersave');
+
 
 /* Listar Clientes y Vendedores */
 Route::get('/admin/clientes','UserController@listarClientes')->middleware('auth')->name('user.clientes');

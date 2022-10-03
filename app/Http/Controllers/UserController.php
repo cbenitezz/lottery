@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Customer;
 use App\Profile;
 use App\User;
+use App\Lottery;
+use App\Ticket;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Spatie\ValidationRules\Rules\Delimited;
 
 
 class UserController extends Controller
@@ -106,37 +109,19 @@ class UserController extends Controller
     return view('admin.users.create',compact('title', 'title'));
   }
 
+  public function createCustomerSeller(Request $request)
+  {
 
+    return view('admin.users.cliente');
+
+  }
   /**
    * [Description for createCliente:
    *
    * @return [type]
    *
    */
-  /*
-  public function createCliente(){
-
-    return view('admin.users.cliente');
-
-  }
-
-  public function createVendedor(){
-
-    return view('admin.users.cliente');
-
-  }
-  */
-
-  public function createCustomerSeller(Request $request)
-  {
-
-    $rol = $request->rol;
-    return view('admin.users.cliente',compact('rol'));
-
-  }
-
-
-  /**
+  /*/**
    * [Description for storeCliente: save cliente and vendedor
    *
    * @param Request $request
@@ -144,72 +129,80 @@ class UserController extends Controller
    * @return [type]
    *
    */
-  public function storeCustomerSeller(User $user, Request $request)
+  public function storeCustomer(User $user, Request $request)
   {
-    //dd($request);
+
     $validate = $this->validate($request,[
       'name'      =>'required|max:30',
       'apellido'  =>'required|max:30',
       'email'     =>'nullable|unique:users|email|max:70',
       'identification_card'    =>'required|unique:profiles|numeric|min:30',
-      'sede'      =>'required|max:40',
       'direccion' =>'required|max:80',
       'barrio'    =>'required|max:80',
       'phone'     =>'required|numeric|min:11',
 
     ]);
-      $email = $request->email ?? 'none@none.com';
+
+      $lotteries = Lottery::pluck('name','id');
+
+      $email = $request->email ?? 'cliente@estrategiasmichu.com';
       $rol = $request->rol;
       if($rol == 'cliente'){
         $customer= new Customer();
-        $customer->seller_id = auth()->id;
-        $customer->ticket_id =
+        $customer->seller_id = auth()->user()->id;
+        //$customer->ticket_id = $ticketId->id;
         $customer->identification_card = $request->identification_card;
         $customer->name = $request->name;
         $customer->last_name = $request->apellido;
         $customer->email = $email;
-        $customer->sede = $request->sede;
+        //$customer->sede = $request->sede;
         $customer->address = $request->direccion;
         $customer->phone = $request->phone;
+        $customer->status = 0;
         $customer->save();
-      }else{
 
-        $user = new User;
-        $user->name     = $request->name;
-        $user->email    = $email;
-        $user->password = bcrypt('password');
-        $user->save();
-        $user->assignRole($rol);
-
-        $profile = new Profile;
-        $profile->user_id = $user->id;
-        $profile->identification_card = $request->identification_card;
-        $profile->name = $request->name;
-        $profile->last_name= $request->apellido;
-        $profile->sede = $request->sede;
-        $profile->address = $request->direccion;
-        $profile->phone = $request->phone;
-        $profile->sector = $request->barrio;
-        $profile->save();
-
-
-
+        return redirect()->route('user.customersave',['customer'=>$customer->id]);
+        //return view('admin.users.cliente-paso2',compact('customer','lotteries'));
       }
 
-
-      if($rol == 'cliente'){
-        return redirect('/customer');
-      }else{
-        return redirect('admin/vendedores');
-      }
 
   }
 
 
-  public function storeVendedor(Request $request)
+  public function customerSave(Request $request)
   {
 
-    dd($request);
+
+    $lotteries = Lottery::pluck('name','id');
+    $customer = Customer::findOrFail($request->customer);
+
+    return view('admin.users.cliente-paso2',compact('customer','lotteries'));
+
+  }
+
+  public function storeCustomerNumberTicket(Request $request)
+  {
+
+    //$tickets[]= $request->tickets;
+
+    //return response()->json(['data'=>true, 'ticket'=>$request->tickets, 'abono'=>$request->abono ]);
+
+    if($request->ajax()){
+
+        $validate = $this->validate($request,[
+
+            'tickets'  =>'required',
+            'abono'    =>'required',
+        ]);
+
+
+
+
+
+    return response()->json(['data'=>true, 'ticket'=>$request->tickets, 'abono'=>$request->abono ]);
+    //return response()->json(['data'=>true, 'number'=>true, 'ticket'=>0055, 'abono'=>true ]);
+
+    }
 
   }
 
