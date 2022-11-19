@@ -58,7 +58,7 @@
                                         <div class="row p-t-10">
                                             <div class="col-md-6">
                                                 <div class="form-group has-danger">
-                                                    <label class="control-label">Talonario #</label>
+                                                    <label class="control-label">Recibo #</label>
                                                     <input type="text"
                                                            required
                                                            maxlength="5"
@@ -124,7 +124,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Boleta #</th>
-                                                <th>Talonario</th>
+                                                <th>Recibo</th>
                                                 <th>Abono</th>
                                                 <th>Saldo</th>
 
@@ -182,7 +182,7 @@
             lottery           = $('#lottery_id option:selected').val();
             usuario_cajero    = $('#usuario_cajero').val();
 
-
+            //console.log(array_table);
             //alert(usuario_seller_id);
         $.ajaxSetup({
                 headers: {
@@ -207,6 +207,8 @@
                            // imprimir();
                         //window.location.href = '/storage/'+result.filePdf;
                          window.open('/storage/'+result.filePdf, '_blank');
+                        // window.open('{!! storage_path() !!}'+result.filePdf, '_blank');
+
                         //console.log(result.contar);
                         }
 

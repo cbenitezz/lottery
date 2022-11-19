@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.dashboard.app')
 @section('title', 'Perfil')
 
 @section('content')
@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-lg-12">
             @if (Session::has('succes'))
-                <div class="alert alert-success alert-dismissible fade show mb-4 mt-4" role="alert">
+                <div class="alert alert-info alert-dismissible fade show mb-4 mt-4" role="alert">
                     {{Session::get('succes')}}
                     <button type="button" class="close" data-dismiss="alert" aria-label="close">
                         <span aria-hidden="true">&times;</span>
@@ -24,7 +24,7 @@
                 </div>
             @endif
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
                 <h5 class="card-title mb-0">Perfil</h5>
@@ -33,15 +33,16 @@
                 <div class="card-body">
                 {!! Form::model($profile, ['route' => ['profile.update', $profile->id],'method' => 'PUT','enctype'=>'multipart/form-data']) !!}
 
-                  <div class="row">
+                 <div class="row">
                     <div class="col-md-6">
-
+                    <br>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                             <span class="input-group-text"><i class="icon-user"></i></span>
                             </div>
-                            {!! Form::text('nombre', null, ['class'=>'form-control'. ( $errors->has('nombre') ? ' is-invalid' : '' )]) !!}
-                            @error('nombre')
+                            {!! Form::text('name', null, ['class'=>'form-control'.
+                             ( $errors->has('name') ? ' is-invalid' : '' )]) !!}
+                            @error('name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -51,8 +52,9 @@
                             <div class="input-group-prepend">
                             <span class="input-group-text"><i class="icon-user"></i></span>
                             </div>
-                            {!! Form::text('apellido', null, ['placeholder'=>'apellido','class'=>'form-control'. ( $errors->has('apellido') ? ' is-invalid' : '' )]) !!}
-                            @error('apellido')
+                            {!! Form::text('last_name', null, ['placeholder'=>'Apellido','class'=>'form-control'.
+                            ( $errors->has('last_name') ? ' is-invalid' : '' )]) !!}
+                            @error('last_name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -62,7 +64,7 @@
                         <div class="input-group-prepend">
                         <span class="input-group-text">@</span>
                         </div>
-                        {!! Form::email('email', $profile->userProfile->email, ['disabled','class'=>'form-control']) !!}
+                        {!! Form::email('email', $profile->users->email, ['disabled','class'=>'form-control']) !!}
                         </div>
 
                         <div class="input-group mb-3">
@@ -104,11 +106,11 @@
                                 <div class="row">
                                     @if ($profile->avatar== NULL)
                                     <div class="mx-auto">
-                                    <img class="img-avatar" src="{{ asset('img/avatarDefault.png')}}" style="width: 100%">
+                                    <img class="img-avatar" src="{{ asset('asset/images/avatarDefault.png')}}" style="width: 100%">
                                     </div>
                                     @else
                                     <div class="mx-auto">
-                                    <img src="{{ asset('img/'.$profile->avatar)}}" style="width: 100%">
+                                    <img src="{{ asset('asset/images/'.$profile->avatar)}}" style="width: 100%">
                                     </div>
                                     @endif
                                         <div class="custom-file">
@@ -121,10 +123,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        {!! Form::submit('Actualizar Perfil', ['class'=>'btn btn-block btn-success']) !!}
 
-                    </div>
+                    {!! Form::submit('Actualizar Perfil', ['class'=>'btn btn-block btn-success']) !!}
+
                   </div>
                   {!! Form::close() !!}
                 </div>
@@ -156,4 +157,3 @@
 
 </style>
 @endpush
-

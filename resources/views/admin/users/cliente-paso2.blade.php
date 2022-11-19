@@ -51,8 +51,9 @@
                     <form  id="form_select_ticket">
                         @csrf
                         <input type="hidden" id="customer" name="customer" value="{{$customer->id}}">
+                        <input type="hidden" id="abono" name="abono" value=0>
                         <div class="row">
-                                <div class="col-4">
+                                <div class="col-6">
                                     <div class="form-group">
                                         <label class="control-label">Seleccione el Sorteo</label>
                                         <select class="form-control" id="lottery_id" name="lottery_id">
@@ -66,7 +67,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-4">
+                                <div class="col-6">
                                     <div class="form-group">
                                         <label class="control-label">Digite Número</label>
                                         <input type="text" maxlength="4" pattern="\d{4}|\d{3}" required id="tickets"
@@ -87,27 +88,18 @@
                                             @enderror
                                     </div>
                                 </div>
-                                <div class="col-4">
-                                    <div class="form-group" >
-                                        <label class="control-label">Abono Total</label>
-                                        <input type="text" id="abono" name="abono" maxlength="5" pattern="\d{4}|\d{5}"
-                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57" required
-                                        class="form-control form-control-danger"  placeholder="$"  min ="1000" max ="90000">
-                                        <small id="messages_pay" class="form-control-feedback color-dark">
-                                        Valor minimo $5000</small>
-                                    </div>
-                                </div>
+
                         </div>
                         <!---->
 
 
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <button type="submit" id="registro_ticket" class="btn btn-lg btn-info btn-block" >
                                     <span class="color-white">Registrar Números</span>
                                 </button>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <button type="submit" id="registro_save_ticket" class="btn btn-lg btn-success btn-block" >
                                     <span class="color-white">Guardar Cliente y Números</span>
                                 </button>
@@ -122,6 +114,10 @@
             </div>
             <div class="card-footer">
                 Numeros Registrados:<span id="numbersregister"></span>
+                <span id="customerx"></span>
+                <span id="lotteryx"></span>
+                <span id="asignarx"></span>
+                <span id="respuestax"></span>
               </div>
         </div>
 
@@ -172,6 +168,10 @@
                            console.log(result.ticket);
                            $('#tickets').val('');
                            $('#numbersregister').append('<strong>'+result.ticket +'-'+'</strong>');
+                           $('#customerx').append('<strong>'+result.customer +'-'+'</strong>');
+                           $('#lotteryx').append('<strong>'+result.lottery +'-'+'</strong>');
+                           $('#asignarx').append('<strong>'+result.asignar +'-'+'</strong>');
+
                         }
                         if(result.data == 'pagada')
                         {

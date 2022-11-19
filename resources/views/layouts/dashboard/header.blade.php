@@ -83,10 +83,7 @@
 
                 <!-- Comment -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-muted text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                         <i class="fa fa-user"></i> {{ Auth::user()->name }}
-
-                    </a>
+                    <span class="nav-link dropdown-toggle text-muted text-muted  ">{{ Auth::user()->name }}</span>
 
                 </li>
                 <!-- End Comment -->
@@ -94,11 +91,11 @@
                 <!-- Profile -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{{ asset('asset/images/users/5.jpg')}}" alt="user" class="profile-pic" /></a>
+                        <img src="{{ asset('asset/images/users/user.png')}}" alt="user" class="profile-pic" /></a>
                     <div class="dropdown-menu dropdown-menu-right animated zoomIn">
                         <ul class="dropdown-user">
                             <li>
-                            <a class="dropdown-item" href="#"><i class="ti-user"></i> Profile</a></li>
+                            <a class="dropdown-item" href="{{ route('profile.index') }}"><i class="ti-user"></i> Profile</a></li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

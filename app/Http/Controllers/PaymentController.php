@@ -64,7 +64,10 @@ class PaymentController extends Controller
         $vendedor = $request->usuario_seller_cc;
 
         $lottery = Lottery::findOrFail($request->lottery)->first();
+        // $registro[0][1] es el numero de talonario o recibo
         $recibo = $registro[0][1];
+        var_dump($registro);
+die();
         $abonoTotal=0;
         foreach ($registro as $key => $value) {
             $abonoTotal += intval(substr($value[2],1));
@@ -161,7 +164,7 @@ class PaymentController extends Controller
             // En la table lotteries se inicializa el contador de recibo y talonario en 00000
             // desde ahi se incrementa en la tabla payments
             $rt_lottery  = Lottery::find($request->lottery_id)->select('id','recibo')->first();
-            $ticketReady = DB::table('Payments')->where('ticket_id',$id_ticket->id)->count();
+            $ticketReady = DB::table('payments')->where('ticket_id',$id_ticket->id)->count();
             //***Instancia del modelo TICKET */
             $ticket = Ticket::find($id_ticket->id);
             //***Instancia del Modelo Lottery */

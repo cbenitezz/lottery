@@ -15,7 +15,7 @@ class CustomerSeeder extends Seeder
         $customer = Customer::create([
             'seller_id'           => '1',
             'identification_card' => '1',
-            "name"                => 'Administrador',
+            "name"                => 'Cliente-Admin',
             'last_name'           => 'Estrategias Michu',
             "email"               => 'info@lottery.co',
             'address'             => 'Tebaida',

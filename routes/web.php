@@ -14,7 +14,12 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Foreach_;
 
+
 Route::get('/', function () {
+    return view('frontend.index');
+});
+
+Route::get('/inicio', function(){
     return view('welcome');
 });
 
@@ -24,32 +29,6 @@ return view('admin.payments.recibo');
 
 });
 
-
-Route::get('/sql',function(Request $request){
-
-    $data = [
-        'cajero'         => 'Carlos',
-        'recibo'         => '1234',
-        'fecha'          => '2022-09-25',
-        'cedula'         => '6137911',
-        'nombreVendedor' => 'adriana patricia velez',
-        'abono'          => '20000'];
-
-
-    $pdf = Barryvdh\DomPDF\Facade\Pdf::loadView('admin.payments.recibo',$data);
-    $pdf->setPaper('a7', 'portrait');
-        return $pdf->stream('ticket.pdf');
-
-
-    //$get_array = json_decode($request->array_table, true);
-    //$usuario   = $request->usuario;
-
-    if($request->ajax()){
-
-       // return response()->json(['data'=>true, 'array'=>$get_array]);
-
-    }
-});
 
 Auth::routes();
 

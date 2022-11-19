@@ -176,6 +176,8 @@ class UserController extends Controller
     $lotteries = Lottery::pluck('name','id');
     $customer = Customer::findOrFail($request->customer);
 
+
+
     return view('admin.users.cliente-paso2',compact('customer','lotteries'));
 
   }
@@ -192,14 +194,30 @@ class UserController extends Controller
         $validate = $this->validate($request,[
 
             'tickets'  =>'required',
-            'abono'    =>'required',
+
         ]);
 
+        /*
+        lottery_id:lottery_id,
+        tickets   :tickets,
+        customer  :customer,
+        */
+        $asignar = Ticket::select('id')
+        ->where('lottery_id',$request->lottery_id)
+        ->where('number_ticket',$request->tickets)
+        ->where('status',0)
+        ->first();
+        /*
+        if(!$asignar){
+
+    $asignar_response = "El Número solicitado está vendido";
+}
+        */
 
 
 
 
-    return response()->json(['data'=>true, 'ticket'=>$request->tickets, 'abono'=>$request->abono ]);
+    return response()->json(['data'=>true, 'ticket'=>$request->tickets, 'customer'=>$request->customer, 'lottery'=>$request->lottery_id,'asignar'=>$asignar->id ]);
     //return response()->json(['data'=>true, 'number'=>true, 'ticket'=>0055, 'abono'=>true ]);
 
     }
