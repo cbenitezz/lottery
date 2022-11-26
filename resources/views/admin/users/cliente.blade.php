@@ -51,6 +51,7 @@
 
                     {!! Form::open(['route' => 'user.cliente', 'method' => 'POST']) !!}
 
+
                         <!---->
                         <div class="row">
                             <div class="col-6">
@@ -163,7 +164,8 @@
 
                      {!! Form::close() !!}
 
-                </div>
+
+                    </div>
             </div>
 
         </div>

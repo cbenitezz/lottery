@@ -224,7 +224,9 @@
 
 
 
-
+//*********************************************//**********************************
+// 1. Enviar datos a tabla dinamica
+//**********************************************************************************
     $('#form_abono_boleta').submit(e=>{
             e.preventDefault();
             let lottery_id = $('#lottery_id').val();
@@ -237,6 +239,7 @@
                   'X-CSRF-TOKEN': $('input[name="_token"]').attr('value')
                 }
             });
+
             $.ajax({
                     type: "POST",
                     url: '/payment',

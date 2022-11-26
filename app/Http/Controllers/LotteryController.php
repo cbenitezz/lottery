@@ -23,7 +23,7 @@ class LotteryController extends Controller
    */
   public function index()
   {
-    $lotteries = Lottery::select(['id','eslogan','name','sede','date_start','date_end','status'])->orderBy('date_end','desc')->get();
+    $lotteries = Lottery::select(['id','eslogan','name','sede','date_start','date_end','status'])->orderBy('id','desc')->get();
     $title = 'Sorteo';
 
 
@@ -211,8 +211,8 @@ dd($products);*/
         'address'            =>'required|max:80',
         'lottery'            =>'required|max:80',
         'commission_sale'    =>'required|numeric|min:11',
-        'date_start'         =>'required|date|after:tomorrow|unique:lotteries',
-        'date_end'           =>'required|date|after:date_start|unique:lotteries',
+        'date_start'         =>'required|date|after:tomorrow',
+        'date_end'           =>'required|date|after:date_start',
         'boletas'            =>'required',
 
     ]);

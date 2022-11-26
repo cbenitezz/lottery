@@ -35,9 +35,9 @@
     <div class="card">
         <div class="card-header">
 
-            <a href="/customer" class="btn btn-success active  float-right">
+            <a href="{{$ruta}}" class="btn btn-success active  float-right">
                 <i class="fa fa-align-justify"></i> Listar</a>
-                <h6 class="card-title mb-0"><strong>Cliente :{{$customer->name}}</strong></h6>
+                <h6 class="card-title mb-0"><strong>{{$tipo_usuario}} :{{$customer->name}}</strong></h6>
                 <div class="small text-muted">Debe Seleccionar Sorteo y Números</div>
         </div>
         <div class="card-body">
@@ -52,6 +52,7 @@
                         @csrf
                         <input type="hidden" id="customer" name="customer" value="{{$customer->id}}">
                         <input type="hidden" id="abono" name="abono" value=0>
+                        <input type="hidden" id="modelo" name="abono" value="{{$modelo}}">
                         <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
@@ -101,7 +102,7 @@
                             </div>
                             <div class="col-md-6">
                                 <button type="submit" id="registro_save_ticket" class="btn btn-lg btn-success btn-block" >
-                                    <span class="color-white">Guardar Cliente y Números</span>
+                                    <span class="color-white">Guardar {{$tipo_usuario}} y Números</span>
                                 </button>
                             </div>
 
@@ -114,10 +115,13 @@
             </div>
             <div class="card-footer">
                 Numeros Registrados:<span id="numbersregister"></span>
-                <span id="customerx"></span>
-                <span id="lotteryx"></span>
-                <span id="asignarx"></span>
-                <span id="respuestax"></span>
+                <span id="seller_id"></span>
+                <span id="lottery_identificador"></span>
+                <span id="idRegistroTicket"></span>
+                <span id="modelo"></span>
+
+
+
               </div>
         </div>
 
@@ -130,15 +134,79 @@
 <script>
     $('.modal').removeClass('fade');
     $("#user_seller_cc").hide();
-    $("#registro_save_ticket").hide();
 
-    $('#form_select_ticket').submit(e=>{
+
+
+    $("#registro_save_ticket").hide();
+    $("#seller_id").hide();
+    $("#lottery_identificador").hide();
+    $("#idRegistroTicket").hide();
+    $("#modelo").hide();
+
+    // *****************//*************************************************************************
+    // 2. REGISTRAR TICKET
+    //*********************************************************************************************
+    $('#registro_save_ticket').click(e=>{
+            e.preventDefault();
+
+        let numeros  = $('#numbersregister').text();
+        let seller   = $('#seller_id').text();
+        let lottery  = $('#lottery_identificador').text();
+        let idRegistroTicket  = $('#idRegistroTicket').text();
+        let modelo   = $('#modelo').text();
+
+        $.ajaxSetup({
+                headers: {
+                  'X-CSRF-TOKEN': $('input[name="_token"]').attr('value')
+                }
+            });
+
+            //alert(lottery_id + "   " +tickets + "   " +customer +"   " + abono );
+            $.ajax({
+                    type: "POST",
+                    url: '/admin/users/registernumber',
+                    data:{
+                        numeros:numeros,
+                        seller:seller,
+                        lottery:lottery,
+                        idRegistroTicket:idRegistroTicket,
+                        modelo:modelo,
+
+                    },
+                    success: function (result){
+
+                        if(result.data == true){
+                            if(result.modelo=="seller"){
+                                window.location.href='/admin/vendedores';
+                            }else{
+                                window.location.href ='/customer';
+                            }
+
+                        }
+
+                    },
+                    error: function (result) {
+                        console.log('Error:', result);
+                    }
+
+            });// endAjax
+    });
+
+
+    //****************************** // **************************************
+    // 1- registro de Numeros
+    //**************************************************************************
+    $('#registro_ticket').click(e=>{
             e.preventDefault();
 
             let customer   = $('#customer').val();
             let lottery_id = $('#lottery_id').val();
             let tickets    = $('#tickets').val();
             let abono      = $('#abono').val();
+            let modelo     = $('#modelo').val();
+
+
+            if (tickets=== '') return false;
 
             $.ajaxSetup({
                 headers: {
@@ -155,22 +223,33 @@
                         tickets   :tickets,
                         customer  :customer,
                         abono     :abono,
+                        modelo    :modelo,
 
                     },
                     success: function (result){
-                        $("#registro_save_ticket").show();
+
                         if(result.data == 'invalida')
                         {
                             $("#messages").show();
 
                         }
                         if(result.data == true){
-                           console.log(result.ticket);
+                           console.log(result.ticket,result.valorAsignar,result.customer);
                            $('#tickets').val('');
-                           $('#numbersregister').append('<strong>'+result.ticket +'-'+'</strong>');
-                           $('#customerx').append('<strong>'+result.customer +'-'+'</strong>');
-                           $('#lotteryx').append('<strong>'+result.lottery +'-'+'</strong>');
-                           $('#asignarx').append('<strong>'+result.asignar +'-'+'</strong>');
+
+                           if(result.valorAsignar==0){
+
+                            alert("Numero no disponible");
+
+                           }else if(result.valorAsignar==1){
+                            $("#registro_save_ticket").show();
+                            $('#numbersregister').append('<strong>'+result.ticket +' '+'</strong>');
+
+                            $('#seller_id').append('<strong>'+result.customer+' '+'</strong>');
+                            $('#lottery_identificador').append('<strong>'+result.lottery+' '+'</strong>');
+                            $('#idRegistroTicket').append('<strong>'+result.idRegistroTicket+' '+'</strong>');
+                            $('#modelo').append('<strong>'+result.modelo+' '+'</strong>');
+                           }
 
                         }
                         if(result.data == 'pagada')
@@ -189,52 +268,7 @@
 
         });
 
-      /* -------------------CLICK BUTTOM------------------- */
 
-
-      $("#registro_save_ticket").click(function () {
-
-       let tickets = [];
-       let numbers = $('#numbersregister').text();
-
-       alert(numbers);
-       event.preventDefault();
-/*
-        $.ajaxSetup({
-                headers: {
-                  'X-CSRF-TOKEN': $('input[name="_token"]').attr('value')
-                }
-            });
-            $.ajax({
-                    type: "POST",
-                    url: '/printer',
-                    data:{
-                        array_table,
-                        usuario_seller,
-                        lottery,
-                        usuario_cajero,
-                        usuario_seller_cc,
-                    },
-                    success: function (result){
-                        console.log(result);
-
-                        if(result.data == true){
-
-                           // imprimir();
-                        //window.location.href = '/storage/'+result.filePdf;
-                         window.open('/storage/'+result.filePdf, '_blank');
-                        //console.log(result.contar);
-                        }
-
-                    },
-                    error: function (result) {
-                        console.log('Error:', result);
-                    }
-                });
-
-*/
-
-   });
 
 
 </script>

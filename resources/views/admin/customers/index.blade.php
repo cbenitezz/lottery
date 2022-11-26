@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.app')
-@section('title', "Clientes")
+@section('title', "Clientes - Vendedores")
 
 @section('content')
 
@@ -9,8 +9,8 @@
         <div class="card">
             <div class="card-header">
 
-            <a href="{{route('user.cliente')}}" class="btn btn-warning  float-right">
-            <i class="fa fa-plus"></i> Adicionar</a>
+            <a href="{{route('user.cliente',[ 'rol'=>"cliente" ])}}" class="btn btn-warning  float-right">
+            <i class="fa fa-plus"></i> Adicionar Cliente</a>
 
 
 
@@ -27,9 +27,10 @@
                         <th>Apellido</th>
                         <th>Cédula</th>
                         <th>Teléfono</th>
-                        <th>Boleta #</th>
-                        <th>Abonos</th>
+                        <th>Direción</th>
                         <th>Vendedor</th>
+                        <th>Boletas</th>
+                        <th>Asignar</th>
 
                     </thead>
 
@@ -94,9 +95,10 @@
                     { data: 'last_name', name: 'last_name'},
                     { data: 'identification_card', name: 'identification_card'},
                     { data: 'phone', name: 'phone'},
-                    { data: 'number_ticket', name: 'number_ticket'},
-                    { data: 'abono', name: 'abono'},
-                    { data: 'seller', name: 'seller'},
+                    { data: 'address', name: 'address'},
+                    { data: 'seller', name: 'seller_id'},
+                    { data: 'actions', name: 'actions'},
+                    { data: 'asignar', name: 'asignar'},
 
 
 

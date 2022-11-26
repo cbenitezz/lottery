@@ -10,7 +10,7 @@ use App\Ticket;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\ValidationRules\Rules\Delimited;
-
+use Faker\Factory as Faker;
 
 class UserController extends Controller
 {
@@ -30,9 +30,8 @@ class UserController extends Controller
   {
     $roles = Role::all();
     $title = "Usuarios del Sistema";
-    $users = User::role(['admin','cajero'])->simplepaginate(5);
-    //$users = User::all();
-    //dd($users);
+    $users = User::role(['admin','cajero'])->simplepaginate(15);
+
     return view('admin.users.index',compact('users', 'roles','title'));
   }
 
@@ -45,35 +44,39 @@ class UserController extends Controller
   public function listarVendedores(Request $request)
   {
 
-    $users = User::role(['vendedor'])->with('profile')->orderBy('id', 'desc');
+    //$users = User::role(['vendedor'])->with('profile')->orderBy('id', 'desc');
+    $profiles = Profile::whereHas('users', function($query){
+        $query->role('vendedor');
+   })->orderBy('id', 'desc');
+
 
     if($request->ajax()){
-
-
-        return datatables()->eloquent($users)
-        ->editColumn('name', function(User $users) {
-            return  $users->name;
+        return datatables()->eloquent($profiles)
+        ->editColumn('name', function(Profile $profiles) {
+            return  $profiles->name;
          })
-        ->addColumn('last_name', function(User $users) {
-            return  $users->profile->last_name;
+        ->editColumn('last_name', function(Profile $profiles) {
+            return  $profiles->last_name;
         })
-        ->editColumn('email', function(User $users) {
-            return  $users->email;
+        ->editColumn('identification_card', function(Profile $profiles) {
+            return  $profiles->identification_card;
         })
-        ->addColumn('phone', function(User $users) {
-            return  $users->profile->phone;
+        ->editColumn('phone', function(Profile $profiles) {
+            return  $profiles->phone;
         })
-        ->addColumn('rol', function(User $users) {
-            $rol = $users->getRoleNames();
-            return
-            '<span class="badge badge-success" style="color: black"><i class="fa fa-user"></i> '.  $rol[0] .'</span>';
+        ->addColumn('asignar', function(Profile $profiles) {
+
+            $button = '<a href="/admin/users/customersave/?customer=' .$profiles->users->id. '&modelo=seller"  name="eliminar" id="ff" class="active btn btn-primary btn-sm">
+                <i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp; Asignar</a>&nbsp;&nbsp;';
+            return $button;
+        })
+        ->addColumn('actions', function(Profile $profiles) {
+
+            $count = Ticket::select('number_ticket')->where('user_id',$profiles->users->id)->count();
+            return '<a href="/listarticket/?customer=' .$profiles->users->id. '&modelo=seller"  name="eliminar" id="ff" class="label label-rouded label-warning" style="color:black">'.$count.'</a>';
 
         })
-        ->addColumn('actions', function(User $users) {
-            return
-            '<span class="label label-rouded label-warning">6</span>';
-        })
-        ->rawColumns(['rol','actions'])
+        ->rawColumns(['asignar','actions'])
         ->toJson();
 
 
@@ -112,7 +115,12 @@ class UserController extends Controller
   public function createCustomerSeller(Request $request)
   {
 
-    return view('admin.users.cliente');
+     if($request->rol=="cliente"){
+         return view('admin.users.cliente');
+    }elseif($request->rol=="vendedor"){
+
+        return view('admin.users.vendedor');
+    }
 
   }
   /**
@@ -135,7 +143,7 @@ class UserController extends Controller
     $validate = $this->validate($request,[
       'name'      =>'required|max:30',
       'apellido'  =>'required|max:30',
-      'email'     =>'nullable|unique:users|email|max:70',
+      'email'     =>'nullable|email|max:70',
       'identification_card'    =>'required|unique:profiles|numeric|min:30',
       'direccion' =>'required|max:80',
       'barrio'    =>'required|max:80',
@@ -150,18 +158,19 @@ class UserController extends Controller
       if($rol == 'cliente'){
         $customer= new Customer();
         $customer->seller_id = auth()->user()->id;
-        //$customer->ticket_id = $ticketId->id;
+
         $customer->identification_card = $request->identification_card;
         $customer->name = $request->name;
         $customer->last_name = $request->apellido;
         $customer->email = $email;
-        //$customer->sede = $request->sede;
+
         $customer->address = $request->direccion;
         $customer->phone = $request->phone;
         $customer->status = 0;
         $customer->save();
 
-        return redirect()->route('user.customersave',['customer'=>$customer->id]);
+
+        return redirect()->route('user.customersave',['customer'=>$customer->id,'modelo'=>'customer']);
         //return view('admin.users.cliente-paso2',compact('customer','lotteries'));
       }
 
@@ -169,25 +178,78 @@ class UserController extends Controller
   }
 
 
-  public function customerSave(Request $request)
+  public function storeSeller(User $user, Request $request)
   {
 
+    $validate = $this->validate($request,[
+      'name'      =>'required|max:30',
+      'apellido'  =>'required|max:30',
+      'email'     =>'nullable|email|max:70',
+      'identification_card'    =>'required|unique:profiles|numeric|min:30',
+      'direccion' =>'required|max:80',
+      'sede'    =>'required|max:80',
+      'phone'     =>'required|numeric|min:11',
 
-    $lotteries = Lottery::pluck('name','id');
-    $customer = Customer::findOrFail($request->customer);
+    ]);
 
+      $lotteries = Lottery::pluck('name','id');
+      $faker = Faker::create();
+      $email_faker = $faker->email();
+      $email = $request->email ?? $email_faker;
 
+      //dd($email);
+      $rol = $request->rol;
+      if($rol == 'vendedor'){
+        $seller= new User();
+        $seller->name     = $request->name;
+        $seller->email    = $email;
+        $seller->password = bcrypt('vendedor2022');
+        $seller->save();
+        $seller->assignRole('vendedor');
 
-    return view('admin.users.cliente-paso2',compact('customer','lotteries'));
+        $profile = new Profile();
+        $profile->user_id = $seller->id;
+        $profile->identification_card = $request->identification_card;
+        $profile->name = $seller->name;
+        $profile->last_name = $request->apellido;
+        $profile->sede = $request->sede;
+        $profile->address = $request->direccion;
+        $profile->phone = $request->phone;
+        $profile->save();
+
+       // return redirect()->route('user.vendedores');
+        return redirect()->route('user.customersave',['customer'=>$seller->id,'modelo'=>'seller']);
+       // return view('admin.users.cliente-paso2',compact('customer','lotteries'));
+      }
+
 
   }
 
-  public function storeCustomerNumberTicket(Request $request)
+  public function customerSave(Request $request)
   {
 
-    //$tickets[]= $request->tickets;
+    $lotteries = Lottery::pluck('name','id');
+    $modelo = $request->modelo;
+    if($modelo=='customer'){
+        $customer = Customer::findOrFail($request->customer);
+        $tipo_usuario = "Cliente";
+        $ruta = '/customer';
+    }elseif($modelo='seller'){
+        $customer = User::findOrFail($request->customer);
+        $tipo_usuario = "Vendedor";
+        $ruta = '/admin/vendedores';
+    }
 
-    //return response()->json(['data'=>true, 'ticket'=>$request->tickets, 'abono'=>$request->abono ]);
+    return view('admin.users.cliente-paso2',compact('customer','lotteries','tipo_usuario','ruta','modelo'));
+
+  }
+
+
+
+
+
+  public function storeCustomerNumberTicket(Request $request)
+  {
 
     if($request->ajax()){
 
@@ -201,25 +263,78 @@ class UserController extends Controller
         lottery_id:lottery_id,
         tickets   :tickets,
         customer  :customer,
+        abono     :abono,
+        modelo    :modelo,
         */
         $asignar = Ticket::select('id')
         ->where('lottery_id',$request->lottery_id)
-        ->where('number_ticket',$request->tickets)
+        ->where('number_ticket','=',$request->tickets)
         ->where('status',0)
-        ->first();
-        /*
-        if(!$asignar){
+        ->count();
+        //si asignar es igual a 1 indica que esta disponible para separar dicho numero
+        if($asignar==1){
 
-    $asignar_response = "El Número solicitado está vendido";
-}
+            $asignar = Ticket::select('id')
+            ->where('lottery_id',$request->lottery_id)
+            ->where('number_ticket','=',$request->tickets)
+            ->where('status',0)
+            ->first();
+
+            $reserva = Ticket::findOrFail($asignar->id);
+            $reserva->status =1;
+            $reserva->update();
+            $valorAsignar = 1;
+            $idRegistroTicket = $asignar->id;
+
+
+        }elseif($asignar==0){
+            $valorAsignar = 0;
+            $idRegistroTicket = 0;
+        }
+
+        return response()->json(['data'=>true, 'ticket'=>$request->tickets,
+              'customer'=>$request->customer, 'lottery'=>$request->lottery_id,
+              'valorAsignar'=>$valorAsignar, 'idRegistroTicket'=>$idRegistroTicket,
+              'modelo'=>$request->modelo ]);
+
+
+    }
+
+  }
+
+
+
+
+  public function registerNumberSeller(Request $request)
+  {
+
+    if($request->ajax()){
+       /*
+        numeros
+        seller
+        lottery
         */
+        $number  = explode(' ',rtrim($request->numeros));
+        $seller  = explode(' ',rtrim($request->seller));
+        $lottery = explode(' ',rtrim($request->lottery));
+        $idRegistroTicket = explode(' ',rtrim($request->idRegistroTicket));
+        $modelo  = explode(' ',rtrim($request->modelo));
+        //dd($modelo);
 
+        foreach ($idRegistroTicket as $key => $value) {
 
+            $asignar = Ticket::findOrFail($value);
+            if($modelo[$key] =='customer'){
+                $asignar->customer_id = $seller[$key];
+            }elseif ($modelo[$key] =='seller') {
+                $asignar->user_id = $seller[$key];
+            }
 
+            $asignar->lottery_id = $lottery[$key];
+            $asignar->update();
+        }
 
-    return response()->json(['data'=>true, 'ticket'=>$request->tickets, 'customer'=>$request->customer, 'lottery'=>$request->lottery_id,'asignar'=>$asignar->id ]);
-    //return response()->json(['data'=>true, 'number'=>true, 'ticket'=>0055, 'abono'=>true ]);
-
+        return response()->json(['data'=>true,'modelo'=>$modelo ]);
     }
 
   }

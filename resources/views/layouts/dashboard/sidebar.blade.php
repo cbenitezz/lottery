@@ -35,16 +35,17 @@
 
                     </ul>
                 </li>
+                <!--
                 <li class="nav-label">Contabilidad</li>
                 <li> <a class="has-arrow  " href="#" aria-expanded="false">
                     <i class="fa fa-suitcase"></i><span class="hide-menu">Informes <span class="label label-rouded label-warning pull-right">6</span></span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="{{ route('lottery.index')}}">Cartera</a></li>
-                        <li><a href="{{ route('lottery.index')}}">Comisiones</a></li>
+                        <li><a href="{{-- route('lottery.index')--}}">Cartera</a></li>
+                        <li><a href="{{-- route('lottery.index')--}}">Comisiones</a></li>
 
                     </ul>
                 </li>
-
+                 -->
 
 
 

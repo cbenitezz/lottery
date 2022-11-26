@@ -46,7 +46,9 @@ Route::resource('profile', 'ProfileController')->middleware('auth');
 Route::resource('customer', CustomerController::class)->middleware('auth');
 
 
+Route::get('listarticket', 'TicketController@listarTicket')->middleware('auth')->name('ticket.listarticket');
 Route::get('asignar/{ticket}', 'TicketController@asignar')->middleware('auth')->name('ticket.asignar');
+Route::delete('desasignar/{id}', 'TicketController@desasignar')->middleware('auth')->name('ticket.desasignar');
 Route::resource('ticket', 'TicketController')->middleware('auth');
 
 /* Roles */
@@ -67,8 +69,11 @@ Route::post('/admin/user/{id}','UserController@destroy')->middleware('auth')->na
 Route::get('/admin/users/cliente','UserController@createCustomerSeller')->middleware('auth')->name('user.cliente');
 //Route::get('/admin/users/vendedor','UserController@createCustomerSeller')->middleware('auth')->name('user.vendedor');
 Route::post('/admin/users/cliente','UserController@storeCustomer')->middleware('auth')->name('user.cliente');
+Route::post('/admin/users/seller','UserController@storeSeller')->middleware('auth')->name('user.seller');
 Route::post('/admin/users/customer','UserController@storeCustomerNumberTicket')->middleware('auth')->name('user.customer');
 Route::get('/admin/users/customersave','UserController@customerSave')->middleware('auth')->name('user.customersave');
+Route::post('/admin/users/registernumber','UserController@registerNumberSeller')->middleware('auth')->name('user.registernumber');
+
 
 
 /* Listar Clientes y Vendedores */

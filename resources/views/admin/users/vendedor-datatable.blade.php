@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.app')
-@section('title', "Clientes")
+@section('title', "Vendedores - Clientes")
 
 @section('content')
 
@@ -10,7 +10,7 @@
             <div class="card-header">
 
             <a href="{{route('user.cliente',[ 'rol'=>"vendedor" ])}}" class="btn btn-warning  float-right">
-                <i class="fa fa-plus"></i> Adicionar</a>
+                <i class="fa fa-plus"></i> Adicionar Vendedor</a>
 
             <h5 class="card-title mb-0"><i class="fa fa-user" aria-hidden="true"></i> CONTROL VENDEDORES </h5>
             <div class="small text-muted">Listado Vendedor</div>
@@ -23,9 +23,10 @@
                     <thead>
                         <th>Nombre</th>
                         <th>Apellido</th>
-                        <th>Email</th>
+                        <th>Cédula</th>
                         <th>Teléfono</th>
                         <th># Boletas</th>
+                        <th>Asignar Números</th>
 
 
                     </thead>
@@ -40,7 +41,6 @@
 
 
         </div>
-
 
 
     </div>
@@ -89,16 +89,17 @@
 
                     { data: 'name', name: 'name'},
                     { data: 'last_name', name: 'last_name'},
-                    { data: 'email', name: 'email'},
+                    { data: 'identification_card', name: 'identification_card'},
                     { data: 'phone', name: 'phone'},
                     { data: 'actions', name: 'actions'},
+                    { data: 'asignar', name: 'asignar'},
 
 
 
 
 
             ],
-            columnDefs: [{ "targets": [4],
+            columnDefs: [{ "targets": [4,5],
                           "orderable": false,
                           "className": "text-center",
 
