@@ -100,6 +100,19 @@
                                         @enderror
 
                                 </div>
+                                <div class="form-group">
+
+                                    {!! Form::label('pass', 'Contraseña', ['style'=>"float:left; margin-left:10px"]) !!}
+                                    {!! Form::password('password',['placeholder'=>'Password','class'=>'form-control'. ( $errors->has('password') ? ' is-invalid' : '' )
+                                    ,'required'=>'required', 'maxlength'=>10]) !!}
+                                    @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                    @enderror
+
+                            </div>
+
                             </div>
                             <div  class="col-lg-6">
                                 <div class="form-group">

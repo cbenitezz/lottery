@@ -405,12 +405,14 @@ class UserController extends Controller
         'address'   =>'required|max:80',
         'sector'    =>'required|max:80',
         'phone'     =>'required|numeric|min:11',
+        'password'  =>'required|max:10',
 
       ]);
 
 
       $user = User::findOrFail($profile->user_id);
       $user->name = $request->name;
+      $user->password = bcrypt($request->password);
       $user->update();
 
 
