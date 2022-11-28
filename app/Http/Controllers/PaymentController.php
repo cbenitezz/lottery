@@ -66,14 +66,15 @@ class PaymentController extends Controller
         $lottery = Lottery::findOrFail($request->lottery)->first();
         // $registro[0][1] es el numero de talonario o recibo
         $recibo = $registro[0][1];
-        var_dump($registro);
-die();
+
         $abonoTotal=0;
         foreach ($registro as $key => $value) {
-            $abonoTotal += intval(substr($value[2],1));
+            $abonoTotal += intval(substr($value[3],1));
         }
+        //[["prueba 1","0100","12345","$10000","$60000"]
+        //[[  0           1       2       3        4  ]]
 
-       // dd($request->array_table);
+       //dd($registro);
 
         $data = [
             'cajero'         =>  $request->usuario_cajero,
@@ -85,6 +86,8 @@ die();
             'nit'            =>  $lottery->nit,
             'sede'           =>  $lottery->sede,
             'loteria'        =>  $lottery->lottery,
+            'nombreLoteria'  =>  $lottery->name,
+            'registro_tabla' =>  $registro,
 
         ];
 
@@ -122,11 +125,13 @@ die();
 
             $vendedorCc = $seller->user->profile->identification_card;
 
-            $query = Lottery::select('ticket_value')->where('id',$request->lottery_id )->first();
+            $query = Lottery::select('name','ticket_value')->where('id',$request->lottery_id )->first();
             $saldo = $query->ticket_value-$request->valor;
+            $name_lottery = $query->name;
 
             $datos = [
                     'lottery' => $request->lottery_id,
+                    'name_lottery'=>$name_lottery,
                     'boleta' =>$request->boleta,
                     'talonario'=>$request->talonario,
                     'valor' =>$request->valor,
@@ -204,21 +209,22 @@ die();
                      ->where('ticket_id',$id_ticket->id)->first();
 
             $payment->value = $payment->value + $request->valor;
-                if($payment->value<= $lottery->ticket_value){
 
-                    $payment->recibo       = str_pad($rt_lottery->recibo +1,5,'0',STR_PAD_LEFT);
-                    $payment->talonario    = $request->talonario;
-                    $payment->date_payment = Carbon::now();
-                    $payment->update();
+            if($payment->value<= $lottery->ticket_value){
 
-                    $ticket->paid_ticket = $payment->value;
-                    $ticket->update();
+                $payment->recibo       = str_pad($rt_lottery->recibo +1,5,'0',STR_PAD_LEFT);
+                $payment->talonario    = $request->talonario;
+                $payment->date_payment = Carbon::now();
+                $payment->update();
 
-                    $datos['saldo'] = $lottery->ticket_value - $payment->value;
+                $ticket->paid_ticket = $payment->value;
+                $ticket->update();
 
-                }else{
-                    return response()->json(['data' => 'pagada' ]);
-                }
+                $datos['saldo'] = $lottery->ticket_value - $payment->value;
+
+            }else{
+                return response()->json(['data' => 'pagada' ]);
+            }
 
 
             return response()->json(['data'=>true, 'array'=>$datos]);

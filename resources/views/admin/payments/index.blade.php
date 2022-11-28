@@ -123,6 +123,7 @@
                                     <table class="table table-bordered" id="table_reporte">
                                         <thead>
                                             <tr>
+                                                <th>Sorteo</th>
                                                 <th>Boleta #</th>
                                                 <th>Recibo</th>
                                                 <th>Abono</th>
@@ -158,6 +159,11 @@
     $("#user_seller_cc").hide();
     $("#btn_imprimir_reporte").hide();
 
+
+    //*******************************************************************************************
+    //  2. Generar reporte en PDF de las boletas abonadas
+    //
+    //*******************************************************************************************
     $("#btn_imprimir_reporte").click(function () {
        let arrayDatos = [];
        let boleta,talonario,abono,saldo,usuario,usuario_seller,usuario_cajero;
@@ -176,13 +182,14 @@
             }
         });
 
+
         let array_table = JSON.stringify(convertedIntoArray);
             usuario_seller    = $('#user_seller').text();
             usuario_seller_cc = $('#user_seller_cc').text();
             lottery           = $('#lottery_id option:selected').val();
             usuario_cajero    = $('#usuario_cajero').val();
 
-            //console.log(array_table);
+            //console.log(array_table, "tabla CFB");
             //alert(usuario_seller_id);
         $.ajaxSetup({
                 headers: {
@@ -229,6 +236,14 @@
 //**********************************************************************************
     $('#form_abono_boleta').submit(e=>{
             e.preventDefault();
+
+            let text;
+            if (confirm(" ESTÁ INFORMACIÓN ES CORRECTA ? ") == true) {
+            text = "You pressed OK!";
+            } else {
+              return false;
+            }
+
             let lottery_id = $('#lottery_id').val();
             let boleta  = $('#boleta').val();
             let talonario   = $('#talonario').val();
@@ -267,6 +282,7 @@
 
                             $('#table_reporte').append(
                                     "<tr>\
+                                        <td id='ticket'>"+result.array.name_lottery+"</td>\
                                         <td id='ticket'>"+result.array.boleta+"</td>\
                                         <td id='talonario'>"+result.array.talonario +"</td>\
 										<td id='abono'>$"+result.array.valor  +"</td>\
