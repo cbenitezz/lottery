@@ -26,7 +26,7 @@
                         <th>Cédula</th>
                         <th>Teléfono</th>
                         <th># Boletas</th>
-                        <th>Asignar Números</th>
+                        <th>Acciones</th>
 
 
                     </thead>

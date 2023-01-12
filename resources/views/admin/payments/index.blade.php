@@ -238,11 +238,13 @@
             e.preventDefault();
 
             let text;
+            /*
             if (confirm(" ESTÁ INFORMACIÓN ES CORRECTA ? ") == true) {
             text = "You pressed OK!";
             } else {
               return false;
             }
+            */
 
             let lottery_id = $('#lottery_id').val();
             let boleta  = $('#boleta').val();

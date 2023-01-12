@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use App\Http\Controllers\UserController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Foreach_;
@@ -67,7 +69,8 @@ Route::post('/admin/user/{id}','UserController@destroy')->middleware('auth')->na
 
 /* Ruta para la creación de Clientes y vendedores*/
 Route::get('/admin/users/cliente','UserController@createCustomerSeller')->middleware('auth')->name('user.cliente');
-//Route::get('/admin/users/vendedor','UserController@createCustomerSeller')->middleware('auth')->name('user.vendedor');
+Route::get('/admin/users/editseller/{id}','UserController@editSeller')->middleware('auth')->name('user.editseller');
+Route::post('/admin/users/vendedor','UserController@updateSeller')->middleware('auth')->name('user.updateseller');
 Route::post('/admin/users/cliente','UserController@storeCustomer')->middleware('auth')->name('user.cliente');
 Route::post('/admin/users/seller','UserController@storeSeller')->middleware('auth')->name('user.seller');
 Route::post('/admin/users/customer','UserController@storeCustomerNumberTicket')->middleware('auth')->name('user.customer');

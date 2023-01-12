@@ -67,7 +67,11 @@ class UserController extends Controller
         ->addColumn('asignar', function(Profile $profiles) {
 
             $button = '<a href="/admin/users/customersave/?customer=' .$profiles->users->id. '&modelo=seller"  name="eliminar" id="ff" class="active btn btn-primary btn-sm">
-                <i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp; Asignar</a>&nbsp;&nbsp;';
+                <i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp; Asignar</a>&nbsp;&nbsp;
+                <a href="/admin/users/editseller/' .$profiles->users->id.'"  name="editar" id="ff" class="active btn btn-info btn-sm">
+                <i class="fa fa-user" aria-hidden="true"></i>&nbsp; Editar &nbsp;&nbsp;</a>
+
+                ';
             return $button;
         })
         ->addColumn('actions', function(Profile $profiles) {
@@ -137,6 +141,51 @@ class UserController extends Controller
    * @return [type]
    *
    */
+   public function updateSeller(Request $request)
+   {
+
+    $validate = $this->validate($request,[
+        'name'      =>'required|max:30',
+        'apellido'  =>'required|max:30',
+        'email'     =>'nullable|email|max:70',
+        'direccion' =>'required|max:80',
+        'barrio'    =>'required|max:80',
+        'phone'     =>'required|numeric|min:11',
+
+      ]);
+
+      $lotteries = Lottery::pluck('name','id');
+      $faker = Faker::create();
+      $email_faker = $faker->email();
+      $email = $request->email ?? $email_faker;
+
+      //dd($request);
+      $rol = $request->rol;
+      if($rol == 'vendedor'){
+        $seller= User::findOrFail($request->id);
+        $seller->name     = $request->name;
+        $seller->email    = $email;
+        $seller->save();
+        $seller->assignRole('vendedor');
+
+        $profile = Profile::findOrFail($seller->id);
+        $profile->name = $seller->name;
+        $profile->last_name = $request->apellido;
+        $profile->sector  = $request->barrio;
+        $profile->address = $request->direccion;
+        $profile->phone = $request->phone;
+        $profile->save();
+
+       // return redirect()->route('user.vendedores');
+        return redirect()->route('user.vendedores');
+       // return view('admin.users.cliente-paso2',compact('customer','lotteries'));
+      }
+
+
+   }
+
+
+
   public function storeCustomer(User $user, Request $request)
   {
 
@@ -388,8 +437,15 @@ class UserController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function edit($id)
+  public function editSeller($id)
   {
+
+    $vendedor = Profile::findOrFail($id);
+
+    return view('admin.users.edit_seller', compact('vendedor', 'vendedor'));
+
+
+
 
   }
 

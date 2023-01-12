@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
@@ -23,12 +25,24 @@ class PaymentController extends Controller
   public function index()
   {
 
-    $lotteries = Lottery::pluck('name','id');
-    foreach ($lotteries as $key => $value) {
-        $lottoId = $key;
+
+    $lotteries = Lottery::where('status', 1)->pluck('name', 'id');
+
+    if (sizeof($lotteries) == 0) {
+
+        Session::flash('message', " DEBE CREAR UN SORTEO PARA HABILITAR LA OPCIÓN 'ABONOS' ");
+        return redirect()->back();
+
+    } else {
+
+        foreach ($lotteries as $key => $value) {
+            $lottoId = $key;
+        }
+        return view('admin.payments.index', compact('lotteries','lottoId'));
     }
 
-    return view('admin.payments.index', compact('lotteries','lottoId'));
+
+
 
   }
 

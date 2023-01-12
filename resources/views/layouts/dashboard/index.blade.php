@@ -4,6 +4,22 @@
 
 <!-- Start Page Content -->
 <div class="row">
+
+    <div class="col-md-12">
+        <div class="card-content">
+            @if (Session::has('message'))
+
+            <div class="alert alert-danger alert-dismissible fade show">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <strong>{{ Session::get('message') }}</strong>
+            </div>
+
+            @endif
+
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-3">
         <div class="card bg-primary p-20">
             <div class="media widget-ten">
