@@ -99,6 +99,14 @@
                                              Aceptar y Guardar
                                             </button>
 
+                                            <a href="controlabonos" id="btn_eliminar_abono"  class="btn btn-danger">
+                                                <span class="label label-rouded label-warning">
+                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                </span>&nbsp;
+
+                                                 Eliminar abonos
+                                            </a>
+
                                     </div>
 
                                 </form>
@@ -128,6 +136,8 @@
                                                 <th>Recibo</th>
                                                 <th>Abono</th>
                                                 <th>Saldo</th>
+                                                <th class="del_abono">Eliminar</th>
+
 
                                             </tr>
                                         </thead>
@@ -138,7 +148,7 @@
 
                                 </div>
                             </div>
-                            <div class="card-footer col-md-offset-3 col-md-9">
+                            <div class="card-footer col-md-offset-3 col-md-12">
                                 <input type="hidden" id="usuario_cajero" value="{{ auth()->user()->profile->name}} {{ auth()->user()->profile->last_name }}">
                                 <span id="user_seller_cc"></span>
                                 <button type="submit" id="btn_imprimir_reporte" class="btn btn-warning" >
@@ -245,7 +255,7 @@
               return false;
             }
             */
-
+            let rowId = 0;
             let lottery_id = $('#lottery_id').val();
             let boleta  = $('#boleta').val();
             let talonario   = $('#talonario').val();
@@ -270,6 +280,7 @@
                     },
                     success: function (result){
                         console.log(result);
+                        rowId+=1;
                         if(result.data == 'invalida')
                         {
                             $("#messages").show();
@@ -278,6 +289,8 @@
                         if(result.data == true){
 
                             let saldo = result.array.saldo;
+
+
                             $("#btn_imprimir_reporte").show();
                             $('#user_seller').html(result.array.seller);
                             $('#user_seller_cc').html(result.array.vendedorCc);
@@ -289,6 +302,7 @@
                                         <td id='talonario'>"+result.array.talonario +"</td>\
 										<td id='abono'>$"+result.array.valor  +"</td>\
                                         <td id='saldo'>$"+saldo+"</td>\
+                                        <td id='rowId' class='del_abono'>"+ rowId +"</td>\
 									</tr>");
 
 
@@ -311,6 +325,26 @@
 
         });
 
+
+    //****************************** *****************************************************************
+    //******** Eliminar Abono ********************************
+
+    $(document).ready(function () {
+
+            $(".del_abono").click(function () {
+
+//let abono_registrado = $(this).attr('class').replace('addproduct ', '');
+                alert("This is an alert message!");
+
+            });
+
+            $('#rowId').on('click', ".del_abono",function() {
+
+                alert("This is an alert message!");
+                //var val = $(this).data('val');
+                //console.log(val)       //17
+            });
+        });
 
 </script>
 @endpush

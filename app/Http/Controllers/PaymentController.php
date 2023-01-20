@@ -56,11 +56,43 @@ class PaymentController extends Controller
 
   }
 
-   public function temporal(Request $request)
+   public function controlAbonos(Request $request)
    {
 
+        $payments = Payment::with('tickets')->orderBy('id', 'desc');
+        dd($payments);
+
+        if($request->ajax()){
+            return datatables()->eloquent($payments)
+            ->editColumn('ticket_id', function(Payment $payments) {
+                return  $payments->tickets->number_ticket;
+             })
+            ->editColumn('value', function(Payment $payments) {
+                return  $payments->value;
+            })
+            ->editColumn('talonario', function(Payment $payments) {
+                return  $payments->talonario;
+            })
+            ->editColumn('date_payment', function(Payment $payments) {
+                return  $payments->date_payment;
+            })
+            ->addColumn('editar', function(Payment $payments) {
+
+                $button = '<a href="/admin/users/customersave/?customer=' .$payments->id. '&modelo=seller"  name="eliminar" id="ff" class="active btn btn-primary btn-sm">
+                    <i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp; Asignar</a>&nbsp;&nbsp;
+                    <a href="/admin/users/editseller/' .$payments->id.'"  name="editar" id="ff" class="active btn btn-info btn-sm">
+                    <i class="fa fa-user" aria-hidden="true"></i>&nbsp; Editar &nbsp;&nbsp;</a>
+
+                    ';
+                return $button;
+            })
+
+            ->rawColumns(['asignar'])
+            ->toJson();
 
 
+        }
+        return view('admin.payments.control-abono-datatable');
 
    }
 

@@ -41,6 +41,7 @@ Route::get('admin/boleteria/{id}','LotteryController@boleteria')->middleware('au
 Route::resource('lottery', 'LotteryController')->middleware('auth');
 
 Route::post('printer','PaymentController@printer')->middleware('auth')->name('printer');
+Route::get('controlabonos','PaymentController@controlAbonos')->middleware('auth')->name('payment.controlabonos');
 Route::resource('payment', 'PaymentController')->middleware('auth');
 //Route::resource('user', 'UserController')->middleware('auth');
 Route::resource('profile', 'ProfileController')->middleware('auth');
