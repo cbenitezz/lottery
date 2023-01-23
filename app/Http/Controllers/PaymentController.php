@@ -59,42 +59,60 @@ class PaymentController extends Controller
    public function controlAbonos(Request $request)
    {
 
-        $payments = Payment::with('tickets')->orderBy('id', 'desc');
-        dd($payments);
+        //$payments = Payment::with('tickets')->orderBy('id', 'desc');
+
+        $ticket = Ticket::select('id', 'lottery_id','number_ticket','paid_ticket','status','updated_at')->orderBy('id', 'desc');
+        //dd($ticket->lottery_id);
+       // $nombre_sorteo = lottery::select('name')->where('id', $ticket->lottery_id)->first();
+       // dd($ticket->number_ticket, $ticket->paid_ticket, $ticket->payments());
+        // dd($nombre_sorteo);
+
+        //dd($ticket);
 
         if($request->ajax()){
-            return datatables()->eloquent($payments)
-            ->editColumn('ticket_id', function(Payment $payments) {
-                return  $payments->tickets->number_ticket;
+            return datatables()->eloquent($ticket)
+
+            ->addColumn('sorteo', function(Ticket $ticket) {
+                $nombre_sorteo = lottery::select('name')->where('id', $ticket->lottery_id)->first();
+                return   $nombre_sorteo['name'];
              })
-            ->editColumn('value', function(Payment $payments) {
-                return  $payments->value;
-            })
-            ->editColumn('talonario', function(Payment $payments) {
-                return  $payments->talonario;
-            })
-            ->editColumn('date_payment', function(Payment $payments) {
-                return  $payments->date_payment;
-            })
-            ->addColumn('editar', function(Payment $payments) {
 
-                $button = '<a href="/admin/users/customersave/?customer=' .$payments->id. '&modelo=seller"  name="eliminar" id="ff" class="active btn btn-primary btn-sm">
-                    <i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp; Asignar</a>&nbsp;&nbsp;
-                    <a href="/admin/users/editseller/' .$payments->id.'"  name="editar" id="ff" class="active btn btn-info btn-sm">
-                    <i class="fa fa-user" aria-hidden="true"></i>&nbsp; Editar &nbsp;&nbsp;</a>
-
-                    ';
-                return $button;
+            ->editColumn('number_ticket', function(Ticket $ticket) {
+                return   $ticket->number_ticket;
+             })
+            ->addColumn('abono', function(Ticket $ticket) {
+               return   $ticket->paid_ticket;
             })
+            ->addColumn('talonario', function(Ticket $ticket) {
+                $recibo = Payment::select('talonario')->where('ticket_id', $ticket->id)->first();
+                if(empty($recibo)){ return ' -- ';} else{ return $recibo['talonario'];}
+            })
+            ->editColumn('updated_at', function(Ticket $ticket) {
+               if(empty($ticket->updated_at)){ return ' -- ';} else{ return $ticket->updated_at;}
 
-            ->rawColumns(['asignar'])
+            })
+            ->addColumn('editar', function(Ticket $ticket) {
+
+                $editar = '<a href="editar/abono/'.$ticket->id.'/'.$ticket->status.'"  name="editar" id="editar" class="active btn alert-success btn-sm">
+                <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp; Editar</a>';
+
+               return $editar;
+            })
+            ->rawColumns(['editar'])
             ->toJson();
 
 
         }
         return view('admin.payments.control-abono-datatable');
 
-   }
+
+
+
+
+
+   }//End function controlAbono
+
+
 
    public function printer(Request $request)
    {
@@ -277,6 +295,66 @@ class PaymentController extends Controller
         }
 
     }
+
+  }
+
+  public function editAbono($id,$status)
+  {
+
+    $ticket = Ticket::select('*')->where('id',$id)->where('status',$status)->first();
+    if(is_null($ticket)){
+
+       Session::flash('message', " EL SISTEMA NO ENCUENTRA EL NÚMERO ' ");
+       return redirect('controlabonos');
+
+    }else{
+
+        //dd($id, $status,$ticket);
+
+      return view('admin.payments.control_abono',compact('ticket'));
+    }
+  }
+
+  public function updateAbono(Request $request)
+  {
+
+    $validate = $this->validate($request,[
+        'id'        =>'required',
+        'abono'     =>'required|numeric',
+      ]);
+//dd($request);
+    $ticket = Ticket::findOrFail($request->id);
+    if($ticket->paid_ticket<=90000){
+
+       //$abono_total = $ticket->paid_ticket + $request->abono;
+
+
+        if($request->abono<=90000){
+           // dd($ticket->paid_ticket, $ticket->id, $request->abono);
+
+            $payment = Payment::select('*')->where('ticket_id',$ticket->id)->first();
+            //dd($payment);
+            $payment->value = $request->abono;
+            $payment->update();
+
+            $ticket->paid_ticket = $request->abono;
+            $ticket->update();
+            Session::flash('success', " ABONO ACTUALIZADO ");
+            return redirect('controlabonos');
+        }else{
+            Session::flash('message', " El abono supera el valor total de la boleta! o boleta pagada");
+            return redirect('controlabonos');
+        }
+
+    }else{
+
+        Session::flash('message', " El abono supera el valor total de la boleta! ");
+        return redirect('controlabonos');
+
+    }
+
+
+
 
   }
 

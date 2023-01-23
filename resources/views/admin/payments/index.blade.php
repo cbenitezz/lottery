@@ -96,15 +96,15 @@
                                              <i class="fa fa-usd fa-2" aria-hidden="true"></i>
                                             </span>&nbsp;
 
-                                             Aceptar y Guardar
+                                             Guardar
                                             </button>
 
                                             <a href="controlabonos" id="btn_eliminar_abono"  class="btn btn-danger">
                                                 <span class="label label-rouded label-warning">
-                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
                                                 </span>&nbsp;
 
-                                                 Eliminar abonos
+                                                 Editar
                                             </a>
 
                                     </div>
@@ -136,8 +136,6 @@
                                                 <th>Recibo</th>
                                                 <th>Abono</th>
                                                 <th>Saldo</th>
-                                                <th class="del_abono">Eliminar</th>
-
 
                                             </tr>
                                         </thead>
@@ -302,7 +300,7 @@
                                         <td id='talonario'>"+result.array.talonario +"</td>\
 										<td id='abono'>$"+result.array.valor  +"</td>\
                                         <td id='saldo'>$"+saldo+"</td>\
-                                        <td id='rowId' class='del_abono'>"+ rowId +"</td>\
+
 									</tr>");
 
 

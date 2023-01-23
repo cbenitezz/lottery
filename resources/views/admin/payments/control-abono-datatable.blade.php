@@ -5,33 +5,56 @@
 
 <div class="row">
     <div class="col-lg-12">
+        @if (Session::has('success'))
+            <div class="alert alert-success alert-dismissible fade show mb-4 mt-4" role="alert">
+
+                <a href="#" class="alert-link">
+                     <i class="icon-check"></i>
+                     {{Session::get('success')}}
+                    </a>
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+        @endif
+        @if (Session::has('message'))
+            <div class="alert alert-danger alert-dismissible fade show mb-4 mt-4" role="alert">
+                {{Session::get('message')}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+        @endif
+
 
         <div class="card">
             <div class="card-header">
 
-            <a href="{{route('user.cliente',[ 'rol'=>"vendedor" ])}}" class="btn btn-warning  float-right">
-                <i class="fa fa-plus"></i> Adicionar Vendedor</a>
+            <a href="{{route('payment.index')}}" class="btn btn-warning  float-right">
+            <i class="fa fa-usd"></i> Abonos</a>
 
-            <h5 class="card-title mb-0"><i class="fa fa-user" aria-hidden="true"></i> CONTROL VENDEDORES </h5>
-            <div class="small text-muted">Listado Vendedor</div>
+            <h5 class="card-title mb-0">  CONTROL ABONOS </h5>
+            <div class="small text-muted"><i class="fa fa-usd" aria-hidden="true"></i> Editar Abonos</div>
             </div>
             <div class="card-body">
               <div class="row">
 
                 <div class="col-lg-12 table-responsive">
-                    <table class="table table-striped" id="seller_table" style="font-size: 0.8rem;color:black">
+                    <table class="table table-striped" id="control_abono_table" style="font-size: 0.8rem;color:black">
                     <thead>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Cédula</th>
-                        <th>Teléfono</th>
-                        <th># Boletas</th>
+                        <th>Sorteo</th>
+                        <th>Número</th>
+                        <th>Abono</th>
+                        <th>Recibo</th>
+                        <th>Fecha de Pago</th>
                         <th>Acciones</th>
-
-
                     </thead>
 
                     </table>
+
 
                 </div>
 
@@ -74,7 +97,7 @@
     $(document).ready( function() {
 
 
-     let datatableAbono =   $('#seller_table').DataTable({
+     let datatableAbono =   $('#control_abono_table').DataTable({
 
             processing: true,
             serverSide: true,
@@ -82,17 +105,18 @@
             autoWidth: false,
             searching: true,
             ajax: {
-                url: "{{ route('user.vendedores') }}",
+                url: "{{ route('payment.controlabonos') }}",
             },
 
             columns: [
 
-                    { data: 'name', name: 'name'},
-                    { data: 'last_name', name: 'last_name'},
-                    { data: 'identification_card', name: 'identification_card'},
-                    { data: 'phone', name: 'phone'},
-                    { data: 'actions', name: 'actions'},
-                    { data: 'asignar', name: 'asignar'},
+                    { data: 'sorteo', name: 'sorteo'},
+                    { data: 'number_ticket', name: 'number_ticket'},
+                    { data: 'abono', name: 'abono'},
+                    { data: 'talonario', name: 'talonario'},
+                    { data: 'updated_at', name: 'updated_at'},
+                    { data: 'editar', name: 'editar'},
+
 
 
 
@@ -157,7 +181,7 @@
             "lengthMenu": "Mostrar _MENU_ Entradas",
             "loadingRecords": "Cargando...",
             "processing": "Procesando...",
-            "search": "Buscar por Nombre:",
+            "search": "Buscar Número:",
             "zeroRecords": "Sin resultados encontrados",
             "paginate": {
                 "first": "Primero",

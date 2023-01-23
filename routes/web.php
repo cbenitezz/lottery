@@ -42,6 +42,9 @@ Route::resource('lottery', 'LotteryController')->middleware('auth');
 
 Route::post('printer','PaymentController@printer')->middleware('auth')->name('printer');
 Route::get('controlabonos','PaymentController@controlAbonos')->middleware('auth')->name('payment.controlabonos');
+Route::get('editar/abono/{id}/{status}','PaymentController@editAbono')->middleware('auth')->name('payment.editar');
+Route::post('update/abono','PaymentController@updateAbono')->middleware('auth')->name('payment.updateAbono');
+
 Route::resource('payment', 'PaymentController')->middleware('auth');
 //Route::resource('user', 'UserController')->middleware('auth');
 Route::resource('profile', 'ProfileController')->middleware('auth');
