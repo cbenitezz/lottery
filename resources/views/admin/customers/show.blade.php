@@ -1,36 +1,31 @@
 @extends('layouts.dashboard.app')
-@section('title', "Clientes - Vendedores")
+@section('title', "Cliente: " . strtoupper($customer->name) . " " . strtoupper($customer->last_name))
 
 @section('content')
 
 <div class="row">
     <div class="col-lg-12">
 
+
         <div class="card">
             <div class="card-header">
 
-            <a href="{{route('user.cliente',[ 'rol'=>"cliente" ])}}" class="btn btn-warning  float-right">
-            <i class="fa fa-plus"></i> Adicionar Cliente</a>
+            <h5 class="card-title mb-0">
+                <i class="fa fa-user" aria-hidden="true"></i> CLIENTE: {{ strtoupper($customer->name) }}  {{ strtoupper($customer->last_name) }}</h5>
 
-
-
-            <h5 class="card-title mb-0"><i class="fa fa-user" aria-hidden="true"></i> CONTROL DE CLIENTES </h5>
-            <div class="small text-muted">Listado de Clientes, Boleta y Vendedor</div>
+            <div class="small text-muted">Listado de boletas asignadas y pagos </div>
             </div>
             <div class="card-body">
               <div class="row">
 
                 <div class="col-lg-12 table-responsive">
-                    <table class="table table-striped" id="customers_table" >
+                    <table class="table table-striped" id="cliente_table" >
                     <thead>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Cédula</th>
-                        <th>Teléfono</th>
-                        <th>Dirección</th>
-                        <th>Vendedor</th>
-                        <th>Boletas</th>
-                        <th>Asignar</th>
+                        <th>Número de Boleta</th>
+                        <th>Abono</th>
+                        <th>Fecha de pago</th>
+                        <th>Sorteo</th>
+
 
                     </thead>
 
@@ -78,7 +73,8 @@
     $(document).ready( function() {
 
 
-     let datatableAbono =   $('#customers_table').DataTable({
+     let datatableAbono =   $('#cliente_table').DataTable({
+
 
             processing: true,
             serverSide: true,
@@ -86,25 +82,20 @@
             autoWidth: false,
             searching: true,
             ajax: {
-                url: "{{ route('customer.index') }}",
+                url: "{{ route('customer.show', $customer->id) }}",
             },
 
             columns: [
 
-                    { data: 'name', name: 'name'},
-                    { data: 'last_name', name: 'last_name'},
-                    { data: 'identification_card', name: 'identification_card'},
-                    { data: 'phone', name: 'phone'},
-                    { data: 'address', name: 'address'},
-                    { data: 'seller', name: 'seller_id'},
-                    { data: 'actions', name: 'actions'},
-                    { data: 'asignar', name: 'asignar'},
+                    { data: 'number_ticket', name: 'number_ticket'},
+                    { data: 'paid_ticket', name: 'paid_ticket'},
+                    { data: 'updated_at', name: 'updated_at'},
+                    { data: 'sorteo', name: 'sorteo'},
 
-
-
+                    { data: 'cliente', name: 'cliente', visible:false},
 
             ],
-            columnDefs: [{ "targets": [4,5,6],
+            columnDefs: [{ "targets": [0,1,2,3],
                           "orderable": false,
                           "className": "text-center",
             }],
@@ -137,7 +128,7 @@
                                         text: '<i class="fa fa-file-excel-o" aria-hidden="true"></i>',
                                         className: 'btn btn-success active m-b-10 m-l-5',
                                         exportOptions: {
-                                             columns: [ 0, 1, 2, 3, 4 ]
+                                             columns: [ 0, 1, 2, 3 ]
                                         }
                                     },
                                     {
@@ -145,7 +136,8 @@
                                         text:'<i class="fa fa-file-pdf-o" aria-hidden="true"></i>',
                                         className: 'btn btn-danger active m-b-10 m-l-5',
                                         exportOptions: {
-                                    columns: [ 0, 1, 2, 3, 4 ]
+                                        columns: [ 0, 1, 2, 3 ]
+
                                         }
                                     }
                             ],

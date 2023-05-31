@@ -1,40 +1,40 @@
 @extends('layouts.dashboard.app')
-@section('title', "Clientes - Vendedores")
+@section('title', "Clientes Boletas Abonos")
 
 @section('content')
 
 <div class="row">
     <div class="col-lg-12">
 
+        @if(session('message'))
+            <div class="alert alert-danger">
+                {{ session('message') }}
+            </div>
+        @endif
+
+
+
         <div class="card">
             <div class="card-header">
 
-            <a href="{{route('user.cliente',[ 'rol'=>"cliente" ])}}" class="btn btn-warning  float-right">
-            <i class="fa fa-plus"></i> Adicionar Cliente</a>
+            <h5 class="card-title mb-0"> CLIENTES </h5>
+            <br>
+            <form method="POST" action="{{ route('buscarcedula')}}">
+                @csrf
 
+                <div class="input-group input-group-default">
+                    <span class="input-group-btn"><button class="btn btn-primary" type="submit"><i class="ti-search"></i></button></span>
+                    <input type="text" placeholder="Digite Cédula" name="identification_card" class="form-control">
+                </div>
+            </form>
 
-
-            <h5 class="card-title mb-0"><i class="fa fa-user" aria-hidden="true"></i> CONTROL DE CLIENTES </h5>
-            <div class="small text-muted">Listado de Clientes, Boleta y Vendedor</div>
+            <div class="small text-muted">Para listar las boletas del cliente, digite el número de cédula</div>
             </div>
             <div class="card-body">
               <div class="row">
 
                 <div class="col-lg-12 table-responsive">
-                    <table class="table table-striped" id="customers_table" >
-                    <thead>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Cédula</th>
-                        <th>Teléfono</th>
-                        <th>Dirección</th>
-                        <th>Vendedor</th>
-                        <th>Boletas</th>
-                        <th>Asignar</th>
 
-                    </thead>
-
-                    </table>
 
                 </div>
 
@@ -77,8 +77,11 @@
 
     $(document).ready( function() {
 
+        const nombreElement = document.getElementById('nombre');
+        nombreElement.textContent = 'Juan Pérez';
 
-     let datatableAbono =   $('#customers_table').DataTable({
+     let datatableAbono =   $('#cliente_table').DataTable({
+
 
             processing: true,
             serverSide: true,
@@ -86,25 +89,24 @@
             autoWidth: false,
             searching: true,
             ajax: {
-                url: "{{ route('customer.index') }}",
+                url: "{{ route('customer.show', ['customer'=>54]) }}",
             },
 
             columns: [
 
-                    { data: 'name', name: 'name'},
-                    { data: 'last_name', name: 'last_name'},
-                    { data: 'identification_card', name: 'identification_card'},
-                    { data: 'phone', name: 'phone'},
-                    { data: 'address', name: 'address'},
-                    { data: 'seller', name: 'seller_id'},
-                    { data: 'actions', name: 'actions'},
-                    { data: 'asignar', name: 'asignar'},
+                    { data: 'number_ticket', name: 'number_ticket'},
+                    { data: 'paid_ticket', name: 'paid_ticket'},
+                    { data: 'updated_at', name: 'updated_at'},
+                    { data: 'customer_name', name: 'customer_name'},
+
+
+
 
 
 
 
             ],
-            columnDefs: [{ "targets": [4,5,6],
+            columnDefs: [{ "targets": [0,1,2],
                           "orderable": false,
                           "className": "text-center",
             }],

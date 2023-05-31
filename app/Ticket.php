@@ -27,12 +27,13 @@ class Ticket extends Model
 
     public function customers()
     {
-        return $this->belongsTo('App\Customer','customer_id');
+        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+
     }
 
     public function lotteries()
     {
-        return $this->belongsTo('App\Lottery','lottery_id');
+        return $this->belongsTo('App\Lottery', 'lottery_id','id');
     }
 
 }

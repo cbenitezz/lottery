@@ -49,6 +49,9 @@ Route::resource('payment', 'PaymentController')->middleware('auth');
 //Route::resource('user', 'UserController')->middleware('auth');
 Route::resource('profile', 'ProfileController')->middleware('auth');
 
+Route::get('boleteria','CustomerController@boleteria')->middleware('auth')->name('boleteria');
+Route::post('buscarcedula','CustomerController@buscarcedula')->middleware('auth')->name('buscarcedula');
+
 Route::resource('customer', CustomerController::class)->middleware('auth');
 
 
