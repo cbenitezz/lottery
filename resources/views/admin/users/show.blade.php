@@ -82,7 +82,9 @@
             autoWidth: false,
             searching: true,
             ajax: {
+
                 url: "{{ route('user.show', $profile->id) }}",
+
             },
 
             columns: [
@@ -135,8 +137,19 @@
                                         text:'<i class="fa fa-file-pdf-o" aria-hidden="true"></i>',
                                         className: 'btn btn-danger active m-b-10 m-l-5',
                                         exportOptions: {
-                                        columns: [ 0, 1, 2, 3 ]
+                                        columns: [ 0, 1, 2, 3, 4 ]
 
+                                        },
+                                        customize: function (doc) {
+                                           // Agregar encabezado personalizado
+                                            doc.header = function () {
+                                                // Contenido del encabezado
+                                                doc.text("Listado de Clientes", 20, 20); // Texto del encabezado
+                                                doc.line(20, 25, doc.internal.pageSize.width - 20, 25); // Línea debajo del encabezado
+
+                                            };
+                                            // Establecer orientación de página personalizada
+                                            doc.pageOrientation = 'portrait'; // 'portrait' para orientación vertical -horizontal 'landscape'
                                         }
                                     }
                             ],

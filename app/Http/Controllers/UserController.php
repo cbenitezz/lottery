@@ -55,8 +55,8 @@ class UserController extends Controller
 
         $customers = Customer::select(['id','identification_card','name','last_name','phone'])
         ->where('seller_id', $seller->id)
-        ->with(['users'])
-        ->orderBy('id', 'desc')->get();
+        ->with('users')
+        ->orderBy('id', 'desc');
 //dd($customers);
 
         $profile = Profile::select(['id','name','last_name'])->where('user_id',$seller->id)->first();
@@ -66,7 +66,7 @@ class UserController extends Controller
             return datatables()->eloquent($customers)
             //return datatables()->query($customers)
             ->editColumn('id', function (Customer $customers) {
-                dd($customers);
+
                 return  $customers->id;
              })
              ->editColumn('identification_card', function (Customer $customers) {
@@ -87,7 +87,7 @@ class UserController extends Controller
 
         }
 
-        return view('admin.users.show', compact('profile'));
+        return view('admin.users.show', compact('customers','profile'));
 
 
 
