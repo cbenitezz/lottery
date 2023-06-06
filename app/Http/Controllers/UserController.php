@@ -21,6 +21,78 @@ class UserController extends Controller
 
   }
 
+
+  public function buscarVendedor()
+  {
+
+        return view('admin.users.buscar-vendedor');
+
+  }
+
+  public function buscarcedulavendedor(Request $request)
+    {
+
+      $seller = Profile::where('identification_card', (int)$request->input('identification_card'))->first();
+    //dd($customer);
+      if (!$seller) {
+        // El customer no fue encontrado, muestra un mensaje personalizado
+       // return response()->json(['message' => 'Customer NO encontrado'], 404);
+        return redirect()->back()->with('message', 'Vendedor no encontrado, verifique el número de cédula, sin puntos o comas');
+    }else {
+        //return response()->json(['message' => 'Customer encontrado'], 404);
+        return redirect()->route('user.show', ['seller' => $seller->id]);
+    }
+      //dd((int)$request->input('cedula'));
+     // dd($customer);
+    }
+
+
+    public function show(User $seller, Request $request)
+    {
+
+        //dd($seller->id, $request);
+
+
+        $customers = Customer::select(['id','identification_card','name','last_name','phone'])
+        ->where('seller_id', $seller->id)
+        ->with(['users'])
+        ->orderBy('id', 'desc')->get();
+//dd($customers);
+
+        $profile = Profile::select(['id','name','last_name'])->where('user_id',$seller->id)->first();
+
+        if ($request->ajax()){
+
+            return datatables()->eloquent($customers)
+            //return datatables()->query($customers)
+            ->editColumn('id', function (Customer $customers) {
+                dd($customers);
+                return  $customers->id;
+             })
+             ->editColumn('identification_card', function (Customer $customers) {
+                return  $customers->identification_card;
+             })
+             ->editColumn('name', function (Customer $customers) {
+                return  $customers->name;
+             })
+             ->editColumn('last_name', function (Customer $customers) {
+
+                return $customers->last_name;
+
+             })
+             ->editColumn('phone',function (Customer $customers) {
+                return $customers->phone;
+             })
+             ->toJson();
+
+        }
+
+        return view('admin.users.show', compact('profile'));
+
+
+
+    }
+
   /**
    * function that show users with rol admin and conventional usuario.
    *
@@ -426,10 +498,7 @@ class UserController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function show($id)
-  {
 
-  }
 
   /**
    * Show the form for editing the specified resource.

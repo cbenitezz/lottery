@@ -48,6 +48,7 @@
                     <span class="hide-menu">Vendedores</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{ route('user.vendedores')}}">Listado</a></li>
+                        <li><a href="{{ route('buscarVendedor')}}">Buscar Clientes</a></li>
 
                     </ul>
                 </li>

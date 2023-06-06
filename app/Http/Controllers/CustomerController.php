@@ -135,13 +135,14 @@ class CustomerController extends Controller
 
        //dd($customer->id);
 
+
         $ticket = Ticket::select(['id','number_ticket','paid_ticket','status','updated_at'])
         ->where('customer_id', $customer->id)
         ->with(['payments', 'customers','lotteries'])
         ->orderBy('id', 'desc');
 //dd($ticket);
 
-        if($request->ajax()){
+        if ($request->ajax()){
 
 
             return datatables()->eloquent($ticket)

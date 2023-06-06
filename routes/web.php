@@ -75,6 +75,10 @@ Route::post('/admin/user/{id}','UserController@destroy')->middleware('auth')->na
 
 
 /* Ruta para la creación de Clientes y vendedores*/
+Route::get('/admin/users/buscarvendedor','UserController@buscarVendedor')->middleware('auth')->name('buscarVendedor');
+Route::post('buscarcedulavendedor','UserController@buscarcedulavendedor')->middleware('auth')->name('buscarcedulavendedor');
+Route::get('/admin/users/showvendedor/{seller}','UserController@show')->middleware('auth')->name('user.show');
+
 Route::get('/admin/users/cliente','UserController@createCustomerSeller')->middleware('auth')->name('user.cliente');
 Route::get('/admin/users/editseller/{id}','UserController@editSeller')->middleware('auth')->name('user.editseller');
 Route::post('/admin/users/vendedor','UserController@updateSeller')->middleware('auth')->name('user.updateseller');
