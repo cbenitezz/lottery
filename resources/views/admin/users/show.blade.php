@@ -72,7 +72,8 @@
 
     $(document).ready( function() {
 
-
+     var nombreVendedor = "{{ strtoupper($profile->name) }} {{ strtoupper($profile->last_name) }}";
+     var titleFooter    = "© 2021-2023 MICHU Estrategias Inmobiliarias S.A.S";
      let datatableAbono =   $('#vendedor_table').DataTable({
 
 
@@ -134,6 +135,7 @@
                                     },
                                     {
                                         extend: 'pdf',
+                                        title:  nombreVendedor,
                                         text:'<i class="fa fa-file-pdf-o" aria-hidden="true"></i>',
                                         className: 'btn btn-danger active m-b-10 m-l-5',
                                         exportOptions: {
@@ -141,13 +143,62 @@
 
                                         },
                                         customize: function (doc) {
-                                           // Agregar encabezado personalizado
-                                            doc.header = function () {
-                                                // Contenido del encabezado
-                                                doc.text("Listado de Clientes", 20, 20); // Texto del encabezado
-                                                doc.line(20, 25, doc.internal.pageSize.width - 20, 25); // Línea debajo del encabezado
-
+                                            doc.content[1].table.widths = [ '20%', '20%', '20%', '20%', '20%'];
+                                            doc.pageMargins = [40, 60, 40, 60]; // Márgenes de página
+                                            doc.defaultStyle.fontSize = 9; // Tamaño de fuente predeterminado
+                                            doc.styles.tableHeader.fontSize = 10; // Tamaño de fuente del encabezado de la tabla
+                                            // Encabezado del documento
+                                            var header = {
+                                                text: 'Listado de Clientes',
+                                                style: 'header'
                                             };
+                                            var footer = {
+                                                columns: [
+                                                { text: titleFooter, alignment: 'center', style: 'footer' },
+
+                                                ]
+                                            };
+                                            // Agregar el footer al documento
+                                            doc.footer = function(currentPage, pageCount) {
+                                                return {
+                                                table: {
+                                                    widths: ['*', '*'],
+                                                    body: [
+                                                    [footer, {}]
+                                                    ]
+                                                },
+                                                layout: 'noBorders'
+                                                };
+                                            };
+                                            // Contenido del documento
+                                            var content = [
+                                                { text: 'Subtítulo del documento', style: 'subheader' },
+                                                // Aquí puedes agregar más contenido al PDF
+                                            ];
+
+                                            // Configuración del estilo de texto
+                                            var styles = {
+                                                header: {
+                                                fontSize: 16,
+                                                bold: true,
+                                                alignment: 'center',
+                                                margin: [0, 20, 50, 50] // Márgenes: arriba, derecha, abajo, izquierda
+                                                },
+                                                subheader: {
+                                                fontSize: 14,
+                                                bold: true,
+                                                margin: [0, 10, 0, 5] // Márgenes: arriba, derecha, abajo, izquierda
+                                                }
+                                            };
+
+                                            // Agregar el encabezado y el contenido al documento
+                                            doc['header'] = header;
+                                            //doc['content'] = content;
+
+                                            // Definir los estilos de texto
+                                            doc['styles'] = styles;
+                                      // Agregar encabezado personalizado
+
                                             // Establecer orientación de página personalizada
                                             doc.pageOrientation = 'portrait'; // 'portrait' para orientación vertical -horizontal 'landscape'
                                         }
